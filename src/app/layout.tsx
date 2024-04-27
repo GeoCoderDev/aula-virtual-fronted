@@ -16,7 +16,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+
+
+        {children}
+        
+        {/* <footer className="bg-verde-spotify w-screen py-3">
+        DESARROLLADO POR ESTUDIANTES DE LA FACULTAD DE INGENIERÍA DE SISTEMAS DE LA
+        <b>UNIVERSIDAD NACIONAL DE CAÑETE</b>
+        </footer> */}
+        
+      </body>
     </html>
   );
 }
