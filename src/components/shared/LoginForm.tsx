@@ -105,7 +105,7 @@ export default function LoginForm({
                   visiblePassword ? "/icons/ojo.svg" : "/icons/ojo_cerrado.svg"
                 }
                 alt="Icono-Ojo"
-                className="-border-2 absolute aspect-auto w-6 right-2 bottom-1/2 -translate-y-1/2"
+                className="-border-2 cursor-pointer absolute aspect-auto w-6 right-2 bottom-1/2 -translate-y-1/2"
               />
 
               <button
