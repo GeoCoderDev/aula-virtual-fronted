@@ -1,12 +1,12 @@
 
 import LoginForm from "@/components/shared/LoginForm";
 
-export default function Home() {
+export default function LoginUser() {
 
   //INICIO DE SESION DE PROFESORES Y ALUMNOS
   return (
     <>
-      <LoginForm Api_Endpoint="http//localhost/api/auth/login" welcomeMessageRole="Sepulvedano"/>
+      <LoginForm endpoint="/api/auth/login" welcomeMessageRole="Sepulvedano"/>
     </>
   );
 }

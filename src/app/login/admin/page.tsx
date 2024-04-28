@@ -1,14 +1,14 @@
 import LoginForm from "@/components/shared/LoginForm";
 
-const layout = () => {
+const LoginAdmin = () => {
   return (
     <>
       <LoginForm
-        Api_Endpoint="http://localhost/api/auth/admin/login"
+        endpoint="/api/auth/admin/login"
         welcomeMessageRole="Admin"
       />
     </>
   );
 };
 
-export default layout;
+export default LoginAdmin;

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/shared/Header";
 import Sidebar from "@/components/shared/Sidebar";
+import ProviderStore from "@/store/Provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,12 +17,21 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="shortcut icon"
+          href="/svg/Logo Colegio.svg"
+          type="image/x-icon"
+        />
+      </head>
       <body className={inter.className}>
-        <Header />
-        <div className="flex relative">
-          <Sidebar />
-          <main>{children}</main>
-        </div>
+        <ProviderStore>
+          <Header />
+          <div className="flex relative">
+            <Sidebar />
+            <main className="w-screen">{children}</main>
+          </div>
+        </ProviderStore>
       </body>
     </html>
   );

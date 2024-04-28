@@ -15,7 +15,7 @@ const Loader = ({color="#1c00bc", durationSegundos = 1, width = "50px", backgrou
 
   return (
     <div
-      className={`aspect-square ${className}`}
+      className={`-border-2 aspect-square ${className}`}
       style={{
         width,
         background: `

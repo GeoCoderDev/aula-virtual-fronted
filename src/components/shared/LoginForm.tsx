@@ -1,6 +1,8 @@
 "use client";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import Loader from "../Loader";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface LoginForm {
   username: string;
@@ -13,14 +15,18 @@ const initialForm: LoginForm = {
 };
 
 interface LoginFormProps {
-  Api_Endpoint: string;
+  endpoint: string;
   welcomeMessageRole: string;
 }
 
 export default function LoginForm({
-  Api_Endpoint,
+  endpoint,
   welcomeMessageRole,
 }: LoginFormProps) {
+  const urlAPI = useSelector<RootState>(
+    (state) => state.globalConstants.urlAPI
+  );
+
   const [form, setForm] = useState<LoginForm>(initialForm);
 
   const [visiblePassword, setVisiblePassword] = useState(false);
@@ -31,11 +37,13 @@ export default function LoginForm({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    async function fetchData() {
-      const response = await fetch(Api_Endpoint, {
+    try {
+      setIsLoading(true);
+
+      const response = await fetch(`${urlAPI}${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -44,36 +52,28 @@ export default function LoginForm({
       if (!response.ok) throw new Error("Network response was not ok");
 
       const message = await response.json();
-
       console.log(message);
-    }
-
-    try {
-      setIsLoading(true);
-      fetchData();
-      setForm(initialForm);
     } catch (e) {
       console.log(e);
     } finally {
       setIsLoading(false);
+      setForm(initialForm);
     }
   };
 
   //INICIO DE SESION DE PROFESORES Y ALUMNOS
   return (
     <>
-      {/* CONTENEDOR */}
-      <div className="w-screen flex flex-row h-screen items-center justify-center">
         <div
           style={{ boxShadow: "0 0 22px 6px #00FF6F50" }}
-          className="flex flex-row w-[60%] h-[73%] rounded-[2rem] border-red-100 -border-2 overflow-hidden"
+          className="flex flex-row flex-wrap max-w-[83%] min-h-[28rem] rounded-[2rem] border-red-100 -border-2 overflow-hidden justify-center"
         >
           {/* PRIMERA MITAD */}
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col w-1/2 items-center justify-center gap-y-7"
+            className="flex flex-col w-[25rem] max-md:order-5 items-center justify-items-center justify-center gap-y-7 p-5"
           >
-            <h2 className="font-semibold text-[1.4rem]">Inicia sesión ahora</h2>
+            <h2 className="font-semibold text-[1.5rem] text-center">Inicia sesión ahora</h2>
 
             <input
               onChange={handleChange}
@@ -117,7 +117,7 @@ export default function LoginForm({
             </label>
 
             <button
-              className="bg-verde-spotify rounded-full py-3 w-[80%] font-extrabold"
+              className="bg-verde-spotify rounded-full py-3 w-[80%] font-extrabold flex items-center justify-center gap-x-2"
               type="submit"
             >
               ACCEDER{" "}
@@ -125,25 +125,25 @@ export default function LoginForm({
                 <Loader
                   className=""
                   width="20px"
-                  color="black"
-                  backgroundSize="8px"
+                  color="#000"
+                  backgroundSize="6px"
                 />
               )}
             </button>
           </form>
 
           {/* SEGUNDA MITAD */}
-          <div className="bg-verde-spotify w-1/2 flex flex-col items-center justify-center p-[5%] gap-y-2">
+          <div className="bg-verde-spotify w-[25rem] flex flex-col items-center justify-center gap-y-3 max-md:gap-y-2 max-md:p-5 p-7 flex-1">
             <img
-              className="-border-2 border-b-teal-50 aspect-auto w-20"
+              className="-border-2 border-b-teal-50 aspect-auto max-sm:w-[4.2rem] w-20"
               src="/svg/Logo Colegio.svg"
               alt="Logo Colegio"
             />
-            <h1 className="text-center min-w-min font-black text-3xl">
-              ¡Bienvenido <br />
+            <h1 className="text-center min-w-min font-black text-3xl max-sm:text-2xl max-w-[80%]">
+              ¡Bienvenido{" "}
               {welcomeMessageRole}!
             </h1>
-            <p className="text-center">
+            <p className="text-center max-md:text-sm px-[0.35rem]">
               ¡Estamos encantados de darte la bienvenida a la plataforma virtual
               de
               <b> José Buenaventura Sepúlveda</b>! Aquí, la educación va más
@@ -152,7 +152,6 @@ export default function LoginForm({
             </p>
           </div>
         </div>
-      </div>
     </>
   );
 }
