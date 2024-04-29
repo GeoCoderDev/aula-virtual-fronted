@@ -6,6 +6,11 @@ export async function middleware(request: NextRequest) {
   const pathname = url.pathname;
   const token = request.cookies.get("myToken");
 
+  // Excluir las rutas de la API del middleware
+  if (pathname.startsWith("/api")) {
+    return NextResponse.next();
+  }
+
   // Permite cargar recursos estáticos sin autenticación
   if (isStaticAsset(request.nextUrl.pathname)) {
     return NextResponse.next();
