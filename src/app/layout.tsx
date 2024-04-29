@@ -24,12 +24,12 @@ export default function RootLayout({
           type="image/x-icon"
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} flex flex-col min-h-[100svh]`}>
         <ProviderStore>
           <Header />
-          <div className="flex relative">
+          <div className="flex relative flex-1">
             <Sidebar />
-            <main className="w-screen">{children}</main>
+            <main className="w-screen border-2 flex items-center justify-center">{children}</main>
           </div>
         </ProviderStore>
       </body>

@@ -14,7 +14,7 @@ const Sidebar = () => {
   }
 
   return (
-    <nav className="sticky w-max">
+    <nav className="sticky w-max border-black border-r-[1px]">
       <ul>
         {allPagesApp.map((props, index) => {
           return <SideBarElement key={index} {...props} />;

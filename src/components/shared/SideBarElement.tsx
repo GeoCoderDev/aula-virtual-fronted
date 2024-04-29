@@ -9,7 +9,7 @@ const SideBarElement = ({ IconTSX, route, text }: PageApp) => {
 
   return (
     <Link href={route}>
-      <li className="flex items-center border-black border-r-[1px] px-4 py-3 gap-x-4" title={text}>
+      <li className="flex items-center  px-4 py-3 gap-x-4" title={text}>
         <IconTSX className="" fillColor="black" />
         <span className="w-max">{text}</span>
       </li>
