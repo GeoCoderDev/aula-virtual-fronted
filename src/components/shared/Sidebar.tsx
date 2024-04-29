@@ -1,20 +1,26 @@
 "use client";
 
+import allPagesApp from "@/app/assets/routes";
 // Sidebar.tsx
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
+import SideBarElement from "./SideBarElement";
 
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
   const pathname = usePathname();
-  const isLoginPage = pathname.startsWith('/login');
+  const isLoginPage = pathname.startsWith("/login");
 
   if (isLoginPage) {
     return null; // No renderizar el componente en la ruta /login
   }
 
   return (
-    <aside>
-      Sidebar
-    </aside>
+    <nav className="sticky w-max">
+      <ul>
+        {allPagesApp.map((props, index) => {
+          return <SideBarElement key={index} {...props} />;
+        })}
+      </ul>
+    </nav>
   );
 };
 

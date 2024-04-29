@@ -3,6 +3,7 @@ import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import Loader from "../Loader";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import Image from "next/image";
 
 interface LoginForm {
   username: string;
@@ -111,7 +112,9 @@ export default function LoginForm({
               placeholder="Contraseña*"
               value={form.password}
             />
-            <img
+            <Image
+            width={34}
+            height={34}
               onClick={(e) => {
                 setVisiblePassword(!visiblePassword);
               }}
@@ -148,7 +151,9 @@ export default function LoginForm({
 
         {/* SEGUNDA MITAD */}
         <div className="bg-verde-spotify w-[25rem] flex flex-col items-center justify-center gap-y-3 max-md:gap-y-2 max-md:p-5 p-7 flex-1">
-          <img
+          <Image
+          width={34}
+          height={34}
             className="-border-2 border-b-teal-50 aspect-auto max-sm:w-[4.2rem] w-20"
             src="/svg/Logo Colegio.svg"
             alt="Logo Colegio"
