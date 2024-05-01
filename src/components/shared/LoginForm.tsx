@@ -56,7 +56,7 @@ export default function LoginForm({
       const objectResponse = await response.json();
 
       if (!response.ok){
-        setErrorMessage(objectResponse.message);
+        return setErrorMessage(objectResponse.message);
       }
 
       const { token } = objectResponse;
@@ -136,7 +136,7 @@ export default function LoginForm({
 
             <button
               type="button"
-              className="font-bold self-end text-sm mt-6 hover:underline"
+              className="font-bold self-end text-sm mt-6 hover:underline"              
             >
               ¿Olvidaste tu contraseña?
             </button>
@@ -145,7 +145,8 @@ export default function LoginForm({
           {errorMessage && <div className="text-red-600 font-bold my-[-0.7rem] max-w-[80%] text-center text-sm">{errorMessage}</div>}
 
           <button
-            className="bg-verde-spotify rounded-full py-3 w-[80%] min-w-[50%] font-extrabold flex items-center justify-center gap-x-2"
+            disabled={isLoading}
+            className="bg-verde-spotify rounded-full py-3 w-[80%] min-w-[50%] font-extrabold flex items-center justify-center gap-x-2 disabled:grayscale-[0.5]"
             type="submit"
           >
             ACCEDER{" "}
