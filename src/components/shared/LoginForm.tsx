@@ -1,9 +1,10 @@
 "use client";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import Loader from "../Loader";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
+import {  useSelector } from "react-redux";
+import {  RootState } from "@/store";
 import Image from "next/image";
+import { UserSessionData } from "@/lib/utils/UserSessionData";
 
 interface LoginForm {
   username: string;
@@ -24,6 +25,7 @@ export default function LoginForm({
   endpoint,
   welcomeMessageRole,
 }: LoginFormProps) {
+
   const urlAPI = useSelector<RootState>(
     (state) => state.globalConstants.urlAPI
   );
@@ -55,31 +57,31 @@ export default function LoginForm({
 
       const objectResponse = await response.json();
 
-      if (!response.ok){
+      if (!response.ok) {
         return setErrorMessage(objectResponse.message);
       }
 
-      const { token } = objectResponse;
+      const { token, role } = objectResponse;
 
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: token }),
+        body: JSON.stringify({ token }),
       });
 
-
-
       if (res.ok) {
+        // Almacenando el rol del usuario en el estado global
+        UserSessionData.role = role;
+        UserSessionData.username = form.username;
         setForm(initialForm);
         // Redirigir al usuario al home
         return (window.location.href = "/"); // Cambiar la URL y redirigir al home
       }
       setErrorMessage("La red es inestable");
-
     } catch (e) {
       console.log(e);
     } finally {
-      setIsLoading(false);      
+      setIsLoading(false);
     }
   };
 
@@ -101,6 +103,7 @@ export default function LoginForm({
 
           <input
             onChange={handleChange}
+            maxLength={100}
             name="username"
             required={true}
             style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
@@ -122,8 +125,8 @@ export default function LoginForm({
               value={form.password}
             />
             <Image
-            width={34}
-            height={34}
+              width={34}
+              height={34}
               onClick={(e) => {
                 setVisiblePassword(!visiblePassword);
               }}
@@ -136,13 +139,17 @@ export default function LoginForm({
 
             <button
               type="button"
-              className="font-bold self-end text-sm mt-6 hover:underline"              
+              className="font-bold self-end text-sm mt-6 hover:underline"
             >
               ¿Olvidaste tu contraseña?
             </button>
           </label>
 
-          {errorMessage && <div className="text-red-600 font-bold my-[-0.7rem] max-w-[80%] text-center text-sm">{errorMessage}</div>}
+          {errorMessage && (
+            <div className="text-red-600 font-bold my-[-0.7rem] max-w-[80%] text-center text-sm">
+              {errorMessage}
+            </div>
+          )}
 
           <button
             disabled={isLoading}
@@ -164,8 +171,8 @@ export default function LoginForm({
         {/* SEGUNDA MITAD */}
         <div className="bg-verde-spotify w-[25rem] flex flex-col items-center justify-center gap-y-3 max-md:gap-y-2 max-md:p-5 p-7 flex-1">
           <Image
-          width={34}
-          height={34}
+            width={34}
+            height={34}
             className="-border-2 border-b-teal-50 aspect-auto max-sm:w-[4.2rem] w-20"
             src="/svg/Logo Colegio.svg"
             alt="Logo Colegio"

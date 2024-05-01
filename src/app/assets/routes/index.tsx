@@ -5,11 +5,13 @@ import HorarioIcon from "@/components/icons/sidebar/HorarioIcon";
 import AsistenciaIcon from "@/components/icons/sidebar/AsistenciaIcon";
 import CalificacionesIcon from "@/components/icons/sidebar/CalificacionesIcon";
 import ReportesIcon from "@/components/icons/sidebar/ReportesIcon";
+import { AllowedRoles } from "@/interfaces/Role";
 
 export interface PageApp {
   route: string;
   text: string;
   IconTSX: (props: IconProps) => ReactElement;
+  allowedRoles: AllowedRoles[]; // Propiedad para roles permitidos
 }
 
 const pagesApp: PageApp[] = [
@@ -19,6 +21,7 @@ const pagesApp: PageApp[] = [
     IconTSX: (props: IconProps) => {
       return <MyCoursesIcon {...props} />;
     },
+    allowedRoles: ["teacher", "student"],
   },
   {
     route: "horario",
@@ -26,6 +29,7 @@ const pagesApp: PageApp[] = [
     IconTSX: (props: IconProps) => {
       return <HorarioIcon {...props} />;
     },
+    allowedRoles: ["teacher", "student"],
   },
   {
     route: "asistencia",
@@ -33,6 +37,7 @@ const pagesApp: PageApp[] = [
     IconTSX: (props: IconProps) => {
       return <AsistenciaIcon {...props} />;
     },
+    allowedRoles: ["teacher", "student"],
   },
   {
     route: "calificaciones",
@@ -40,6 +45,7 @@ const pagesApp: PageApp[] = [
     IconTSX: (props: IconProps) => {
       return <CalificacionesIcon {...props} />;
     },
+    allowedRoles: ["teacher", "student"],
   },
   {
     route: "reportes",
@@ -47,6 +53,7 @@ const pagesApp: PageApp[] = [
     IconTSX: (props: IconProps) => {
       return <ReportesIcon {...props} />;
     },
+    allowedRoles: ["teacher", "student"],
   },
 ];
 

@@ -15,7 +15,7 @@ const Sidebar = () => {
 
   return (
     <nav
-      style={{ boxShadow: "0 3px 5px 4px rgba(0,0,0,0.1)" }}
+      style={{ boxShadow: "0px 0 4px 2px #00000020" }}
       className="sticky w-max"
     >
       <ul className="">

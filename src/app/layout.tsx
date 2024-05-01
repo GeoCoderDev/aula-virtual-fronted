@@ -29,7 +29,7 @@ export default function RootLayout({
           <Header />
           <div className="flex relative flex-1">
             <Sidebar />
-            <main className="w-screen border-2 flex items-center justify-center">{children}</main>
+            <main className="w-screen -border-2 flex items-center justify-center">{children}</main>
           </div>
         </ProviderStore>
       </body>

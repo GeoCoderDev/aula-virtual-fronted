@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = "http://localhost";
 
-const animationsDurationSlice = createSlice({
+const urlAPISlice = createSlice({
   name: "urlAPI",
   initialState,
   reducers: {
@@ -12,4 +12,4 @@ const animationsDurationSlice = createSlice({
 });
 
 // export const { setAnimationsDuration } = animationsDurationSlice.actions;
-export default animationsDurationSlice.reducer;
+export default urlAPISlice.reducer;

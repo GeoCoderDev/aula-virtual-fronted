@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isStaticAsset } from "./lib/utils/isStaticAsset";
+import { isStaticAsset } from "./lib/helpers/isStaticAsset";
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
