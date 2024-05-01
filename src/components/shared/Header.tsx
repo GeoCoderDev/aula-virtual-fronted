@@ -11,7 +11,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <header id="header" className='w-screen text-center bg-verde-spotify py-4 sticky top-0 left-0 '>
+    <header style={{boxShadow: "0 3px 5px 10px rgba()"}} id="header" className='w-screen text-center z-[5] bg-verde-spotify py-4 sticky top-0 left-0'>
       Soy el header
     </header>
   );

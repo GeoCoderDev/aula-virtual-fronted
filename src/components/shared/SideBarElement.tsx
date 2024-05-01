@@ -9,9 +9,9 @@ const SideBarElement = ({ IconTSX, route, text }: PageApp) => {
 
   return (
     <Link href={route}>
-      <li className="flex items-center  px-4 py-3 gap-x-4" title={text}>
-        <IconTSX className="" fillColor="black" />
-        <span className="w-max">{text}</span>
+      <li style={{borderRadius: "0 0 1rem 1rem"}} className={`flex items-center px-4 py-3 gap-x-4 ${isSelected && "bg-black"}`} title={text}>
+        <IconTSX className="aspect-auto w-12" fillColor={isSelected ? "#fff" : "black"} />
+        <span className={`w-max ${isSelected && "text-white"}`}>{text}</span>
       </li>
     </Link>
   );

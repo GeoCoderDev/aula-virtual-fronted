@@ -32,7 +32,10 @@ export default function LoginForm({
 
   const [visiblePassword, setVisiblePassword] = useState(false);
 
+  const [errorMessage, setErrorMessage] = useState<null | string>(null);
+
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setErrorMessage(null);
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -50,9 +53,13 @@ export default function LoginForm({
         body: JSON.stringify(form),
       });
 
-      if (!response.ok) throw new Error("Network response was not ok");
+      const objectResponse = await response.json();
 
-      const { token } = await response.json();
+      if (!response.ok){
+        setErrorMessage(objectResponse.message);
+      }
+
+      const { token } = objectResponse;
 
       const res = await fetch("/api/auth/login", {
         method: "POST",
@@ -60,17 +67,19 @@ export default function LoginForm({
         body: JSON.stringify({ token: token }),
       });
 
+
+
       if (res.ok) {
+        setForm(initialForm);
         // Redirigir al usuario al home
         return (window.location.href = "/"); // Cambiar la URL y redirigir al home
       }
+      setErrorMessage("La red es inestable");
 
-      console.log("Ocurrio un error");
     } catch (e) {
       console.log(e);
     } finally {
-      setIsLoading(false);
-      setForm(initialForm);
+      setIsLoading(false);      
     }
   };
 
@@ -132,6 +141,8 @@ export default function LoginForm({
               ¿Olvidaste tu contraseña?
             </button>
           </label>
+
+          {errorMessage && <div className="text-red-600 font-bold my-[-0.7rem] max-w-[80%] text-center text-sm">{errorMessage}</div>}
 
           <button
             className="bg-verde-spotify rounded-full py-3 w-[80%] min-w-[50%] font-extrabold flex items-center justify-center gap-x-2"
