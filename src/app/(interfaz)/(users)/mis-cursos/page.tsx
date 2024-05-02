@@ -1,4 +1,7 @@
-
+"use client";
+import useToken from "@/app/hooks/useToken";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
 
 const MisCursosHome = ({
   student,
@@ -7,11 +10,14 @@ const MisCursosHome = ({
   student: React.ReactNode;
   teacher: React.ReactNode;
 }) => {
+  
+  const {token} = useToken();
+
   return (
     <>
-      <div>MisCursosHome</div>
       {student}
       {teacher}
+      <div>MisCursosHome</div>
     </>
   );
 };

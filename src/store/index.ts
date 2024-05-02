@@ -1,4 +1,4 @@
-import globalConstantsReducer from "@/state/constants";
+import globalConstantsReducer from "@/state/Constants";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({

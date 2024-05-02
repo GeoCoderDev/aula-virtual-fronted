@@ -1,4 +1,3 @@
-import React from "react";
 import { IconProps } from "../icon.interface";
 
 const ReportesIcon = ({ className, fillColor }: IconProps) => {

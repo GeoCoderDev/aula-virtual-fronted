@@ -5,13 +5,19 @@ import HorarioIcon from "@/components/icons/sidebar/HorarioIcon";
 import AsistenciaIcon from "@/components/icons/sidebar/AsistenciaIcon";
 import CalificacionesIcon from "@/components/icons/sidebar/CalificacionesIcon";
 import ReportesIcon from "@/components/icons/sidebar/ReportesIcon";
-import { AllowedRoles } from "@/interfaces/Role";
+import { Role } from "@/interfaces/Role";
+import EstudiantesIcon from "@/components/icons/sidebar/EstudiantesIcon";
+import ProfesoresIcon from "@/components/icons/sidebar/ProfesoresIcon";
+import CursosIcon from "@/components/icons/sidebar/CursosIcon";
+import SeccionesIcon from "@/components/icons/sidebar/SeccionesIcon";
+import AsignacionesIcon from "@/components/icons/sidebar/AsignacionesIcon";
+import ConfiguracionesIcon from "@/components/icons/sidebar/ConfiguracionesIcon";
 
 export interface PageApp {
   route: string;
   text: string;
   IconTSX: (props: IconProps) => ReactElement;
-  allowedRoles: AllowedRoles[]; // Propiedad para roles permitidos
+  allowedRoles: Role[]; // Propiedad para roles permitidos
 }
 
 const pagesApp: PageApp[] = [
@@ -53,8 +59,64 @@ const pagesApp: PageApp[] = [
     IconTSX: (props: IconProps) => {
       return <ReportesIcon {...props} />;
     },
-    allowedRoles: ["teacher", "student"],
+    allowedRoles: ["teacher"],
   },
+  {
+    route: "estudiantes",
+    text: "Estudiantes",
+    IconTSX: (props: IconProps) => {
+      return <EstudiantesIcon {...props} />;
+    },
+    allowedRoles: ["admin", "superadmin" ]
+  },
+
+  {
+    route: "profesores",
+    text: "Profesores",
+    IconTSX: (props: IconProps) => {
+      return <ProfesoresIcon  {...props} />;
+    },
+    allowedRoles: ["admin", "superadmin" ]
+  },
+
+  {
+    route: "cursos",
+    text: "Cursos",
+    IconTSX: (props: IconProps) => {
+      return <CursosIcon  {...props} />;
+    },
+    allowedRoles: ["admin", "superadmin" ]
+  },
+
+  {
+    route: "secciones",
+    text: "Secciones",
+    IconTSX: (props: IconProps) => {
+      return <SeccionesIcon  {...props} />;
+    },
+    allowedRoles: ["admin", "superadmin" ]
+  },
+  {
+    route: "asignaciones",
+    text: "Asignaciones",
+    IconTSX: (props: IconProps) => {
+      return <AsignacionesIcon  {...props} />;
+    },
+    allowedRoles: ["admin", "superadmin" ]
+  },
+
+  {
+    route: "configuraciones",
+    text: "Configuraciones",
+    IconTSX: (props: IconProps) => {
+      return <ConfiguracionesIcon  {...props} />;
+    },
+    allowedRoles: ["admin", "superadmin" ]
+  }
+
+
+
+
 ];
 
 export default pagesApp;
