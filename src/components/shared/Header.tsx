@@ -6,6 +6,7 @@ import MensajesIcon from "../icons/header/MensajesIcon";
 import PerfilIcon from "../icons/header/PerfilIcon";
 import DespliegueIcon from "../icons/header/DespliegueIcon";
 import HamburguesaIcon from "../icons/header/HamburguesaIcon";
+import { UserSessionData } from "@/lib/utils/UserSessionData";
 
 const Header: React.FC = () => {
   const pathname = usePathname();
@@ -29,12 +30,12 @@ const Header: React.FC = () => {
 
           
           <div className="flex flex-col items-start">
-            <p className="text-left" style={{ margin: "-0.15rem 0" }}>
-              Bienvenido!
-            </p>
             <h1 className="font-extrabold text-left" style={{ margin: "-0.15rem 0" }}>
-              JUAN GRABRIEL PEREZ
+              {UserSessionData.username}
             </h1>
+            <p className="text-left" style={{ margin: "-0.15rem 0" }}>
+              {UserSessionData.role}
+            </p>
           </div>
 
           <div className="flex items-center justify-end gap-x-3">

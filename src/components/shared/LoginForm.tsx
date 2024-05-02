@@ -79,7 +79,7 @@ export default function LoginForm({
       }
       setErrorMessage("La red es inestable");
     } catch (e) {
-      console.log(e);
+      setErrorMessage("La red es inestable");
     } finally {
       setIsLoading(false);
     }
