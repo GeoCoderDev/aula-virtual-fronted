@@ -10,9 +10,8 @@ const Sidebar = () => {
   const isLoginPage = pathname.startsWith("/login");
 
   
-  if (isLoginPage) {
-    return null; // No renderizar el componente en la ruta /login
-  }
+  if (isLoginPage) return null; // No renderizar el componente en la ruta /login
+  
 
   return (
     <nav
