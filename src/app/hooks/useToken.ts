@@ -1,11 +1,13 @@
 import { setMyToken } from "@/state/Constants/myToken";
+import { RootState } from "@/store";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const useToken = () => {
 
+  const urlAPI = useSelector<RootState>((state) => state.globalConstants.urlAPI);
+
   const [token, setToken] = useState(null);
-  
 
   //Aca se devuelve 401 si no hay token
   useEffect(() => {
@@ -25,7 +27,18 @@ const useToken = () => {
     fetchData();
   }, []);
 
-  return {token};
+  const fetchAPIWithToken = (endpoint: string, body: string, method = "GET") => {
+    return fetch(`${urlAPI}${endpoint}`, {
+      method,
+      headers: {
+        Authorization: token,
+        "Content-Type": "application/json",
+      },
+      body,
+    } as any);
+  };
+
+  return { fetchAPIWithToken };
 };
 
 export default useToken;

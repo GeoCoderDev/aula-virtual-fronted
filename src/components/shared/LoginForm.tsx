@@ -69,15 +69,15 @@ export default function LoginForm({
         body: JSON.stringify({ token }),
       });
 
-      if (res.ok) {
+      if (!res.ok) throw new Error("Server error");
         // Almacenando el rol del usuario en el estado global
         UserSessionData.role = role;
         UserSessionData.username = form.username;
         setForm(initialForm);
         // Redirigir al usuario al home
         return (window.location.href = "/"); // Cambiar la URL y redirigir al home
-      }
-      setErrorMessage("La red es inestable");
+      
+      
     } catch (e) {
       setErrorMessage("La red es inestable");
     } finally {

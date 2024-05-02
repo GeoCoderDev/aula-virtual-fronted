@@ -10,13 +10,12 @@ const MisCursosHome = ({
   student: React.ReactNode;
   teacher: React.ReactNode;
 }) => {
-  
-  const {token} = useToken();
+  const { fetchAPIWithToken } = useToken();
 
   return (
     <>
-      {student}
-      {teacher}
+      {/* {student}
+      {teacher} */}
       <div>MisCursosHome</div>
     </>
   );
