@@ -9,9 +9,9 @@ const StudentRow = ({DNI_Estudiante, Nombres, Apellidos, Grado, Seccion}:Student
       <td style={{ padding: "1em" }}>{Grado}</td>
       <td style={{ padding: "1em" }}>{Seccion}</td>
       <td style={{ padding: "1em" }}>
-        <button style={{ marginRight: "5px" }}>ELIMINAR</button>
-        <button style={{ marginRight: "5px" }}>EDITAR</button>
-        <button>VER</button>
+        <button style={{ marginRight: "5px" }}>Eliminar</button>
+        <button style={{ marginRight: "5px" }}>Editar</button>
+        <button>Ver</button>
       </td>
     </tr>
   );

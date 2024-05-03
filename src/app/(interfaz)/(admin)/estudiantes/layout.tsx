@@ -5,7 +5,7 @@ const Estudiantes = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className="flex flex-wrap flex-col w-full border-2">
         <div className="">
-            <div className="">Estudiantes</div>
+            <div className="">Gestion de Estudiantes</div>
         </div>
         {children}
       </div>

@@ -36,6 +36,7 @@ const config: Config = {
         "verde-spotify": "#00FF6F",
         "rojo-orange": "#DC2D2D",
         "azul-pablo": "#1400FF",
+        "amarillo-pooh": "#FFB800",
       },
     },
   },

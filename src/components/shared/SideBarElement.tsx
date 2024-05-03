@@ -11,10 +11,10 @@ const SideBarElement = ({ IconTSX, route, text, allowedRoles }: PageApp) => {
   //No renderizar el componente si no tiene el rol requerido
   if (allowedRoles.indexOf(UserSessionData.role) === -1) return null;
 
-  const isSelected = pathName === `/${route}`;
+  const isSelected = pathName.startsWith(`/${route}`);
 
   return (
-    <Link href={route}>
+    <Link href={`../${route}`}>
       <li
         className={`flex items-center pl-5 pr-8 h-[4.2rem] gap-x-4 ${
           !isSelected && "hover:bg-gray-200"

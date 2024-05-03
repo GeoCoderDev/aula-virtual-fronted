@@ -54,7 +54,7 @@ const useToken = () => {
     } as any);
   };
 
-  return { fetchAPIWithToken };
+  return { fetchAPIWithToken, token };
 };
 
 export default useToken;
