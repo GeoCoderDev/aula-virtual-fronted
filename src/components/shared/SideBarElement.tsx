@@ -8,14 +8,8 @@ import { useEffect, useState } from "react";
 const SideBarElement = ({ IconTSX, route, text, allowedRoles }: PageApp) => {
   const pathName = usePathname();
 
-  const [role, setRole] = useState<undefined | string>();
-
-  useEffect(() => {
-    setRole(UserSessionData.role);
-  }, []);
-
   //No renderizar el componente si no tiene el rol requerido
-  if (allowedRoles.indexOf(role as any) === -1) return null;
+  if (allowedRoles.indexOf(UserSessionData.role) === -1) return null;
 
   const isSelected = pathName === `/${route}`;
 

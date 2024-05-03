@@ -12,15 +12,7 @@ import { useEffect, useState } from "react";
 const Header = () => {
   const pathname = usePathname();
   const isLoginPage = pathname.startsWith("/login");
-  const [username, setUsername] = useState<null | string>(null);
-  const [role, setRole] = useState<null | string>(null);
 
-  useEffect(() => {
-    if (isLoginPage) return; // No hacer nada en la página de login
-
-    setUsername(UserSessionData.username);
-    setRole(UserSessionData.role);
-  }, []);
 
   if (isLoginPage) return null; // No renderizar el componente en la ruta /login
 
@@ -40,10 +32,10 @@ const Header = () => {
             className="font-extrabold text-left"
             style={{ margin: "-0.15rem 0" }}
           >
-            {username}
+            {UserSessionData.username}
           </h1>
           <p className="text-left" style={{ margin: "-0.15rem 0" }}>
-            {role}
+            {UserSessionData.role}
           </p>
         </div>
 
