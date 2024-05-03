@@ -1,3 +1,4 @@
+
 import { Role } from "@/interfaces/Role";
 import { UserSessionDataErrors } from "../errors/UserSessionData";
 import { CustomError } from "./CustomError";

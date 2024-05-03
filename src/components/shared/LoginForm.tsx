@@ -70,11 +70,12 @@ export default function LoginForm({
       });
 
       if (!res.ok) throw new Error("Server error");
-        // Almacenando el rol del usuario en el estado global
+      
         UserSessionData.role = role;
         UserSessionData.username = form.username;
-        setForm(initialForm);
+
         // Redirigir al usuario al home
+        
         return (window.location.href = "/"); // Cambiar la URL y redirigir al home
       
       

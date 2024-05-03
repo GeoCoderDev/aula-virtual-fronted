@@ -7,14 +7,22 @@ import PerfilIcon from "../icons/header/PerfilIcon";
 import DespliegueIcon from "../icons/header/DespliegueIcon";
 import HamburguesaIcon from "../icons/header/HamburguesaIcon";
 import { UserSessionData } from "@/lib/utils/UserSessionData";
+import { useEffect, useState } from "react";
 
-const Header: React.FC = () => {
+const Header = () => {
   const pathname = usePathname();
   const isLoginPage = pathname.startsWith("/login");
+  const [username, setUsername] = useState<null | string>(null);
+  const [role, setRole] = useState<null | string>(null);
 
-  if (isLoginPage) {
-    return null; // No renderizar el componente en la ruta /login
-  }
+  useEffect(() => {
+    if (isLoginPage) return; // No hacer nada en la página de login
+
+    setUsername(UserSessionData.username);
+    setRole(UserSessionData.role);
+  }, []);
+
+  if (isLoginPage) return null; // No renderizar el componente en la ruta /login
 
   return (
     <header
@@ -27,26 +35,26 @@ const Header: React.FC = () => {
           <HamburguesaIcon className="aspect-auto w-8" fillColor="black" />
         </div>
 
+        <div className="flex flex-col items-start">
+          <h1
+            className="font-extrabold text-left"
+            style={{ margin: "-0.15rem 0" }}
+          >
+            {username}
+          </h1>
+          <p className="text-left" style={{ margin: "-0.15rem 0" }}>
+            {role}
+          </p>
+        </div>
 
-          
-          <div className="flex flex-col items-start">
-            <h1 className="font-extrabold text-left" style={{ margin: "-0.15rem 0" }}>
-              {UserSessionData.username}
-            </h1>
-            <p className="text-left" style={{ margin: "-0.15rem 0" }}>
-              {UserSessionData.role}
-            </p>
+        <div className="flex items-center justify-end gap-x-3">
+          <MensajesIcon className="aspect-auto w-8" fillColor="black" />
+          <NotificacionesIcon className="aspect-auto w-7" fillColor="black" />
+          <div className="flex items-center justify-center">
+            <PerfilIcon className="aspect-auto w-11" fillColor="black" />
+            <DespliegueIcon className="aspect-auto w-7" fillColor="black" />
           </div>
-
-          <div className="flex items-center justify-end gap-x-3">
-            <MensajesIcon className="aspect-auto w-8" fillColor="black" />
-            <NotificacionesIcon className="aspect-auto w-7" fillColor="black" />
-            <div className="flex items-center justify-center">
-              <PerfilIcon className="aspect-auto w-11" fillColor="black" />
-              <DespliegueIcon className="aspect-auto w-7" fillColor="black" />
-            </div>
-          </div>
-
+        </div>
       </div>
     </header>
   );
