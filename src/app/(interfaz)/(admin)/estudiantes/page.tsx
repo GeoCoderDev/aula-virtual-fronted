@@ -1,46 +1,26 @@
 "use client";
-import useToken from "@/app/hooks/useToken";
 import { Student } from "@/interfaces/Student";
 import React, { useEffect, useState } from "react";
 import StudentRow from "./_components/StudentRow";
 import Link from "next/link";
+import useBatchAPI from "@/app/hooks/useBatchAPI";
 
 const limitStudentsRequired = 50;
 
+
 const Estudiantes = () => {
-  const [startFrom, setStartFrom] = useState(0);
-  const [students, setStudents] = useState<Student[]>([]);
-  const { fetchAPIWithToken, token } = useToken();
-
-  useEffect(() => {
-    if (token === null) return;
-
-    const fetchStudents = async () => {
-      try {
-        const res = await fetchAPIWithToken(
-          "/api/students",
-          "GET",
-          { startFrom: startFrom, limit: limitStudentsRequired },
-          null
-        );
-
-        if (!res.ok) {
-          if (res.status === 401) {
-            // Handle unauthorized access
-          }
-          return;
-        }
-
-        const studentsFinded = await res.json();
-
-        setStudents([...students, ...studentsFinded]);
-        setStartFrom((start) => start + limitStudentsRequired);
-      } catch (e) {
-        // Handle errors
-      }
+  
+    const { fetchNextResults, results } = useBatchAPI<Student>(
+      "/api/students",
+      "/api/students/count",
+      2,
+      0
+    );
+  
+    const loadMoreResults = () => {
+      fetchNextResults?.();
     };
-    fetchStudents();
-  }, [token]);
+
 
   return (
     <div className="flex flex-col items-start justify-center gap-y-6">
@@ -106,29 +86,26 @@ const Estudiantes = () => {
         </div>
       </div>
 
-
       <div className="flex  items-center gap-3">
-          <p className="font-semibold">APELLIDO:</p>
-          <input
-            // onChange=''
-            maxLength={100}
-            name="username"
-            style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
-            className="outline-none w-[150%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
-            type="text"
-            placeholder=""
-            value=""
-          />
+        <p className="font-semibold">APELLIDO:</p>
+        <input
+          // onChange=''
+          maxLength={100}
+          name="username"
+          style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
+          className="outline-none w-[150%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
+          type="text"
+          placeholder=""
+          value=""
+        />
       </div>
 
-        
       <button
         type="button"
         className="bg-verde-spotify rounded-full py-3 px-4 font-semibold flex items-center justify-center gap-x-2 disabled:grayscale-[0.5]"
       >
         Buscar Estudiante
-      </button> 
-      
+      </button>
 
       <div>
         <table>
@@ -143,13 +120,15 @@ const Estudiantes = () => {
             </tr>
           </thead>
           <tbody>
-            {students.map((student, index) => (
+            {results.map((student, index) => (
               <StudentRow key={index} {...student} />
             ))}
           </tbody>
         </table>
+        <button onClick={loadMoreResults}>
+          Cargar mas
+        </button>
       </div>
-
     </div>
   );
 };
