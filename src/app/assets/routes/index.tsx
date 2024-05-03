@@ -12,6 +12,7 @@ import CursosIcon from "@/components/icons/sidebar/CursosIcon";
 import SeccionesIcon from "@/components/icons/sidebar/SeccionesIcon";
 import AsignacionesIcon from "@/components/icons/sidebar/AsignacionesIcon";
 import ConfiguracionesIcon from "@/components/icons/sidebar/ConfiguracionesIcon";
+import AdministradoresIcon from "@/components/icons/sidebar/AdministradoresIcon";
 
 export interface PageApp {
   route: string;
@@ -21,6 +22,16 @@ export interface PageApp {
 }
 
 const pagesApp: PageApp[] = [
+
+  {
+    route: "administradores",
+    text: "Administradores",
+    IconTSX: (props: IconProps) => {
+      return <AdministradoresIcon  {...props} />;
+    },
+    allowedRoles: ["superadmin" ]
+  },
+
   {
     route: "mis-cursos",
     text: "Mis Cursos",
@@ -114,6 +125,7 @@ const pagesApp: PageApp[] = [
     allowedRoles: ["admin", "superadmin" ]
   }
 
+  
 
 
 

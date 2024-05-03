@@ -1,8 +1,5 @@
 import type { Config } from "tailwindcss";
 
-
-
-
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,7 +8,6 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      
       screens: {
         sxs: "0px",
         xs: "300px",
@@ -28,7 +24,7 @@ const config: Config = {
         portrait: { raw: "(orientation: portrait)" },
         landscape: { raw: "(orientation: landscape)" },
         "small-height": { raw: "(min-aspect-ratio: 2.55/1)" },
-        "more-double-height": { raw: "(max-aspect-ratio: 1/2)" }
+        "more-double-height": { raw: "(max-aspect-ratio: 1/2)" },
       },
 
       backgroundImage: {
@@ -37,10 +33,12 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        "verde-spotify":  "#00FF6F",
-      }
+        "verde-spotify": "#00FF6F",
+        "rojo-orange": "#DC2D2D",
+        "azul-pablo": "#1400FF",
+      },
     },
   },
-  plugins: [],
+  plugins: []
 };
 export default config;

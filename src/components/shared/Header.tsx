@@ -20,7 +20,7 @@ const Header = () => {
     <header
       style={{ boxShadow: "0 0px 2px 2px rgba(0,0,0,0.2)" }}
       id="header"
-      className="flex w-screen text-center z-[5] bg-verde-spotify py-3 sticky top-0 left-0 max-w-full px-4"
+      className="flex w-screen text-center z-[5] bg-verde-spotify py-2 sticky top-0 left-0 max-w-full px-4"
     >
       <div className="flex items-center justify-between w-full gap-x-7">
         <div className="flex-1 ">
@@ -41,10 +41,10 @@ const Header = () => {
 
         <div className="flex items-center justify-end gap-x-3">
           <MensajesIcon className="aspect-auto w-8" fillColor="black" />
-          <NotificacionesIcon className="aspect-auto w-7" fillColor="black" />
+          <NotificacionesIcon className="aspect-auto w-8" fillColor="black" />
           <div className="flex items-center justify-center">
             <PerfilIcon className="aspect-auto w-11" fillColor="black" />
-            <DespliegueIcon className="aspect-auto w-7" fillColor="black" />
+            <DespliegueIcon className="aspect-auto w-8" fillColor="black" />
           </div>
         </div>
       </div>

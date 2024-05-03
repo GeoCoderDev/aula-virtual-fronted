@@ -1,11 +1,13 @@
-import { setMyToken } from "@/state/Constants/myToken";
+import { ObjetoConStringYNumber } from "@/interfaces/CustomObjects";
+import { MethodHTTP } from "@/interfaces/MethodsHTTP";
 import { RootState } from "@/store";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const useToken = () => {
-
-  const urlAPI = useSelector<RootState>((state) => state.globalConstants.urlAPI);
+  const urlAPI = useSelector<RootState>(
+    (state) => state.globalConstants.urlAPI
+  );
 
   const [token, setToken] = useState(null);
 
@@ -27,8 +29,22 @@ const useToken = () => {
     fetchData();
   }, []);
 
-  const fetchAPIWithToken = (endpoint: string, body: string, method = "GET") => {
-    return fetch(`${urlAPI}${endpoint}`, {
+  const fetchAPIWithToken = (
+    endpoint: string,
+    method: MethodHTTP = "GET",
+    queryParams: ObjetoConStringYNumber | null = null,
+    body: string | null = null
+  ) => {
+    let query: undefined | string = undefined;
+
+    if (queryParams) {
+      query = "?";
+      for (const [key, value] of Object.entries(queryParams)) {
+        query = query + key + "=" + value + "&";
+      }
+    }
+
+    return fetch(`${urlAPI}${endpoint}${query ?? ""}`, {
       method,
       headers: {
         Authorization: token,
