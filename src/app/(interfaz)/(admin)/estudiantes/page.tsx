@@ -7,7 +7,7 @@ import useBatchAPI from "@/app/hooks/useBatchAPI";
 import Loader from "@/components/Loader";
 import { ObjetoConStringYNumber } from "@/interfaces/CustomObjects";
 
-const limitStudentsRequired = 4;
+const limitStudentsRequired = 50;
 
 interface SearchTermsStudent {
   dni?: string; // DNI del estudiante
@@ -57,7 +57,6 @@ const Estudiantes = () => {
     e.preventDefault();
     setQueryParams(searchTerms as any);
   };
-
 
   return (
     <div className="flex flex-col items-start justify-center gap-y-6">
@@ -141,7 +140,7 @@ const Estudiantes = () => {
             className="outline-none w-[150%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
             type="text"
             placeholder=""
-            value=""
+            value={searchTerms.apellidos}
           />
         </div>
 

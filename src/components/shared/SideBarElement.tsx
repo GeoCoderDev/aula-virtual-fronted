@@ -16,7 +16,7 @@ const SideBarElement = ({ IconTSX, route, text, allowedRoles }: PageApp) => {
   return (
     <Link href={`../${route}`}>
       <li
-        className={`flex items-center pl-5 pr-8 h-[4.2rem] gap-x-4 ${
+        className={`flex items-center pl-5 pr-8 h-[4.2rem] gap-x-4 overflow-hidden min-w-[12.5rem] max-w-[25rem] text-ellipsis text-nowrap${
           !isSelected && "hover:bg-gray-200"
         } ${isSelected && "bg-black"}`}
         title={text}

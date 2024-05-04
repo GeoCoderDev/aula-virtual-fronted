@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/shared/Header";
 import Sidebar from "@/components/shared/Sidebar";
 import ProviderStore from "@/store/Provider";
+import WrapperMainContent from "@/components/shared/WrapperMainContent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,9 +28,11 @@ export default function RootLayout({
       <body className={`${inter.className} flex flex-col min-h-[100svh]`}>
         <ProviderStore>
           <Header />
-          <div className="flex relative flex-1">
+          <div className="flex relative">
             <Sidebar />
-            <main className="w-screen -border-2 flex items-center justify-center">{children}</main>
+            <main className="flex-1 flex items-center justify-center">
+              <WrapperMainContent>{children}</WrapperMainContent>
+            </main>
           </div>
         </ProviderStore>
       </body>
