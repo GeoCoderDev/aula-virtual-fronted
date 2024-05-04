@@ -90,7 +90,7 @@ const RegistrarEstudiante = () => {
             Grado:
           </label>
           <select
-            className="appearance-none border rounded w-full py-1 px-2 pr-8 rounded-lg shadow-md"
+            className="appearance-none border  w-full py-1 px-2 pr-8 rounded-lg shadow-md"
             id="grade"
           >
             <option value="">Seleccione...</option>
@@ -109,7 +109,7 @@ const RegistrarEstudiante = () => {
             Sección:
           </label>
           <select
-            className="appearance-none border rounded w-full py-1 px-2 pr-8 rounded-lg shadow-md"
+            className="appearance-none border  w-full py-1 px-2 pr-8 rounded-lg shadow-md"
             id="section"
           >
             <option value="">Seleccione...</option>

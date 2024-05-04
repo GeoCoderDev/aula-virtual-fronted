@@ -51,7 +51,7 @@ const useBatchAPI = <T>(
         setStart(startFrom);
         setIsLoading(false);
         setAllResultGetted(false);
-    }, [queryParams]);
+    }, [queryParams, startFrom]);
 
   useEffect(() => {
     const getCount = async () => {

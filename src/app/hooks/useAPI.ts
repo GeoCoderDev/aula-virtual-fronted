@@ -39,7 +39,7 @@ const useAPI = () => {
         body,
       } as any);
     },
-    [token]
+    [token, urlAPI]
   );
 
   return { fetchAPI };
