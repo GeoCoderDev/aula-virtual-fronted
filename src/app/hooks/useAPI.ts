@@ -42,7 +42,7 @@ const useAPI = () => {
     [token, urlAPI]
   );
 
-  return { fetchAPI };
+  return [fetchAPI];
 };
 
 export default useAPI;

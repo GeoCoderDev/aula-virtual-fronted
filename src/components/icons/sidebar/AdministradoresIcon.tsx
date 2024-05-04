@@ -2,7 +2,7 @@ import { IconProps } from "../icon.interface";
 const AdministradoresIcon = ({ className, fillColor }: IconProps) => {
   return (
     <svg
-    className={className}
+      className={className}
       width="45"
       height="45"
       viewBox="0 0 45 45"

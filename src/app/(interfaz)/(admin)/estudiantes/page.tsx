@@ -6,6 +6,8 @@ import Link from "next/link";
 import useBatchAPI from "@/app/hooks/useBatchAPI";
 import Loader from "@/components/Loader";
 import { ObjetoConStringYNumber } from "@/interfaces/CustomObjects";
+import WarningMessage from "@/components/shared/WarningMessage";
+import useAPI from "@/app/hooks/useAPI";
 
 const limitStudentsRequired = 50;
 
@@ -26,11 +28,11 @@ const searchTermsInitial: SearchTermsStudent = {
 };
 
 const Estudiantes = () => {
+  const [availableSections, setAvailableSections] = useState([]);
+
   const [searchTerms, setSearchTerms] = useState(searchTermsInitial);
 
-  const [queryParams, setQueryParams] = useState<ObjetoConStringYNumber | null>(
-    null
-  );
+  const [fetchAPI] = useAPI();
 
   const { fetchNextResults, results, isLoading, allResultGetted } =
     useBatchAPI<Student>(
@@ -38,24 +40,37 @@ const Estudiantes = () => {
       "/api/students/count",
       limitStudentsRequired,
       0,
-      queryParams
+      searchTerms as any
     );
 
   const loadMoreResults = () => {
     fetchNextResults?.();
   };
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
+  const handleSelectChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+
+    
+    if (e.target.name === "grado") {
+      setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value , seccion: ""});
+      setAvailableSections([]);  
+      if (e.target.value === "") {
+        setAvailableSections([]);
+      } else {
+        const res = await fetchAPI(
+          `/api/classrooms/grade/${e.target.value}/sections`
+        );
+        const sections = await res?.json();
+        setAvailableSections(sections ?? []);
+      }
+    }else{
+      setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
+    }
   };
 
   const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setQueryParams(searchTerms as any);
   };
 
   return (
@@ -72,7 +87,7 @@ const Estudiantes = () => {
         </Link>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex  items-center gap-3">
+      <form className="flex  items-center gap-3">
         <div className="flex items-center space-x-3">
           <p className="font-semibold">DNI:</p>
           <input
@@ -120,13 +135,15 @@ const Estudiantes = () => {
             name="seccion"
             value={searchTerms.seccion}
             onChange={handleSelectChange}
-            disabled
+            disabled={availableSections.length === 0}
             className="bg-verde-spotify"
           >
             <option value="">SECCIÓN</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
+            {availableSections.map((section, index) => (
+              <option value={section} key={index}>
+                {section}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -143,14 +160,6 @@ const Estudiantes = () => {
             value={searchTerms.apellidos}
           />
         </div>
-
-        <button
-          disabled={isLoading}
-          type="submit"
-          className="bg-verde-spotify rounded-full py-3 px-4 font-semibold flex items-center justify-center gap-x-2 disabled:grayscale-[0.5]"
-        >
-          Buscar Estudiante
-        </button>
       </form>
 
       <div>
@@ -169,17 +178,22 @@ const Estudiantes = () => {
             {results.map((student, index) => (
               <StudentRow key={index} {...student} />
             ))}
-
-            {isLoading && (
-              <Loader
-                color="black"
-                durationSegundos={1}
-                backgroundSize="12px"
-                width="40px"
-              />
-            )}
           </tbody>
         </table>
+
+        {isLoading && (
+          <Loader
+            color="black"
+            durationSegundos={1}
+            backgroundSize="12px"
+            width="40px"
+          />
+        )}
+
+        {!isLoading && results.length === 0 && (
+          <WarningMessage message="No se encontraron resultados" />
+        )}
+
         {!isLoading && !allResultGetted && (
           <button
             className="bg-amarillo-pooh text-white px-3 py-2 rounded-[0.5rem]"

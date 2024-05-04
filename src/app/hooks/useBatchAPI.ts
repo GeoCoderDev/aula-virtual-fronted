@@ -12,7 +12,7 @@ const useBatchAPI = <T>(
   method: MethodHTTP = "GET",
   body: string | null = null
 ) => {
-  const { fetchAPI } = useAPI();
+  const [fetchAPI] = useAPI();
   const [results, setResults] = useState<Array<T>>([]);
   const [start, setStart] = useState(startFrom);
   const [count, setCount] = useState(Number.MAX_VALUE);
@@ -23,6 +23,12 @@ const useBatchAPI = <T>(
 
   const fetchNextResults = useCallback(async () => {
     if (fetchAPI === undefined || start >= count) {
+      //En caso no se encuentren resultados
+      if (count === 0) {
+        setIsLoading(false);
+        setResults([]);
+        setAllResultGetted(true);
+      }
       return;
     }
 
@@ -37,21 +43,21 @@ const useBatchAPI = <T>(
       const nextResults = await res!.json();
       setResults((prevResults) => [...prevResults, ...nextResults] as Array<T>);
       setStart((prev) => prev + limit);
-      setAllResultGetted(start + limit >= count - 1);
+      setAllResultGetted(start + limit >= count);
     } catch (e) {
     } finally {
       setIsLoading(false);
     }
   }, [fetchAPI, endpoint, count, limit, queryParams, method, body, start]);
 
-    // Resetear los resultados al enviar el formulario
-    useEffect(() => {
-        setResults([]);
-        setShouldFetchNextResults(false);
-        setStart(startFrom);
-        setIsLoading(false);
-        setAllResultGetted(false);
-    }, [queryParams, startFrom]);
+  // Resetear los resultados al enviar el formulario
+  useEffect(() => {
+    setResults([]);
+    setShouldFetchNextResults(false);
+    setStart(startFrom);
+    setIsLoading(false);
+    setAllResultGetted(false);
+  }, [queryParams, startFrom]);
 
   useEffect(() => {
     const getCount = async () => {
