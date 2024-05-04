@@ -13,17 +13,22 @@ const useAPI = () => {
       queryParams: ObjetoConStringYNumber | null = null,
       body: string | null = null
     ) => {
-      if (token === undefined) return;
-      let query: undefined | string = undefined;
+      if (token === undefined) return undefined;
+      let query = '';
 
       if (queryParams) {
-        query = "?";
-        for (const [key, value] of Object.entries(queryParams)) {
-          query = query + key + "=" + value + "&";
-        }
+        const queryString = Object.entries(queryParams)
+          .map(([key, value]) => {
+            const trimmedValue = typeof value === "string" ? value.trim() : value;
+            return trimmedValue !== '' ? `${key}=${trimmedValue}` : '';
+          })
+          .filter(Boolean)
+          .join('&');
+
+        query = `?${queryString}`;
       }
 
-      console.log(endpoint);
+      console.log(`${urlAPI}${endpoint}${query}`);
 
       return fetch(`${urlAPI}${endpoint}${query ?? ""}`, {
         method,

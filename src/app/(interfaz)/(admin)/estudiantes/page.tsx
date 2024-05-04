@@ -1,25 +1,62 @@
 "use client";
 import { Student } from "@/interfaces/Student";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import StudentRow from "./_components/StudentRow";
 import Link from "next/link";
 import useBatchAPI from "@/app/hooks/useBatchAPI";
+import Loader from "@/components/Loader";
+import { ObjetoConStringYNumber } from "@/interfaces/CustomObjects";
 
-const limitStudentsRequired = 50;
+const limitStudentsRequired = 4;
 
+interface SearchTermsStudent {
+  dni?: string; // DNI del estudiante
+  nombre?: string; // Nombre del estudiante
+  apellidos?: string; // Apellidos del estudiante
+  grado?: string; // Grado del estudiante
+  seccion?: string; // Sección del estudiante
+}
+
+const searchTermsInitial: SearchTermsStudent = {
+  dni: "",
+  nombre: "",
+  apellidos: "",
+  grado: "",
+  seccion: "",
+};
 
 const Estudiantes = () => {
-  
-    const { fetchNextResults, results } = useBatchAPI<Student>(
+  const [searchTerms, setSearchTerms] = useState(searchTermsInitial);
+
+  const [queryParams, setQueryParams] = useState<ObjetoConStringYNumber | null>(
+    null
+  );
+
+  const { fetchNextResults, results, isLoading, allResultGetted } =
+    useBatchAPI<Student>(
       "/api/students",
       "/api/students/count",
-      2,
-      0
+      limitStudentsRequired,
+      0,
+      queryParams
     );
-  
-    const loadMoreResults = () => {
-      fetchNextResults?.();
-    };
+
+  const loadMoreResults = () => {
+    fetchNextResults?.();
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
+  };
+
+  const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setQueryParams(searchTerms as any);
+  };
 
 
   return (
@@ -36,76 +73,86 @@ const Estudiantes = () => {
         </Link>
       </div>
 
-      <div className="flex  items-center gap-3">
+      <form onSubmit={handleSubmit} className="flex  items-center gap-3">
         <div className="flex items-center space-x-3">
           <p className="font-semibold">DNI:</p>
           <input
-            // onChange=''
             maxLength={100}
-            name="username"
+            name="dni"
             style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
             className="outline-none w-[60%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
             type="text"
-            placeholder=""
-            value=""
+            value={searchTerms.dni}
+            onChange={handleInputTextChange}
           />
         </div>
 
         <div className="flex items-center space-x-3">
           <p className="font-semibold">NOMBRES:</p>
           <input
-            // onChange=''
+            onChange={handleInputTextChange}
             maxLength={100}
-            name="username"
+            name="nombre"
             style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
             className="outline-none w-[60%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
+            type="text"
+            placeholder=""
+            value={searchTerms.nombre}
+          />
+        </div>
+
+        <div className="flex items-center space-x-3">
+          <select
+            name="grado"
+            value={searchTerms.grado}
+            onChange={handleSelectChange}
+            id="grado-student"
+            className="bg-verde-spotify text-center"
+          >
+            <option value="">GRADO</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+
+          <select
+            name="seccion"
+            value={searchTerms.seccion}
+            onChange={handleSelectChange}
+            disabled
+            className="bg-verde-spotify"
+          >
+            <option value="">SECCIÓN</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
+        </div>
+
+        <div className="flex  items-center gap-3">
+          <p className="font-semibold">APELLIDO:</p>
+          <input
+            onChange={handleInputTextChange}
+            maxLength={100}
+            name="apellidos"
+            style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
+            className="outline-none w-[150%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
             type="text"
             placeholder=""
             value=""
           />
         </div>
 
-        <div className="flex items-center space-x-3">
-          <form>
-            <select className="bg-verde-spotify">
-              <option value="0">GRADO</option>
-              <option value="1">Opción 1</option>
-              <option value="2">Opción 2</option>
-              <option value="3">Opción 3</option>
-            </select>
-          </form>
-
-          <form>
-            <select className="bg-verde-spotify">
-              <option value="0">SECCIÓN</option>
-              <option value="1">Opción 1</option>
-              <option value="2">Opción 2</option>
-              <option value="3">Opción 3</option>
-            </select>
-          </form>
-        </div>
-      </div>
-
-      <div className="flex  items-center gap-3">
-        <p className="font-semibold">APELLIDO:</p>
-        <input
-          // onChange=''
-          maxLength={100}
-          name="username"
-          style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
-          className="outline-none w-[150%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
-          type="text"
-          placeholder=""
-          value=""
-        />
-      </div>
-
-      <button
-        type="button"
-        className="bg-verde-spotify rounded-full py-3 px-4 font-semibold flex items-center justify-center gap-x-2 disabled:grayscale-[0.5]"
-      >
-        Buscar Estudiante
-      </button>
+        <button
+          disabled={isLoading}
+          type="submit"
+          className="bg-verde-spotify rounded-full py-3 px-4 font-semibold flex items-center justify-center gap-x-2 disabled:grayscale-[0.5]"
+        >
+          Buscar Estudiante
+        </button>
+      </form>
 
       <div>
         <table>
@@ -123,11 +170,25 @@ const Estudiantes = () => {
             {results.map((student, index) => (
               <StudentRow key={index} {...student} />
             ))}
+
+            {isLoading && (
+              <Loader
+                color="black"
+                durationSegundos={1}
+                backgroundSize="12px"
+                width="40px"
+              />
+            )}
           </tbody>
         </table>
-        <button onClick={loadMoreResults}>
-          Cargar mas
-        </button>
+        {!isLoading && !allResultGetted && (
+          <button
+            className="bg-amarillo-pooh text-white px-3 py-2 rounded-[0.5rem]"
+            onClick={loadMoreResults}
+          >
+            Cargar mas
+          </button>
+        )}
       </div>
     </div>
   );
