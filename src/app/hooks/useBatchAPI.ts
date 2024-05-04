@@ -18,12 +18,12 @@ const useBatchAPI = <T>(
   const [count, setCount] = useState(Number.MAX_VALUE);
   const [isLoading, setIsLoading] = useState(false);
   const [allResultGetted, setAllResultGetted] = useState(false);
-
   const [shouldFetchNextResults, setShouldFetchNextResults] = useState(false);
+  const [ignoreOldResults, setIgnoreOldResults] = useState(false);
 
   const fetchNextResults = useCallback(async () => {
-    if (fetchAPI === undefined || start >= count) {
-      //En caso no se encuentren resultados
+    if (fetchAPI === undefined || start >= count || ignoreOldResults) {
+      // En caso no se encuentren resultados o se deban ignorar los resultados antiguos
       if (count === 0) {
         setIsLoading(false);
         setResults([]);
@@ -41,14 +41,14 @@ const useBatchAPI = <T>(
         body
       );
       const nextResults = await res!.json();
-      setResults((prevResults) => [...prevResults, ...nextResults] as Array<T>);
+      setResults(nextResults);
       setStart((prev) => prev + limit);
       setAllResultGetted(start + limit >= count);
     } catch (e) {
     } finally {
       setIsLoading(false);
     }
-  }, [fetchAPI, endpoint, count, limit, queryParams, method, body, start]);
+  }, [fetchAPI, endpoint, count, limit, queryParams, method, body, start, ignoreOldResults]);
 
   // Resetear los resultados al enviar el formulario
   useEffect(() => {
@@ -57,30 +57,28 @@ const useBatchAPI = <T>(
     setStart(startFrom);
     setIsLoading(false);
     setAllResultGetted(false);
+    setIgnoreOldResults(true); // Establecer ignoreOldResults a true para ignorar los resultados antiguos
   }, [queryParams, startFrom]);
 
   useEffect(() => {
     const getCount = async () => {
       setIsLoading(true);
       if (fetchAPI === undefined) return;
-      const getCountRegistersRes = await fetchAPI(
-        endpointCount,
-        "GET",
-        queryParams
-      );
+      const getCountRegistersRes = await fetchAPI(endpointCount, "GET", queryParams);
       if (getCountRegistersRes === undefined) return;
       const { count } = await getCountRegistersRes!.json();
       setCount(count);
-      setShouldFetchNextResults(true); // Establecer shouldFetchNextResults a true después de obtener el count
+      setShouldFetchNextResults(true);
+      setIgnoreOldResults(false); // Establecer ignoreOldResults a false después de obtener el nuevo count
     };
-
     getCount();
   }, [fetchAPI, endpointCount, queryParams]);
 
   useEffect(() => {
     if (shouldFetchNextResults) {
+      setResults([]); // Borrar los resultados anteriores antes de iniciar la nueva solicitud
       fetchNextResults();
-      setShouldFetchNextResults(false); // Establecer shouldFetchNextResults a false después de llamar a fetchNextResults
+      setShouldFetchNextResults(false);
     }
   }, [shouldFetchNextResults, fetchNextResults]);
 

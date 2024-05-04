@@ -45,12 +45,15 @@ const Header = () => {
 
     window.addEventListener("resize", handleResize);
 
+
     const headerHTML = document.getElementById("header");
 
-    resizeObserverHeader.observe(headerHTML!);
+    if(!headerHTML) return;
+
+    resizeObserverHeader.observe(headerHTML);
 
     return () => {
-      resizeObserverHeader.observe(headerHTML!);
+      resizeObserverHeader.observe(headerHTML);
       window.removeEventListener("resize", handleResize);
     };
   }, []);

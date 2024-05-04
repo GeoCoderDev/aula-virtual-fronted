@@ -42,6 +42,7 @@ const Estudiantes = () => {
       0,
       searchTerms as any
     );
+    
 
   const loadMoreResults = () => {
     fetchNextResults?.();
