@@ -35,12 +35,10 @@ const useBatchAPI = <T>(
 
   //Definicion de la funcion fetchNextResults
   const fetchNextResults = useCallback(async () => {
-    if (fetchAPI === undefined || start >= count) {
-      if (count === 0) {
-        setIsLoading(false);
-        setResults([]);
-        setAllResultsGetted(true);
-      }
+
+    if ((fetchAPI === undefined || start >= count) && count!==0) {
+
+      console.log("holi")
       return;
     }
 
@@ -109,7 +107,8 @@ const useBatchAPI = <T>(
   }, [endpoint, limit, startFrom, queryParams, method, body]);
 
   useEffect(() => {
-    if(start>=count) return setAllResultsGetted(true);
+    
+    if(start>=count&&count!==0) return setAllResultsGetted(true);
     if (start !== startFrom) return;
     setIsLoading(true);
     setAllResultsGetted(false);
