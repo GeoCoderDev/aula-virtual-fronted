@@ -8,7 +8,7 @@ import Loader from "@/components/Loader";
 import WarningMessage from "@/components/shared/WarningMessage";
 import useAPI from "@/app/hooks/useAPI";
 
-const limitStudentsRequired = 2;
+const limitStudentsRequired = 50;
 
 interface SearchTermsStudent {
   dni?: string; // DNI del estudiante

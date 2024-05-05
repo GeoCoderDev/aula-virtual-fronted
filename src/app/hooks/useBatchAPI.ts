@@ -54,6 +54,9 @@ const useBatchAPI = <T>(
 
       if (fetchCancelable === undefined) return;
 
+
+      setIsLoading(true);
+
       const res = await fetchCancelable.fetch();
 
       let equalsQueryParams = true;
@@ -77,8 +80,6 @@ const useBatchAPI = <T>(
       }
 
       if (!equalsQueryParams) return;
-
-      setIsLoading(true);
 
       const {
         results: nextResults,
@@ -108,6 +109,7 @@ const useBatchAPI = <T>(
   }, [endpoint, limit, startFrom, queryParams, method, body]);
 
   useEffect(() => {
+    if(start>=count) return setAllResultsGetted(true);
     if (start !== startFrom) return;
     setIsLoading(true);
     setAllResultsGetted(false);
