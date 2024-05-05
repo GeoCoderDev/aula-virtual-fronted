@@ -7,6 +7,7 @@ import useBatchAPI from "@/app/hooks/useBatchAPI";
 import Loader from "@/components/Loader";
 import WarningMessage from "@/components/shared/WarningMessage";
 import useAPI from "@/app/hooks/useAPI";
+import ErrorMessage from "@/components/shared/ErrorMessage";
 
 const limitStudentsRequired = 50;
 
@@ -39,7 +40,7 @@ const Estudiantes = () => {
 
   const { fetchAPI, fetchCancelables } = useAPI();
 
-  const { fetchNextResults, results, isLoading, allResultsGetted } =
+  const { fetchNextResults, results, isLoading, allResultsGetted, error } =
     useBatchAPI<Student>(
       "/api/students",
       limitStudentsRequired,
@@ -48,9 +49,6 @@ const Estudiantes = () => {
       [inputDNI, inputName, inputApellido, selectGrado, selectSeccion]
     );
 
-  const loadMoreResults = () => {
-    fetchNextResults?.();
-  };
 
   const handleSelectChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -199,7 +197,7 @@ const Estudiantes = () => {
           </tbody>
         </table>
 
-        {isLoading && (
+        {!error && isLoading && (
           <Loader
             color="black"
             durationSegundos={1}
@@ -208,38 +206,23 @@ const Estudiantes = () => {
           />
         )}
 
-        {!isLoading && results.length === 0 && (
+        {!error && !isLoading && results.length === 0 && (
           <WarningMessage message="No se encontraron resultados" />
         )}
 
-        {!isLoading && !allResultsGetted && (
+        {!error && !isLoading && !allResultsGetted && (
           <button
             className="bg-amarillo-pooh text-white px-3 py-2 rounded-[0.5rem]"
-            onClick={loadMoreResults}
+            onClick={()=>{fetchNextResults?.()}}
           >
             Cargar mas
           </button>
         )}
+
+        {error && !isLoading && <ErrorMessage message={error.message} />}
       </div>
     </div>
   );
 };
 
 export default Estudiantes;
-
-
-function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  delay: number
-): (...args: Parameters<T>) => void {
-  let timeoutId: ReturnType<typeof setTimeout> | undefined;
-
-  return (...args: Parameters<T>): void => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      func.apply(null, args);
-    }, delay);
-  };
-}

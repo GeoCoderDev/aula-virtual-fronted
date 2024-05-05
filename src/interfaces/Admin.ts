@@ -1,4 +1,4 @@
-interface Admin {
-    Id_Admin: number;
-    Nombre_Usuario: string;
+export interface Admin {
+  Id_Admin: number;
+  Nombre_Usuario: string;
 }

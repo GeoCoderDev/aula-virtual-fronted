@@ -1,12 +1,40 @@
-
+"use client";
+import useBatchAPI from "@/app/hooks/useBatchAPI";
+import Loader from "@/components/Loader";
+import ErrorMessage from "@/components/shared/ErrorMessage";
+import WarningMessage from "@/components/shared/WarningMessage";
+import { Admin } from "@/interfaces/Admin";
 import Link from "next/link";
-import React from "react";
+import React, { useRef, useState } from "react";
+import AdminRow from "./_components/AdminRow";
+
+const limitAdminsRequired = 50;
+
+interface SearchTermsAdmin {
+  username: string;
+}
+
+const searchTermsInitial: SearchTermsAdmin = {
+  username: "",
+};
 
 const Administradores = () => {
+  const inputUsername = useRef<HTMLInputElement>();
 
+  const [searchTerms, setSearchTerms] = useState(searchTermsInitial);
 
+  const { fetchNextResults, results, allResultsGetted, error, isLoading } =
+    useBatchAPI<Admin>(
+      "/api/admins",
+      limitAdminsRequired,
+      0,
+      searchTerms as any,
+      [inputUsername]
+    );
 
-
+  const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className="flex flex-col items-start justify-center gap-y-6">
@@ -14,21 +42,22 @@ const Administradores = () => {
         <p className=" text-4xl  font-extrabold">Buscar Administrador</p>
 
         <Link href={"/administradores/registrar"}>
-            <button className="px-4 py-3  rounded-[0.5rem] bg-verde-spotify font-bold">Registrar Administradores</button>      
+          <button className="px-4 py-3  rounded-[0.5rem] bg-verde-spotify font-bold">
+            Registrar Administradores
+          </button>
         </Link>
-
       </div>
 
       <div className="flex  items-center gap-3">
         <p className="font-semibold">NOMBRE DE USUARIO:</p>
         <input
-
+          ref={inputUsername as React.LegacyRef<HTMLInputElement>}
           maxLength={100}
           name="username"
           style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
           className="outline-none w-[50%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
           type="text"
-          placeholder="Nombre de Usuario*"
+          onChange={handleInputTextChange}
         />
       </div>
 
@@ -39,10 +68,36 @@ const Administradores = () => {
             <td className="px-8 py-3">Nombre de Usuario</td>
             <td className="px-60 py-3 rounded-r">Acciones</td>
           </tr>
-
-
-          
+          {results.map((admin, index) => (
+              <AdminRow key={index} {...admin} />
+            ))}
         </table>
+
+        {!error && isLoading && (
+          <Loader
+            color="black"
+            durationSegundos={1}
+            backgroundSize="12px"
+            width="40px"
+          />
+        )}
+
+        {!error && !isLoading && results.length === 0 && (
+          <WarningMessage message="No se encontraron resultados" />
+        )}
+
+        {!error && !isLoading && !allResultsGetted && (
+          <button
+            className="bg-amarillo-pooh text-white px-3 py-2 rounded-[0.5rem]"
+            onClick={() => {
+              fetchNextResults?.();
+            }}
+          >
+            Cargar mas
+          </button>
+        )}
+
+        {error && !isLoading && <ErrorMessage message={error.message} />}
       </div>
     </div>
   );

@@ -3,6 +3,10 @@ import { MethodHTTP } from "@/interfaces/MethodsHTTP";
 import { useCallback, useEffect, useState } from "react";
 import useAPI from "./useAPI";
 
+export interface ErrorBatchAPI {
+  message: string;
+}
+
 /**
  * Las referencias deben ir en el mismo
  * orden de los parametros de consulta
@@ -29,18 +33,17 @@ const useBatchAPI = <T>(
   const { fetchAPI, fetchCancelables } = useAPI();
   const [results, setResults] = useState<Array<T>>([]);
   const [start, setStart] = useState(startFrom);
-  const [count, setCount] = useState(Number.MAX_VALUE);
+  const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [allResultsGetted, setAllResultsGetted] = useState(false);
+  const [shouldFetch, setShouldFetch] = useState(true);
+  const [error, setError] = useState<ErrorBatchAPI | null>(null);
 
   //Definicion de la funcion fetchNextResults
   const fetchNextResults = useCallback(async () => {
+    if (!shouldFetch) return;
 
-    if ((fetchAPI === undefined || start >= count) && count!==0) {
-
-      console.log("holi")
-      return;
-    }
+    if ((fetchAPI === undefined || start >= count) && count !== 0) return;
 
     try {
       const fetchCancelable = fetchAPI(
@@ -52,8 +55,12 @@ const useBatchAPI = <T>(
 
       if (fetchCancelable === undefined) return;
 
-
       setIsLoading(true);
+
+      while (fetchCancelables.length > 0) {
+        const oldFetch = fetchCancelables.shift();
+        oldFetch?.cancel();
+      }
 
       const res = await fetchCancelable.fetch();
 
@@ -64,7 +71,7 @@ const useBatchAPI = <T>(
         indice++;
         if (searchParamsRef?.[indice]?.current === undefined) continue;
         if (searchParamsRef[indice].current?.value !== value) {
-          console.log("%cdiferente", "font-size: 2rem")
+          console.log("%cdiferente", "font-size: 2rem");
 
           console.log(
             "current-" + key,
@@ -97,27 +104,46 @@ const useBatchAPI = <T>(
       setStart((prev) => prev + limit);
       setAllResultsGetted(start + limit >= count);
       setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching results:", error);
+    } catch (error: any) {
+      const pattern = /signal is aborted without reason/;
+      if (error.stack && pattern.test(error.stack)) return;
+      setError(() => ({ message: "La red es inestable" }));
+      setIsLoading(false);
     }
-  }, [fetchAPI, body, endpoint, start, limit, method, queryParams, count]);
+  }, [
+    fetchAPI,
+    body,
+    endpoint,
+    start,
+    limit,
+    method,
+    queryParams,
+    count,
+    shouldFetch,
+  ]);
 
   useEffect(() => {
     setStart(() => startFrom);
   }, [endpoint, limit, startFrom, queryParams, method, body]);
 
+  // Reset the state when the query params change
   useEffect(() => {
-    
-    if(start>=count&&count!==0) return setAllResultsGetted(true);
+    if (start >= count && count !== 0) return setAllResultsGetted(true);
     if (start !== startFrom) return;
     setIsLoading(true);
     setAllResultsGetted(false);
+    setError(null);
     setResults([]);
     setStart(() => startFrom);
     fetchNextResults();
   }, [fetchNextResults, startFrom, start, queryParams]);
 
-  return { fetchNextResults, results, isLoading, allResultsGetted };
+  useEffect(() => {
+    setShouldFetch(false);
+    setTimeout(() => setShouldFetch(true), 1000);
+  }, [queryParams]);
+
+  return { fetchNextResults, results, isLoading, allResultsGetted, error };
 };
 
 export default useBatchAPI;

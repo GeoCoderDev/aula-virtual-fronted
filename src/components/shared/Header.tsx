@@ -11,7 +11,10 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setHeaderHeight } from "@/state/ElementDimensions/headerHeight";
 import { setWindowHeight } from "@/state/ElementDimensions/windowHeight";
-import { setSidebarIsOpen } from "@/state/Flags/sidebarIsOpen";
+import {
+  setSidebarIsOpen,
+  switchSidebarIsOpen,
+} from "@/state/Flags/sidebarIsOpen";
 import { setWindowWidth } from "@/state/ElementDimensions/windowWidth";
 
 const Header = () => {
@@ -45,10 +48,9 @@ const Header = () => {
 
     window.addEventListener("resize", handleResize);
 
-
     const headerHTML = document.getElementById("header");
 
-    if(!headerHTML) return;
+    if (!headerHTML) return;
 
     resizeObserverHeader.observe(headerHTML);
 
@@ -67,8 +69,10 @@ const Header = () => {
       className="flex w-screen text-center z-[5] bg-verde-spotify py-2 sticky top-0 left-0 max-w-full pl-6 pr-4"
     >
       <div className="flex items-center justify-between w-full gap-x-7">
-        <div className="flex-1 ">
-          <HamburguesaIcon className="aspect-auto w-8" fillColor="black" />
+        <div className=" flex-1">
+          <div className="cursor-pointer select-none" onClick={()=>dispatch(switchSidebarIsOpen(null))}>
+            <HamburguesaIcon className="aspect-auto w-8" fillColor="black" />
+          </div>
         </div>
 
         <div className="flex flex-col items-start">
