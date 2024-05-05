@@ -1,15 +1,14 @@
 "use client";
 import { Student } from "@/interfaces/Student";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import StudentRow from "./_components/StudentRow";
 import Link from "next/link";
 import useBatchAPI from "@/app/hooks/useBatchAPI";
 import Loader from "@/components/Loader";
-import { ObjetoConStringYNumber } from "@/interfaces/CustomObjects";
 import WarningMessage from "@/components/shared/WarningMessage";
 import useAPI from "@/app/hooks/useAPI";
 
-const limitStudentsRequired = 50;
+const limitStudentsRequired = 2;
 
 interface SearchTermsStudent {
   dni?: string; // DNI del estudiante
@@ -28,21 +27,26 @@ const searchTermsInitial: SearchTermsStudent = {
 };
 
 const Estudiantes = () => {
+  const inputDNI = useRef<HTMLInputElement>();
+  const inputName = useRef<HTMLInputElement>();
+  const inputApellido = useRef<HTMLInputElement>();
+  const selectGrado = useRef<HTMLSelectElement>();
+  const selectSeccion = useRef<HTMLSelectElement>();
+
   const [availableSections, setAvailableSections] = useState([]);
 
   const [searchTerms, setSearchTerms] = useState(searchTermsInitial);
 
-  const [fetchAPI] = useAPI();
+  const { fetchAPI, fetchCancelables } = useAPI();
 
-  const { fetchNextResults, results, isLoading, allResultGetted } =
+  const { fetchNextResults, results, isLoading, allResultsGetted } =
     useBatchAPI<Student>(
       "/api/students",
-      "/api/students/count",
       limitStudentsRequired,
       0,
-      searchTerms as any
+      searchTerms as any,
+      [inputDNI, inputName, inputApellido, selectGrado, selectSeccion]
     );
-    
 
   const loadMoreResults = () => {
     fetchNextResults?.();
@@ -51,21 +55,29 @@ const Estudiantes = () => {
   const handleSelectChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-
-    
     if (e.target.name === "grado") {
-      setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value , seccion: ""});
-      setAvailableSections([]);  
+      setSearchTerms({
+        ...searchTerms,
+        [e.target.name]: e.target.value,
+        seccion: "",
+      });
+
+      setAvailableSections([]);
       if (e.target.value === "") {
         setAvailableSections([]);
       } else {
-        const res = await fetchAPI(
+        const fetchCancelable = fetchAPI(
           `/api/classrooms/grade/${e.target.value}/sections`
         );
+
+        if (fetchCancelable === undefined) return;
+
+        const res = await fetchCancelable.fetch();
+
         const sections = await res?.json();
         setAvailableSections(sections ?? []);
       }
-    }else{
+    } else {
       setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
     }
   };
@@ -92,6 +104,7 @@ const Estudiantes = () => {
         <div className="flex items-center space-x-3">
           <p className="font-semibold">DNI:</p>
           <input
+            ref={inputDNI as React.LegacyRef<HTMLInputElement>}
             maxLength={100}
             name="dni"
             style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
@@ -105,6 +118,7 @@ const Estudiantes = () => {
         <div className="flex items-center space-x-3">
           <p className="font-semibold">NOMBRES:</p>
           <input
+            ref={inputName as React.LegacyRef<HTMLInputElement>}
             onChange={handleInputTextChange}
             maxLength={100}
             name="nombre"
@@ -118,6 +132,7 @@ const Estudiantes = () => {
 
         <div className="flex items-center space-x-3">
           <select
+            ref={selectGrado as React.LegacyRef<HTMLSelectElement>}
             name="grado"
             value={searchTerms.grado}
             onChange={handleSelectChange}
@@ -133,6 +148,7 @@ const Estudiantes = () => {
           </select>
 
           <select
+            ref={selectSeccion as React.LegacyRef<HTMLSelectElement>}
             name="seccion"
             value={searchTerms.seccion}
             onChange={handleSelectChange}
@@ -151,6 +167,7 @@ const Estudiantes = () => {
         <div className="flex  items-center gap-3">
           <p className="font-semibold">APELLIDO:</p>
           <input
+            ref={inputApellido as React.LegacyRef<HTMLInputElement>}
             onChange={handleInputTextChange}
             maxLength={100}
             name="apellidos"
@@ -195,7 +212,7 @@ const Estudiantes = () => {
           <WarningMessage message="No se encontraron resultados" />
         )}
 
-        {!isLoading && !allResultGetted && (
+        {!isLoading && !allResultsGetted && (
           <button
             className="bg-amarillo-pooh text-white px-3 py-2 rounded-[0.5rem]"
             onClick={loadMoreResults}

@@ -3,86 +3,120 @@ import { MethodHTTP } from "@/interfaces/MethodsHTTP";
 import { useCallback, useEffect, useState } from "react";
 import useAPI from "./useAPI";
 
+/**
+ * Las referencias deben ir en el mismo
+ * orden de los parametros de consulta
+ * @param endpoint
+ * @param limit
+ * @param startFrom
+ * @param queryParams
+ * @param searchParamsRef
+ * @param method
+ * @param body
+ * @returns
+ */
 const useBatchAPI = <T>(
   endpoint: string,
-  endpointCount: string,
   limit: number,
   startFrom: number = 0,
   queryParams: ObjetoConStringYNumber | null = null,
+  searchParamsRef: React.MutableRefObject<
+    HTMLInputElement | HTMLSelectElement | undefined
+  >[],
   method: MethodHTTP = "GET",
   body: string | null = null
 ) => {
-  const [fetchAPI] = useAPI();
+  const { fetchAPI, fetchCancelables } = useAPI();
   const [results, setResults] = useState<Array<T>>([]);
   const [start, setStart] = useState(startFrom);
   const [count, setCount] = useState(Number.MAX_VALUE);
-  const [isLoading, setIsLoading] = useState(false);
-  const [allResultGetted, setAllResultGetted] = useState(false);
-  const [shouldFetchNextResults, setShouldFetchNextResults] = useState(false);
-  const [ignoreOldResults, setIgnoreOldResults] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [allResultsGetted, setAllResultsGetted] = useState(false);
 
+  //Definicion de la funcion fetchNextResults
   const fetchNextResults = useCallback(async () => {
-    if (fetchAPI === undefined || start >= count || ignoreOldResults) {
-      // En caso no se encuentren resultados o se deban ignorar los resultados antiguos
+    if (fetchAPI === undefined || start >= count) {
       if (count === 0) {
         setIsLoading(false);
         setResults([]);
-        setAllResultGetted(true);
+        setAllResultsGetted(true);
       }
       return;
     }
 
     try {
-      setIsLoading(true);
-      const res = await fetchAPI(
+      const fetchCancelable = fetchAPI(
         endpoint,
         method,
-        { ...queryParams, startFrom: start, limit: limit },
+        { ...queryParams, startFrom: start, limit },
         body
       );
-      const nextResults = await res!.json();
-      setResults(nextResults);
-      setStart((prev) => prev + limit);
-      setAllResultGetted(start + limit >= count);
-    } catch (e) {
-    } finally {
-      setIsLoading(false);
-    }
-  }, [fetchAPI, endpoint, count, limit, queryParams, method, body, start, ignoreOldResults]);
 
-  // Resetear los resultados al enviar el formulario
-  useEffect(() => {
-    setResults([]);
-    setShouldFetchNextResults(false);
-    setStart(startFrom);
-    setIsLoading(false);
-    setAllResultGetted(false);
-    setIgnoreOldResults(true); // Establecer ignoreOldResults a true para ignorar los resultados antiguos
-  }, [queryParams, startFrom]);
+      if (fetchCancelable === undefined) return;
 
-  useEffect(() => {
-    const getCount = async () => {
+      const res = await fetchCancelable.fetch();
+
+      let equalsQueryParams = true;
+      let indice = -1;
+
+      for (const [key, value] of Object.entries(fetchCancelable.queryParams)) {
+        indice++;
+        if (searchParamsRef?.[indice]?.current === undefined) continue;
+        if (searchParamsRef[indice].current?.value !== value) {
+          console.log("%cdiferente", "font-size: 2rem")
+
+          console.log(
+            "current-" + key,
+            '"' + searchParamsRef[indice].current?.value + '"'
+          );
+          console.log("old-" + key, '"' + value + '"');
+
+          equalsQueryParams = false;
+          break;
+        }
+      }
+
+      if (!equalsQueryParams) return;
+
       setIsLoading(true);
-      if (fetchAPI === undefined) return;
-      const getCountRegistersRes = await fetchAPI(endpointCount, "GET", queryParams);
-      if (getCountRegistersRes === undefined) return;
-      const { count } = await getCountRegistersRes!.json();
-      setCount(count);
-      setShouldFetchNextResults(true);
-      setIgnoreOldResults(false); // Establecer ignoreOldResults a false después de obtener el nuevo count
-    };
-    getCount();
-  }, [fetchAPI, endpointCount, queryParams]);
+
+      const {
+        results: nextResults,
+        count: countResults,
+      }: { results: Array<T>; count?: number } = await res.json();
+
+      if (countResults !== undefined) setCount(countResults);
+
+      if (start === 0) {
+        setResults(() => nextResults);
+      } else {
+        setResults(
+          (prevResults) => [...prevResults, ...nextResults] as Array<T>
+        );
+      }
+
+      setStart((prev) => prev + limit);
+      setAllResultsGetted(start + limit >= count);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching results:", error);
+    }
+  }, [fetchAPI, body, endpoint, start, limit, method, queryParams, count]);
 
   useEffect(() => {
-    if (shouldFetchNextResults) {
-      setResults([]); // Borrar los resultados anteriores antes de iniciar la nueva solicitud
-      fetchNextResults();
-      setShouldFetchNextResults(false);
-    }
-  }, [shouldFetchNextResults, fetchNextResults]);
+    setStart(() => startFrom);
+  }, [endpoint, limit, startFrom, queryParams, method, body]);
 
-  return { fetchNextResults, results, isLoading, allResultGetted };
+  useEffect(() => {
+    if (start !== startFrom) return;
+    setIsLoading(true);
+    setAllResultsGetted(false);
+    setResults([]);
+    setStart(() => startFrom);
+    fetchNextResults();
+  }, [fetchNextResults, startFrom, start, queryParams]);
+
+  return { fetchNextResults, results, isLoading, allResultsGetted };
 };
 
 export default useBatchAPI;
