@@ -58,13 +58,13 @@ const Sidebar = () => {
               sidebarIsOpen ? "block" : "none"
             };                                 
           }
-
+  
           #sidebar-ul{
             background-color: white;
             height: 100%;
             width: 100%;
           }
-
+  
           @media screen and (max-width: 768px){
             #sidebar{
               width: 100vw;
@@ -75,14 +75,14 @@ const Sidebar = () => {
               background-color:${sidebarIsOpen ? "#00000080" : "transparent"};
               z-index: 102;
             }
-
+  
             #sidebar-ul{
               background-color: white;
               height: 100%;
               width: max-content;
               max-width: 80%;
             }
-
+  
           }
                     
       `}

@@ -38,7 +38,7 @@ const Estudiantes = () => {
 
   const [searchTerms, setSearchTerms] = useState(searchTermsInitial);
 
-  const { fetchAPI, fetchCancelables } = useAPI();
+  const { fetchAPI } = useAPI();
 
   const { fetchNextResults, results, isLoading, allResultsGetted, error } =
     useBatchAPI<Student>(
@@ -71,6 +71,8 @@ const Estudiantes = () => {
         if (fetchCancelable === undefined) return;
 
         const res = await fetchCancelable.fetch();
+
+        if(fetchCancelable?.queryParams?.grado===selectGrado.current?.value) return setAvailableSections([]);
 
         const sections = await res?.json();
         setAvailableSections(sections ?? []);
@@ -135,7 +137,7 @@ const Estudiantes = () => {
             value={searchTerms.grado}
             onChange={handleSelectChange}
             id="grado-student"
-            className="bg-verde-spotify text-center"
+            className="bg-verde-spotify text-center outline-none px-3 py-2 rounded-[1rem]"
           >
             <option value="">GRADO</option>
             <option value="1">1</option>
@@ -151,7 +153,7 @@ const Estudiantes = () => {
             value={searchTerms.seccion}
             onChange={handleSelectChange}
             disabled={availableSections.length === 0}
-            className="bg-verde-spotify"
+            className="bg-verde-spotify text-center outline-none px-3 py-2 rounded-[1rem]"
           >
             <option value="">SECCIÓN</option>
             {availableSections.map((section, index) => (

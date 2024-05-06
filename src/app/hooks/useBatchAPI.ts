@@ -3,6 +3,8 @@ import { MethodHTTP } from "@/interfaces/MethodsHTTP";
 import { useCallback, useEffect, useState } from "react";
 import useAPI from "./useAPI";
 
+const waitTimeRedirectionMS = 2300;
+
 export interface ErrorBatchAPI {
   message: string;
 }
@@ -71,14 +73,7 @@ const useBatchAPI = <T>(
         indice++;
         if (searchParamsRef?.[indice]?.current === undefined) continue;
         if (searchParamsRef[indice].current?.value !== value) {
-          console.log("%cdiferente", "font-size: 2rem");
-
-          console.log(
-            "current-" + key,
-            '"' + searchParamsRef[indice].current?.value + '"'
-          );
-          console.log("old-" + key, '"' + value + '"');
-
+          // console.log("%cdiferente", "font-size: 2rem");
           equalsQueryParams = false;
           break;
         }
@@ -89,7 +84,22 @@ const useBatchAPI = <T>(
       const {
         results: nextResults,
         count: countResults,
-      }: { results: Array<T>; count?: number } = await res.json();
+        message,
+      }: {
+        results: Array<T>;
+        count?: number;
+        message?: string;
+      } = await res.json();
+
+      if (res.status === 401) {
+        setError(() => ({
+          message: message ?? "Tu sesion ha expirado o no estas autorizado",
+        }));
+        setTimeout(() => {
+          window.location.href = "/";
+        }, waitTimeRedirectionMS );
+        return setIsLoading(false);
+      }
 
       if (countResults !== undefined) setCount(countResults);
 
