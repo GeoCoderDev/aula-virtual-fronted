@@ -16,6 +16,7 @@ import {
   switchSidebarIsOpen,
 } from "@/state/Flags/sidebarIsOpen";
 import { setWindowWidth } from "@/state/ElementDimensions/windowWidth";
+import { RolesEspañol } from "@/interfaces/RolesEspañol";
 
 const Header = () => {
   const pathname = usePathname();
@@ -83,7 +84,7 @@ const Header = () => {
             {UserSessionData.username}
           </h1>
           <p className="text-left" style={{ margin: "-0.15rem 0" }}>
-            {UserSessionData.role}
+            {RolesEspañol[UserSessionData.role]}
           </p>
         </div>
 
