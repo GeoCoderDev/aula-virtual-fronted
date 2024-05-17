@@ -1,17 +1,21 @@
+import { EstadosInterpretacion } from "@/app/assets/EstadosInterpretacion";
 import { Student } from "@/interfaces/Student";
 
-const StudentRow = ({DNI_Estudiante, Nombres, Apellidos, Grado, Seccion}:Student) => {
+const StudentRow = ({DNI_Estudiante, Nombres, Apellidos, Grado, Seccion, Estado}:Student) => {
   return (
-    <tr>
-      <td style={{ padding: "1em" }}>{DNI_Estudiante}</td>
-      <td style={{ padding: "1em" }}>{Nombres}</td>
-      <td style={{ padding: "1em" }}>{Apellidos}</td>
-      <td style={{ padding: "1em" }}>{Grado}</td>
-      <td style={{ padding: "1em" }}>{Seccion}</td>
-      <td style={{ padding: "1em" }}>
-        <button style={{ marginRight: "5px" }}>Eliminar</button>
-        <button style={{ marginRight: "5px" }}>Editar</button>
-        <button>Ver</button>
+    <tr className="-border-2">
+      <td className="p-4 text-center">{DNI_Estudiante}</td>
+      <td className="p-4 text-center">{Nombres}</td>
+      <td className="p-4 text-center">{Apellidos}</td>
+      <td className="p-4 text-center">{Grado}</td>
+      <td className="p-4 text-center">{Seccion}</td>
+      <td className="p-4 text-center">{EstadosInterpretacion[Estado]}</td>
+      <td >
+        <div className="w-full flex justify-center gap-x-4">
+          <button  className="text-white font-medium px-2 py-1 rounded-lg bg-amarillo-pooh" >Editar</button>
+          <button className="text-white font-medium px-2 py-1 rounded-lg bg-azul-pablo" >Ver</button>
+          <button  className={`text-white font-medium px-2 py-1 rounded-lg ${Estado===1?'bg-rojo-orange': 'bg-teal-400'}`}>{Estado===1?"Deshabilitar":"Habilitar"}</button>
+        </div>
       </td>
     </tr>
   );

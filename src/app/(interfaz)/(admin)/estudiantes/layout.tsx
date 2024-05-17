@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Estudiantes = ({ children }: { children: React.ReactNode }) => {
@@ -5,7 +6,9 @@ const Estudiantes = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className="flex flex-wrap flex-col w-full -border-2">
         <div className="">
-            <div className="">Gestion de Estudiantes</div>
+            <Link href={`../estudiantes`}>
+            <div className="cursor-pointer hover:underline">Gestion de Estudiantes</div>
+            </Link>
         </div>
         {children}
       </div>

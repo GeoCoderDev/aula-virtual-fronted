@@ -16,7 +16,7 @@ import {
   switchSidebarIsOpen,
 } from "@/state/Flags/sidebarIsOpen";
 import { setWindowWidth } from "@/state/ElementDimensions/windowWidth";
-import { RolesEspañol } from "@/interfaces/RolesEspañol";
+import { RolesEspañol } from "@/app/assets/RolesEspañol";
 
 const Header = () => {
   const pathname = usePathname();

@@ -7,6 +7,7 @@ import { Admin } from "@/interfaces/Admin";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 import AdminRow from "./_components/AdminRow";
+import ModalContainer from "@/components/shared/ModalContainer";
 
 const limitAdminsRequired = 50;
 
@@ -23,22 +24,34 @@ const Administradores = () => {
 
   const [searchTerms, setSearchTerms] = useState(searchTermsInitial);
 
-  const { fetchNextResults, results, allResultsGetted, error, isLoading } =
-    useBatchAPI<Admin>(
-      "/api/admins",
-      limitAdminsRequired,
-      0,
-      searchTerms as any,
-      [inputUsername]
-    );
+  const {
+    fetchNextResults,
+    results,
+    allResultsGetted,
+    error,
+    isLoading,
+    setResults,
+  } = useBatchAPI<Admin>(
+    "/api/admins",
+    limitAdminsRequired,
+    0,
+    searchTerms as any,
+    [inputUsername]
+  );
 
   const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
   };
 
+  const handleRemoveAdmin = (idAdmin: number) => {
+    setResults((prevAdmins) =>
+      prevAdmins.filter((admin) => admin.Id_Admin !== idAdmin)
+    );
+  };
+
   return (
-    <div className="flex flex-col items-start justify-center gap-y-6">
-      <div className="flex justify-between items-center w-full">
+    <div className="flex flex-col items-start justify-start gap-y-6 -border-2">
+      <div className="flex justify-between items-start w-full">
         <p className=" text-4xl  font-extrabold">Buscar Administrador</p>
 
         <Link href={"/administradores/registrar"}>
@@ -61,16 +74,20 @@ const Administradores = () => {
         />
       </div>
 
-      <div>
+      <div className="flex flex-col items-center justify-center gap-y-4">
         <table>
           <tr className="font-semibold bg-verde-spotify text-black">
             <td className="px-8 py-3 rounded-l">ID</td>
             <td className="px-8 py-3">Nombre de Usuario</td>
             <td className="px-60 py-3 rounded-r">Acciones</td>
           </tr>
-          {results.map((admin, index) => (
-              <AdminRow key={index} {...admin} />
-            ))}
+          {results.map((admin) => (
+            <AdminRow
+              key={admin.Id_Admin}
+              admin={admin}
+              handleRemoveAdmin={handleRemoveAdmin}
+            />
+          ))}
         </table>
 
         {!error && isLoading && (

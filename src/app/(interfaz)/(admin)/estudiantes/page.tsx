@@ -87,7 +87,8 @@ const Estudiantes = () => {
   };
 
   return (
-    <div className="flex flex-col items-start justify-center gap-y-6">
+    <div className="flex flex-col items-start justify-center gap-y-6 -border-2">
+      
       <div className="flex justify-between items-center w-full">
         <p className=" text-4xl font-extrabold"> Buscar Estudiante</p>
         <Link href={"estudiantes/registrar"}>
@@ -180,16 +181,26 @@ const Estudiantes = () => {
         </div>
       </form>
 
-      <div>
-        <table>
+      <div className="flex flex-col items-center justify-center gap-y-4  min-w-[100%] max-w-[80vw] overflow-x-auto overflow-y-hidden">
+        <table className="w-full min-w-full">
+        <colgroup>
+          <col className="w-[6rem]"/>
+          <col className="w-[12rem]"/>
+          <col className="w-[12rem]"/>
+          <col className="w-[3rem]"/>
+          <col className="w-[3rem]"/>
+          <col className="w-[6rem]"/>
+          <col className="w-[15rem]"/>
+        </colgroup>
           <thead>
             <tr className="font-semibold bg-verde-spotify text-black">
-              <th className="px-4 py-2 rounded-l">DNI</th>
-              <th className="px-4 py-2">Nombre</th>
-              <th className="px-4 py-2">Apellidos</th>
-              <th className="px-4 py-2">Grado</th>
-              <th className="px-4 py-2">Sección</th>
-              <th className="px-30 py-2 rounded-r">Acciones</th>
+              <th className="text-center px-4 py-2 rounded-l">DNI</th>
+              <th className="text-center px-4 py-2">Nombre</th>
+              <th className="text-center px-4 py-2">Apellidos</th>
+              <th className="text-center px-4 py-2">Grado</th>
+              <th className="text-center px-4 py-2">Sección</th>
+              <th className="text-center px-4 py-2">Estado</th>
+              <th className="text-center px-30 py-2 rounded-r">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -198,7 +209,7 @@ const Estudiantes = () => {
             ))}
           </tbody>
         </table>
-
+          
         {!error && isLoading && (
           <Loader
             color="black"
@@ -211,7 +222,7 @@ const Estudiantes = () => {
         {!error && !isLoading && results.length === 0 && (
           <WarningMessage message="No se encontraron resultados" />
         )}
-
+        {}
         {!error && !isLoading && !allResultsGetted && (
           <button
             className="bg-amarillo-pooh text-white px-3 py-2 rounded-[0.5rem]"
