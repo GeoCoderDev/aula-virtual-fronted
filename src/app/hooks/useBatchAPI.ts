@@ -2,7 +2,7 @@ import { ObjetoConStringYNumber } from "@/interfaces/CustomObjects";
 import { MethodHTTP } from "@/interfaces/MethodsHTTP";
 import { useCallback, useEffect, useState } from "react";
 import useAPI from "./useAPI";
-import { ErrorAPI } from "@/interfaces/ErrorAPI";
+import { ErrorAPI } from "@/interfaces/API";
 
 const waitTimeRedirectionMS = 2300;
 
@@ -40,7 +40,6 @@ const useBatchAPI = <T>(
 
   //Definicion de la funcion fetchNextResults
   const fetchNextResults = useCallback(async () => {
-    
     if (!shouldFetch) return;
 
     if ((fetchAPI === undefined || start >= count) && count !== 0) return;
@@ -95,11 +94,11 @@ const useBatchAPI = <T>(
         }));
         setTimeout(() => {
           window.location.href = "/";
-        }, waitTimeRedirectionMS );
+        }, waitTimeRedirectionMS);
         return setIsLoading(false);
       }
 
-      if (countResults !== undefined) setCount(()=>countResults);
+      if (countResults !== undefined) setCount(() => countResults);
 
       if (start === 0) {
         setResults(() => nextResults);
@@ -110,7 +109,7 @@ const useBatchAPI = <T>(
       }
 
       setStart((prev) => prev + limit);
-      setAllResultsGetted(start + limit >= (countResults??count));
+      setAllResultsGetted(start + limit >= (countResults ?? count));
       setIsLoading(false);
     } catch (error: any) {
       const pattern = /signal is aborted without reason/;
@@ -151,7 +150,14 @@ const useBatchAPI = <T>(
     setTimeout(() => setShouldFetch(true), 1000);
   }, [queryParams]);
 
-  return { fetchNextResults, results, isLoading, allResultsGetted, error, setResults };
+  return {
+    fetchNextResults,
+    results,
+    isLoading,
+    allResultsGetted,
+    error,
+    setResults,
+  };
 };
 
 export default useBatchAPI;

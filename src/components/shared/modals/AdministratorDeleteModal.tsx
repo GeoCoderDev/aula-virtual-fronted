@@ -3,23 +3,31 @@ import { Admin } from "../../../interfaces/Admin";
 import { Dispatch, SetStateAction, useState } from "react";
 import ModalContainer from "../ModalContainer";
 import ErrorMessage from "../ErrorMessage";
-import { ErrorAPI } from "@/interfaces/ErrorAPI";
+import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
 import Loader from "@/components/Loader";
 import SuccessMessage from "../SuccessMessage";
+import useModalFeatures from "@/app/hooks/useModalFeatures";
+
+export interface AdministratorDeleteModalProps {
+  admin: Admin;
+  setDeleteModalIsShowing: Dispatch<SetStateAction<boolean>>;
+  handleRemoveAdmin: (idAdmin: number) => void;
+}
 
 const AdministratorDeleteModal = ({
   admin: { Id_Admin, Nombre_Usuario },
   setDeleteModalIsShowing,
   handleRemoveAdmin,
-}: {
-  admin: Admin;
-  setDeleteModalIsShowing: Dispatch<SetStateAction<boolean>>;
-  handleRemoveAdmin: (idAdmin: number) => void;
-}) => {
-  const [isSomethingLoading, setIsSomethingLoading] = useState(false);
-  const [error, setError] = useState<ErrorAPI | null>(null);
-  const [success, setSuccess] = useState(false);
-  const { fetchAPI } = useAPI();
+}: AdministratorDeleteModalProps) => {
+  const {
+    fetchAPI,
+    isSomethingLoading,
+    setIsSomethingLoading,
+    error,
+    setError,
+    successMessage,
+    setSuccessMessage,
+  } = useModalFeatures();
 
   const eliminateAdmin = async () => {
     try {
@@ -32,12 +40,18 @@ const AdministratorDeleteModal = ({
       const res = await fetchCancelable?.fetch();
 
       if (!res.ok) {
-        const errorRes: ErrorAPI = await res.json();
-        setError(() => errorRes);
-        return;
-      }
 
-      setSuccess(true);
+        const { message }: ErrorAPI = await res.json();
+        setError(() => ({ message: message ?? "Administrador no eliminado" }));
+
+      } else {
+
+        const { message }: SuccessMessageAPI = await res.json();
+        setSuccessMessage(() => ({
+          message: message ?? "Administrador Eliminado",
+        }));
+
+      }
 
       setIsSomethingLoading(false);
     } catch (e) {
@@ -56,7 +70,7 @@ const AdministratorDeleteModal = ({
       ) => {
         if (!isSomethingLoading) {
           //Eliminando el admin de los resultados
-          if (success) handleRemoveAdmin(Id_Admin);
+          if (successMessage) handleRemoveAdmin(Id_Admin);
           setDeleteModalIsShowing(false);
         }
         event.stopPropagation();
@@ -67,19 +81,22 @@ const AdministratorDeleteModal = ({
           ¿Estas seguro de eliminar al administrador <b>{Nombre_Usuario}</b>?
         </h2>
 
-        {!success && !error && isSomethingLoading && (
+        {!successMessage && !error && isSomethingLoading && (
           <Loader color="black" width="30px" backgroundSize="9px" />
         )}
 
-        {!success && !isSomethingLoading && error && (
+        {!successMessage && !isSomethingLoading && error && (
           <ErrorMessage message={error.message} />
         )}
 
-        {!error && !isSomethingLoading && success && (
-          <SuccessMessage message="Administrador eliminado Correctamente" />
+        {!error && !isSomethingLoading && successMessage && (
+          <SuccessMessage
+            className="text-rojo-orange"
+            message={successMessage.message}
+          />
         )}
 
-        {!success && !error && !isSomethingLoading && (
+        {!successMessage && !error && !isSomethingLoading && (
           <div className="flex w-full items-center justify-center gap-x-3">
             <button
               onClick={eliminateAdmin}

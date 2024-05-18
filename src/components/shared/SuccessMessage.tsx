@@ -1,8 +1,8 @@
 import React from 'react'
 
-const SuccessMessage = ({message}:{message:string}) => {
+const SuccessMessage = ({message, className=""}:{message:string, className?:string}) => {
   return (
-    <div className='text-rojo-orange font-bold text-center'>{message}</div>
+    <div className={`text-verde-spotify ${className} font-bold text-center`}>{message}</div>
   )
 }
 

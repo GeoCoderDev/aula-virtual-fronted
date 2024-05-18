@@ -14,10 +14,22 @@
   padding: 0;
 }
 
+/* CLASE UTILES */
+
+@layer components {
+  .custom-input {
+    @apply outline-none w-[60%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black;
+    box-shadow: 0 0 10px 4px rgba(0, 255, 111, 0.31);
+  }
+  .button-with-loader {
+    @apply bg-verde-spotify rounded-lg py-3 px-4 font-semibold flex items-center justify-center gap-x-2 disabled:grayscale-[0.5];
+  }
+}
+
 /* ANIMACIONES */
 
-  @keyframes points_rotate {
-    to {
-      transform: rotate(0.5turn);
-    }
+@keyframes points_rotate {
+  to {
+    transform: rotate(0.5turn);
   }
+}

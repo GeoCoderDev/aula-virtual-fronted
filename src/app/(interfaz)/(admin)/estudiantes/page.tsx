@@ -108,8 +108,7 @@ const Estudiantes = () => {
             ref={inputDNI as React.LegacyRef<HTMLInputElement>}
             maxLength={100}
             name="dni"
-            style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
-            className="outline-none w-[60%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
+            className="custom-input"
             type="text"
             value={searchTerms.dni}
             onChange={handleInputTextChange}
@@ -123,8 +122,7 @@ const Estudiantes = () => {
             onChange={handleInputTextChange}
             maxLength={100}
             name="nombre"
-            style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
-            className="outline-none w-[60%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
+            className="custom-input"
             type="text"
             placeholder=""
             value={searchTerms.nombre}
@@ -172,8 +170,7 @@ const Estudiantes = () => {
             onChange={handleInputTextChange}
             maxLength={100}
             name="apellidos"
-            style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
-            className="outline-none w-[150%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
+            className="custom-input"
             type="text"
             placeholder=""
             value={searchTerms.apellidos}

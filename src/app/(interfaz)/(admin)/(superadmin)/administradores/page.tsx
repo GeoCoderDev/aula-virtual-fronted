@@ -49,6 +49,14 @@ const Administradores = () => {
     );
   };
 
+  const handleUpdateUsername = (idAdmin: number, newUsername: string) => {
+    setResults((prevAdmins) =>
+      prevAdmins.map((admin) =>
+        admin.Id_Admin === idAdmin ? { ...admin, Nombre_Usuario: newUsername } : admin
+      )
+    );
+  };
+
   return (
     <div className="flex flex-col items-start justify-start gap-y-6 -border-2">
       <div className="flex justify-between items-start w-full">
@@ -76,18 +84,23 @@ const Administradores = () => {
 
       <div className="flex flex-col items-center justify-center gap-y-4">
         <table>
-          <tr className="font-semibold bg-verde-spotify text-black">
-            <td className="px-8 py-3 rounded-l">ID</td>
-            <td className="px-8 py-3">Nombre de Usuario</td>
-            <td className="px-60 py-3 rounded-r">Acciones</td>
-          </tr>
-          {results.map((admin) => (
-            <AdminRow
-              key={admin.Id_Admin}
-              admin={admin}
-              handleRemoveAdmin={handleRemoveAdmin}
-            />
-          ))}
+          <thead>
+            <tr className="font-semibold bg-verde-spotify text-black">
+              <td className="px-8 py-3 rounded-l">ID</td>
+              <td className="px-8 py-3">Nombre de Usuario</td>
+              <td className="px-60 py-3 rounded-r">Acciones</td>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((admin) => (
+              <AdminRow
+                key={admin.Id_Admin}
+                admin={admin}
+                handleRemoveAdmin={handleRemoveAdmin}
+                handleUpdateUsername={handleUpdateUsername}
+              />
+            ))}
+          </tbody>
         </table>
 
         {!error && isLoading && (
