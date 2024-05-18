@@ -8,7 +8,8 @@ import AdministratorChangeUsernameModal from "../../../../../../components/share
 
 const AdminRow = ({
   admin,
-  handleRemoveAdmin,handleUpdateUsername
+  handleRemoveAdmin,
+  handleUpdateUsername,
 }: {
   admin: Admin;
   handleRemoveAdmin: (idAdmin: number) => void;
@@ -49,6 +50,9 @@ const AdminRow = ({
             Cambiar Nombre de Usuario
           </button>
           <button
+            onClick={() => {
+              setChangePasswordModalIsShowing(true);
+            }}
             type="button"
             className="text-white bg-azul-pablo rounded-[0.5rem] py-2 px-4 font-semibold  gap-x-2 disabled:grayscale-[0.5] inline-block text-[0.9rem]"
           >
@@ -68,6 +72,13 @@ const AdminRow = ({
           admin={admin}
           handleUpdateUsername={handleUpdateUsername}
           setDeleteModalIsShowing={setChangeUsernameModalIsShowing}
+        />
+      )}
+
+      {changePasswordModalIsShowing && (
+        <AdministratorChangePasswordModal
+          admin={admin}
+          setDeleteModalIsShowing={setChangePasswordModalIsShowing}
         />
       )}
     </>

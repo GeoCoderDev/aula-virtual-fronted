@@ -52,7 +52,7 @@ const AdministratorChangeUsernameModal = ({
         `/api/admins/updateUsername/${Id_Admin}`,
         "PUT",
         null,
-        JSON.stringify({ ...form })
+        JSON.stringify(form)
       );
 
       if (fetchCancelable === undefined) return;

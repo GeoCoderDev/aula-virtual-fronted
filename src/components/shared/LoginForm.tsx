@@ -1,10 +1,11 @@
 "use client";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import Loader from "../Loader";
-import {  useSelector } from "react-redux";
-import {  RootState } from "@/store";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import Image from "next/image";
 import { UserSessionData } from "@/lib/utils/UserSessionData";
+import InputPassword from "./InputPassword";
 
 interface LoginForm {
   username: string;
@@ -25,14 +26,11 @@ export default function LoginForm({
   endpoint,
   welcomeMessageRole,
 }: LoginFormProps) {
-
   const urlAPI = useSelector<RootState>(
     (state) => state.globalConstants.urlAPI
   );
 
   const [form, setForm] = useState<LoginForm>(initialForm);
-
-  const [visiblePassword, setVisiblePassword] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
@@ -70,15 +68,13 @@ export default function LoginForm({
       });
 
       if (!res.ok) throw new Error("Server error");
-      
-        UserSessionData.role = role;
-        UserSessionData.username = form.username;
 
-        // Redirigir al usuario al home
-        
-        return (window.location.href = "/"); // Cambiar la URL y redirigir al home
-      
-      
+      UserSessionData.role = role;
+      UserSessionData.username = form.username;
+
+      // Redirigir al usuario al home
+
+      return (window.location.href = "/"); // Cambiar la URL y redirigir al home
     } catch (e) {
       setErrorMessage("La red es inestable");
     } finally {
@@ -115,27 +111,12 @@ export default function LoginForm({
           />
 
           <label className="w-[80%] relative flex flex-col items-center justify-center">
-            <input
-              required={true}
-              name="password"
+            <InputPassword
+              min={8}
+              max={20}
+              className=""
               onChange={handleChange}
-              style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
-              className="outline-none w-full px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
-              type={visiblePassword ? "text" : "password"}
-              placeholder="Contraseña*"
               value={form.password}
-            />
-            <Image
-              width={34}
-              height={34}
-              onClick={(e) => {
-                setVisiblePassword(!visiblePassword);
-              }}
-              src={
-                visiblePassword ? "/icons/ojo.svg" : "/icons/ojo_cerrado.svg"
-              }
-              alt="Icono-Ojo"
-              className="-border-2 cursor-pointer absolute aspect-auto w-6 right-2 bottom-1/2 -translate-y-1/2"
             />
 
             <button
