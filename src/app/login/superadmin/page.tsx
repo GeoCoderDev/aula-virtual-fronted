@@ -1,5 +1,4 @@
-
-import LoginForm from "@/components/shared/LoginForm";
+import LoginForm from "@/components/shared/forms/LoginForm";
 
 const LoginSuperadmin = () => {
   return (

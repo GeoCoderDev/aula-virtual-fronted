@@ -10,8 +10,8 @@ const InputPassword = ({
   name = "password",
   disabled = false,
   required = true,
+  placeholder = "Contraseña*",
 }: {
-  className: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   value: string;
   min: number;
@@ -19,6 +19,8 @@ const InputPassword = ({
   name?: string;
   disabled?: boolean;
   required?: boolean;
+  className?: string;
+  placeholder?: string;
 }) => {
   const [visiblePassword, setVisiblePassword] = useState(false);
 
@@ -32,7 +34,7 @@ const InputPassword = ({
         style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
         className={`outline-none w-full px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black ${className}`}
         type={visiblePassword ? "text" : "password"}
-        placeholder="Contraseña*"
+        placeholder={placeholder}
         value={value}
         min={min}
         max={max}

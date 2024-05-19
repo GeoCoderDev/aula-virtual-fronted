@@ -4,10 +4,10 @@ import React, { FormEvent, useEffect, useRef, useState } from "react";
 import StudentRow from "./_components/StudentRow";
 import Link from "next/link";
 import useBatchAPI from "@/app/hooks/useBatchAPI";
-import Loader from "@/components/Loader";
-import WarningMessage from "@/components/shared/WarningMessage";
+import Loader from "@/components/shared/Loader";
+import WarningMessage from "@/components/shared/messages/WarningMessage";
 import useAPI from "@/app/hooks/useAPI";
-import ErrorMessage from "@/components/shared/ErrorMessage";
+import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 
 const limitStudentsRequired = 50;
 
@@ -49,7 +49,6 @@ const Estudiantes = () => {
       [inputDNI, inputName, inputApellido, selectGrado, selectSeccion]
     );
 
-
   const handleSelectChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -72,7 +71,8 @@ const Estudiantes = () => {
 
         const res = await fetchCancelable.fetch();
 
-        if(fetchCancelable?.queryParams?.grado===selectGrado.current?.value) return setAvailableSections([]);
+        if (fetchCancelable?.queryParams?.grado === selectGrado.current?.value)
+          return setAvailableSections([]);
 
         const sections = await res?.json();
         setAvailableSections(sections ?? []);
@@ -88,7 +88,6 @@ const Estudiantes = () => {
 
   return (
     <div className="flex flex-col items-start justify-center gap-y-6 -border-2">
-      
       <div className="flex justify-between items-center w-full">
         <p className=" text-4xl font-extrabold"> Buscar Estudiante</p>
         <Link href={"estudiantes/registrar"}>
@@ -180,15 +179,15 @@ const Estudiantes = () => {
 
       <div className="flex flex-col items-center justify-center gap-y-4  min-w-[100%] max-w-[80vw] overflow-x-auto overflow-y-hidden">
         <table className="w-full min-w-full">
-        <colgroup>
-          <col className="w-[6rem]"/>
-          <col className="w-[12rem]"/>
-          <col className="w-[12rem]"/>
-          <col className="w-[3rem]"/>
-          <col className="w-[3rem]"/>
-          <col className="w-[6rem]"/>
-          <col className="w-[15rem]"/>
-        </colgroup>
+          <colgroup>
+            <col className="w-[6rem]" />
+            <col className="w-[12rem]" />
+            <col className="w-[12rem]" />
+            <col className="w-[3rem]" />
+            <col className="w-[3rem]" />
+            <col className="w-[6rem]" />
+            <col className="w-[15rem]" />
+          </colgroup>
           <thead>
             <tr className="font-semibold bg-verde-spotify text-black">
               <th className="text-center px-4 py-2 rounded-l">DNI</th>
@@ -206,7 +205,7 @@ const Estudiantes = () => {
             ))}
           </tbody>
         </table>
-          
+
         {!error && isLoading && (
           <Loader
             color="black"
@@ -223,7 +222,9 @@ const Estudiantes = () => {
         {!error && !isLoading && !allResultsGetted && (
           <button
             className="bg-amarillo-pooh text-white px-3 py-2 rounded-[0.5rem]"
-            onClick={()=>{fetchNextResults?.()}}
+            onClick={() => {
+              fetchNextResults?.();
+            }}
           >
             Cargar mas
           </button>

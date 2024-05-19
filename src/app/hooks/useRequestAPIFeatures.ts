@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import useAPI from "./useAPI";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
 
-const useModalFeatures = () => {
+const useRequestAPIFeatures = () => {
   const [isSomethingLoading, setIsSomethingLoading] = useState(false);
   const [error, setError] = useState<ErrorAPI | null>(null);
   const [successMessage, setSuccessMessage] = useState<SuccessMessageAPI | null>(null);
@@ -20,4 +20,4 @@ const useModalFeatures = () => {
   };
 };
 
-export default useModalFeatures;
+export default useRequestAPIFeatures;

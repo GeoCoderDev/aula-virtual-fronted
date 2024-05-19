@@ -1,6 +1,5 @@
 import { ChangePasswordForm } from "@/interfaces/ChangePasswordForm";
-import ModalContainer from "../ModalContainer";
-import useModalFeatures from "@/app/hooks/useModalFeatures";
+import ModalContainer from "../../ModalContainer";
 import {
   ChangeEventHandler,
   Dispatch,
@@ -8,12 +7,13 @@ import {
   SetStateAction,
   useState,
 } from "react";
-import Loader from "@/components/Loader";
+import Loader from "@/components/shared/Loader";
 import { Admin } from "@/interfaces/Admin";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
-import InputPassword from "../InputPassword";
-import ErrorMessage from "../ErrorMessage";
-import SuccessMessage from "../SuccessMessage";
+import InputPassword from "../../InputPassword";
+import ErrorMessage from "../../messages/ErrorMessage";
+import SuccessMessage from "../../messages/SuccessMessage";
+import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
 
 const initialForm: ChangePasswordForm = {
   password: "",
@@ -35,7 +35,7 @@ const AdministratorChangePasswordModal = ({
     setError,
     successMessage,
     setSuccessMessage,
-  } = useModalFeatures();
+  } = useRequestAPIFeatures();
 
   const updatePassword = async () => {
     try {
@@ -57,8 +57,9 @@ const AdministratorChangePasswordModal = ({
 
       if (!res.ok) {
         const { message }: ErrorAPI = await res.json();
+        if(!message) throw new Error();
         setError(() => ({
-          message: message ?? "No se pudo actualizar la contraseña",
+          message
         }));
       } else {
         const { message }: SuccessMessageAPI = await res.json();
@@ -69,6 +70,9 @@ const AdministratorChangePasswordModal = ({
 
       setIsSomethingLoading(false);
     } catch (e) {
+      setError(() => ({
+        message: "No se pudo actualizar la contraseña",
+      }));
       setIsSomethingLoading(false);
     }
   };
@@ -121,7 +125,6 @@ const AdministratorChangePasswordModal = ({
           />
         </label>
 
-        
         {!successMessage && !isSomethingLoading && error && (
           <ErrorMessage message={error.message} />
         )}

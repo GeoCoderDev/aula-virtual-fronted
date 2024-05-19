@@ -1,12 +1,9 @@
-import LoginForm from "@/components/shared/LoginForm";
+import LoginForm from "@/components/shared/forms/LoginForm";
 
 const LoginAdmin = () => {
   return (
     <>
-      <LoginForm
-        endpoint="/api/auth/admin/login"
-        welcomeMessageRole="Admin"
-      />
+      <LoginForm endpoint="/api/auth/admin/login" welcomeMessageRole="Admin" />
     </>
   );
 };

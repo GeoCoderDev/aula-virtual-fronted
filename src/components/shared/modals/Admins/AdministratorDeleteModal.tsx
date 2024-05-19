@@ -1,12 +1,11 @@
-import useAPI from "@/app/hooks/useAPI";
-import { Admin } from "../../../interfaces/Admin";
+import { Admin } from "../../../../interfaces/Admin";
 import { Dispatch, SetStateAction, useState } from "react";
-import ModalContainer from "../ModalContainer";
-import ErrorMessage from "../ErrorMessage";
+import ModalContainer from "../../ModalContainer";
+import ErrorMessage from "../../messages/ErrorMessage";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
-import Loader from "@/components/Loader";
-import SuccessMessage from "../SuccessMessage";
-import useModalFeatures from "@/app/hooks/useModalFeatures";
+import Loader from "@/components/shared/Loader";
+import SuccessMessage from "../../messages/SuccessMessage";
+import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
 
 export interface AdministratorDeleteModalProps {
   admin: Admin;
@@ -27,7 +26,7 @@ const AdministratorDeleteModal = ({
     setError,
     successMessage,
     setSuccessMessage,
-  } = useModalFeatures();
+  } = useRequestAPIFeatures();
 
   const eliminateAdmin = async () => {
     try {
@@ -40,17 +39,14 @@ const AdministratorDeleteModal = ({
       const res = await fetchCancelable?.fetch();
 
       if (!res.ok) {
-
         const { message }: ErrorAPI = await res.json();
-        setError(() => ({ message: message ?? "Administrador no eliminado" }));
-
+        if (!message) throw new Error();
+        setError(() => ({ message }));
       } else {
-
         const { message }: SuccessMessageAPI = await res.json();
         setSuccessMessage(() => ({
           message: message ?? "Administrador Eliminado",
         }));
-
       }
 
       setIsSomethingLoading(false);

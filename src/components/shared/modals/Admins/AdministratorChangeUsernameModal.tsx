@@ -2,18 +2,17 @@ import {
   ChangeEventHandler,
   Dispatch,
   FormEventHandler,
-  ReactEventHandler,
   SetStateAction,
   useEffect,
   useState,
 } from "react";
-import ModalContainer from "../ModalContainer";
+import ModalContainer from "../../ModalContainer";
 import { Admin } from "@/interfaces/Admin";
-import useModalFeatures from "@/app/hooks/useModalFeatures";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
-import Loader from "@/components/Loader";
-import ErrorMessage from "../ErrorMessage";
-import SuccessMessage from "../SuccessMessage";
+import Loader from "@/components/shared/Loader";
+import ErrorMessage from "../../messages/ErrorMessage";
+import SuccessMessage from "../../messages/SuccessMessage";
+import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
 
 interface UpdateAdminPasswordForm {
   newUsername: string;
@@ -40,7 +39,7 @@ const AdministratorChangeUsernameModal = ({
     setError,
     successMessage,
     setSuccessMessage,
-  } = useModalFeatures();
+  } = useRequestAPIFeatures();
 
   const [form, setForm] = useState<UpdateAdminPasswordForm>(initialForm);
 
@@ -61,8 +60,9 @@ const AdministratorChangeUsernameModal = ({
 
       if (!response.ok) {
         const { message }: ErrorAPI = await response.json();
+        if(!message) throw new Error();
         setError(() => ({
-          message: message ?? "No se pudio actualizar",
+          message
         }));
       } else {
         const { message }: SuccessMessageAPI = await response.json();
@@ -72,6 +72,9 @@ const AdministratorChangeUsernameModal = ({
 
       setIsSomethingLoading(false);
     } catch (e) {
+      setError(() => ({
+        message: "No se pudo actualizar el administrador",
+      }));
       setIsSomethingLoading(false);
     }
   };

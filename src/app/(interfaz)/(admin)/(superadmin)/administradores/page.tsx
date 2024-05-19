@@ -1,13 +1,12 @@
 "use client";
 import useBatchAPI from "@/app/hooks/useBatchAPI";
-import Loader from "@/components/Loader";
-import ErrorMessage from "@/components/shared/ErrorMessage";
-import WarningMessage from "@/components/shared/WarningMessage";
+import Loader from "@/components/shared/Loader";
+import ErrorMessage from "@/components/shared/messages/ErrorMessage";
+import WarningMessage from "@/components/shared/messages/WarningMessage";
 import { Admin } from "@/interfaces/Admin";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 import AdminRow from "./_components/AdminRow";
-import ModalContainer from "@/components/shared/ModalContainer";
 
 const limitAdminsRequired = 50;
 
@@ -52,7 +51,9 @@ const Administradores = () => {
   const handleUpdateUsername = (idAdmin: number, newUsername: string) => {
     setResults((prevAdmins) =>
       prevAdmins.map((admin) =>
-        admin.Id_Admin === idAdmin ? { ...admin, Nombre_Usuario: newUsername } : admin
+        admin.Id_Admin === idAdmin
+          ? { ...admin, Nombre_Usuario: newUsername }
+          : admin
       )
     );
   };
@@ -60,7 +61,7 @@ const Administradores = () => {
   return (
     <div className="flex flex-col items-start justify-start gap-y-6 -border-2">
       <div className="flex justify-between items-start w-full">
-        <p className=" text-4xl  font-extrabold">Buscar Administrador</p>
+        <h1 className=" text-4xl  font-extrabold">Buscar Administrador</h1>
 
         <Link href={"/administradores/registrar"}>
           <button className="px-4 py-3  rounded-[0.5rem] bg-verde-spotify font-bold">

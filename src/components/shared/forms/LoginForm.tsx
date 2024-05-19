@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Image from "next/image";
 import { UserSessionData } from "@/lib/utils/UserSessionData";
-import InputPassword from "./InputPassword";
+import InputPassword from "../InputPassword";
 
 interface LoginForm {
   username: string;

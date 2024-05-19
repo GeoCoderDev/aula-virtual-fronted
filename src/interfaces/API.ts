@@ -1,7 +1,11 @@
+import { Alerts } from "./Alerts";
+
 export interface ErrorAPI {
-    message: string;
+  message: string;
+  alerts?: Alerts;
 }
 
 export interface SuccessMessageAPI {
-    message: string;
+  message: string;
+  alerts?: Alerts;
 }

@@ -1,10 +1,10 @@
 import useAPI from "@/app/hooks/useAPI";
 import ModalContainer from "@/components/shared/ModalContainer";
-import AdministratorChangePasswordModal from "@/components/shared/modals/AdministratorChangePasswordModal";
-import AdministratorDeleteModal from "@/components/shared/modals/AdministratorDeleteModal";
+import AdministratorChangePasswordModal from "@/components/shared/modals/Admins/AdministratorChangePasswordModal";
+import AdministratorDeleteModal from "@/components/shared/modals/Admins/AdministratorDeleteModal";
 import { Admin } from "@/interfaces/Admin";
 import { useState } from "react";
-import AdministratorChangeUsernameModal from "../../../../../../components/shared/modals/AdministratorChangeUsernameModal";
+import AdministratorChangeUsernameModal from "../../../../../../components/shared/modals/Admins/AdministratorChangeUsernameModal";
 
 const AdminRow = ({
   admin,
