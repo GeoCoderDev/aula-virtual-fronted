@@ -160,8 +160,7 @@ const RegistrarEstudiante = () => {
         return setError(() => ({
           message: "El archivo no es valido o no tiene informacion",
         }));
-
-      console.log(csvData);
+        console.log(csvData)
       setIsSomethingLoading(true);
 
       const fetchCancelable = fetchAPI(

@@ -206,7 +206,7 @@ const readedContentToArray = <Headers>(
             messageError = `El valor es demasiado largo (máximo ${maxLength} caracteres).`;
           }
           break;
-
+          
         case "date-database-format":
           // Verificar el formato de fecha si es requerido
           const dateFormatRegex = /^(\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}\/\d{4})$/;
@@ -227,7 +227,7 @@ const readedContentToArray = <Headers>(
                 const parts = value.split("/");
                 formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
 
-                parsedData[rowIndex][columnIndex] = formattedDate; // Reemplazar el valor original con el nuevo formato
+                parsedData[index][columnIndex] = formattedDate; // Reemplazar el valor original con el nuevo formato
               }
               if (!isValid(parseISO(formattedDate))) {
                 alerts.push({
@@ -242,7 +242,8 @@ const readedContentToArray = <Headers>(
             }
           });
           break;
-        default:
+        
+          default:
           break;
       }
 
