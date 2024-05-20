@@ -226,6 +226,8 @@ const readedContentToArray = <Headers>(
               if (value.includes("/")) {
                 const parts = value.split("/");
                 formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+                parsedData[rowIndex][columnIndex] = formattedDate; // Reemplazar el valor original con el nuevo formato
               }
               if (!isValid(parseISO(formattedDate))) {
                 alerts.push({
@@ -240,7 +242,6 @@ const readedContentToArray = <Headers>(
             }
           });
           break;
-
         default:
           break;
       }

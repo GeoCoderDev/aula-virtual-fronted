@@ -154,7 +154,44 @@ const RegistrarEstudiante = () => {
     }
   };
 
-  const registrarEstudiantes = async () => {};
+  const registrarEstudiantes = async () => {
+    try {
+      if (!csvData)
+        return setError(() => ({
+          message: "El archivo no es valido o no tiene informacion",
+        }));
+
+      console.log(csvData);
+      setIsSomethingLoading(true);
+
+      const fetchCancelable = fetchAPI(
+        "/api/students/multiple",
+        "POST",
+        null,
+        JSON.stringify({ studentValues: csvData })
+      );
+
+      if (fetchCancelable === undefined) return;
+
+      const res = await fetchCancelable.fetch();
+
+      //Ten en cuenta que la API siempre respondera como success (200), porque puede que algunos se añadan y otros no, lo cual almenos a mi parecer se considera una tarea exitosa
+      const { alerts }: SuccessMessageAPI = await res.json();
+
+      if (alerts) setAlerts(() => alerts);
+
+      setResultsMode(true);
+      setSuccessMessage(() => ({
+        message: "Operacion Realizada",
+      }));
+      setIsThereFileUploaded(false);
+      setIsSomethingLoading(false);
+    } catch (e) {
+      setError(() => ({ message: "No se pudo registrar los estudiantes" }));
+      setIsSomethingLoading(false);
+    }
+  };
+
   const handleChange: ChangeEventHandler<
     HTMLInputElement | HTMLSelectElement
   > = (e) => {
@@ -238,7 +275,9 @@ const RegistrarEstudiante = () => {
       </div>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-wrap gap-x-6 gap-y-8 w-full py-5 justify-between"
+        className={`flex flex-wrap gap-x-6 gap-y-8 py-5 justify-between ${
+          registerWithCSV ? "w-min" : "w-full"
+        }`}
       >
         {registerWithCSV ? (
           <UploadCSVForm<StudentForm>
@@ -269,7 +308,6 @@ const RegistrarEstudiante = () => {
               "string",
             ]}
             minMaxLenghtColumns={[
-
               [8, 8],
               [1, 1],
               [1, 4],
