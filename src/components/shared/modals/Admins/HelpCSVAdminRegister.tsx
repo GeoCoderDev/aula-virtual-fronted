@@ -1,16 +1,8 @@
 import React from "react";
 import ModalContainer from "../../ModalContainer";
-import Image from "next/image";
+import { ModalNoActions } from "@/interfaces/ModalNoActions";
 
-export interface HelpCSVAdminRegisterProps {
-  eliminateModal: (
-    event: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
-  ) => void;
-}
-
-const HelpCSVAdminRegister = ({
-  eliminateModal,
-}: HelpCSVAdminRegisterProps) => {
+const HelpCSVAdminRegister = ({ eliminateModal }: ModalNoActions) => {
   return (
     <ModalContainer eliminateModal={eliminateModal}>
       <figure className="flex flex-col justify-center gap-y-6">

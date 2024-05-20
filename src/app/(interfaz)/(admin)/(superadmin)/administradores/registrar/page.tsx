@@ -11,9 +11,8 @@ import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
 import { Alerts } from "@/interfaces/Alerts";
 import validateUsername from "@/lib/helpers/validations/validateUsername";
 import validatePassword from "@/lib/helpers/validations/validatePassword";
-import HelpCSVAdminRegister, {
-  HelpCSVAdminRegisterProps,
-} from "@/components/shared/modals/Admins/HelpCSVAdminRegister";
+import HelpCSVAdminRegister from "@/components/shared/modals/Admins/HelpCSVAdminRegister";
+import useCSVRegister from "@/app/hooks/useCSVRegister";
 
 export interface RegisterAdminFormFields {
   Nombre_Usuario: string;
@@ -37,15 +36,20 @@ const RegistrarAdministradores = () => {
     setSuccessMessage,
   } = useRequestAPIFeatures();
 
-  const [registerWithCSV, setRegisterWithCSV] = useState(false);
-  const [resultsMode, setResultsMode] = useState(false);
-  const [alerts, setAlerts] = useState<Alerts>([]);
-  const [form, setForm] = useState<RegisterAdminFormFields>(initialForm);
-  const [isThereFileUploaded, setIsThereFileUploaded] = useState(false);
-
-  const [csvData, setCsvData] = useState<
-    number[][] | string[][] | (string | number)[][] | null
-  >();
+  const {
+    registerWithCSV,
+    setRegisterWithCSV,
+    resultsMode,
+    setResultsMode,
+    alerts,
+    setAlerts,
+    form,
+    setForm,
+    isThereFileUploaded,
+    setIsThereFileUploaded,
+    csvData,
+    setCsvData,
+  } = useCSVRegister<RegisterAdminFormFields>(initialForm);
 
   const registrarAdministrador = async () => {
     try {

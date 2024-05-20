@@ -8,25 +8,31 @@ const useAPI = () => {
   const { token, urlAPI } = useToken();
   const [fetchCancelables, setFetchCancelables] = useState<FetchCancelable[]>(
     []
-  );  
+  );
 
   const fetchAPI = useCallback(
     (
       endpoint: string,
       method: MethodHTTP = "GET",
       queryParams: ObjetoConStringYNumber | null = null,
-      body: string | null = null
+      body: BodyInit | string | null = null,
+      JSONBody: boolean = true
     ) => {
       if (token === undefined) return undefined;
+
+      const headers: { ["Content-Type"]?: string; Authorization: string } = {
+        Authorization: token,
+      };
+
+      if (JSONBody) {
+        headers["Content-Type"] = "application/json";
+      }
 
       const fetchCancelable = new FetchCancelable(
         `${urlAPI}${endpoint}`,
         {
           method,
-          headers: {
-            Authorization: token,
-            "Content-Type": "application/json",
-          },
+          headers,
           body,
         },
         queryParams as any

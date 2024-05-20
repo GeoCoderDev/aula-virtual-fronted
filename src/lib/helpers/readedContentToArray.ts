@@ -45,6 +45,11 @@ const readedContentToArray = <Headers>(
   // Filtrar los elementos que no son un array vacío
   const filteredData = data.filter((row) => row.length > 1);
 
+  // Eliminar apóstrofos al inicio de los valores
+  const sanitizedData = filteredData.map((row) =>
+    row.map((item) => item.replace(/^'(.*)/, "$1").trim())
+  );
+
   // Convertir los números en las filas a tipo number solo cuando sea necesario
   const parsedData = filteredData.map((row) =>
     row.map((item, columnIndex) =>
@@ -81,16 +86,19 @@ const readedContentToArray = <Headers>(
       content: `Algunas filas tienen más columnas y otras tienen menos columnas de las esperadas.`,
       type: "critical",
     });
+    return { data: null, alerts };
   } else if (rowsWithMissingColumns > 0) {
     alerts.push({
       content: `Algunas filas tienen menos columnas de las esperadas.`,
       type: "critical",
     });
+    return { data: null, alerts };
   } else if (rowsWithExcessColumns > 0) {
     alerts.push({
       content: `Algunas filas tienen más columnas de las esperadas.`,
       type: "critical",
     });
+    return { data: null, alerts };
   }
 
   // Validacion de valores unicos
@@ -136,12 +144,32 @@ const readedContentToArray = <Headers>(
       let messageError = "";
 
       switch (columnType) {
+        case "number":
+          // Intenta convertir el valor a número
+          const numericValue = Number(value);
+          // Verifica si el valor es NaN (no es un número)
+          if (isNaN(numericValue)) {
+            // Si es NaN, genera una alerta indicando que el valor no es un número válido
+            alerts.push({
+              content: `El valor '${value}' en la fila ${
+                rowIndex + 1
+              } de la columna '${
+                columnNames[columnIndex]
+              }' no es un número válido.`,
+              type: "critical",
+            });
+          }
+          break;
+
         case "dni":
           const { status, messageError: dniMessageError } = validateDNI(value);
 
           if (!status) {
             messageError =
-              dniMessageError || `El DNI no cumple con el formato esperado.`;
+              dniMessageError ||
+              `El DNI '${value}' en la fila ${
+                rowIndex + 1
+              } no cumple con el formato esperado.`;
           }
           break;
         case "username":
@@ -151,7 +179,9 @@ const readedContentToArray = <Headers>(
           if (!usernameStatus) {
             messageError =
               usernameMessageError ||
-              `El nombre de usuario no cumple con el formato esperado.`;
+              `El nombre de usuario '${value}' en la fila ${
+                rowIndex + 1
+              } no cumple con el formato esperado.`;
           }
           break;
         case "password":
@@ -161,9 +191,12 @@ const readedContentToArray = <Headers>(
           if (!passwordStatus) {
             messageError =
               passwordMessageError ||
-              `La contraseña no cumple con el formato esperado.`;
+              `La contraseña en la fila ${
+                rowIndex + 1
+              } no cumple con el formato esperado.`;
           }
           break;
+
         case "string":
           const [minLength, maxLength] = minMaxLenghtColumns[columnIndex];
 
@@ -173,6 +206,41 @@ const readedContentToArray = <Headers>(
             messageError = `El valor es demasiado largo (máximo ${maxLength} caracteres).`;
           }
           break;
+
+        case "date-database-format":
+          // Verificar el formato de fecha si es requerido
+          const dateFormatRegex = /^(\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}\/\d{4})$/;
+          columnValues.forEach((value, index) => {
+            if (!dateFormatRegex.test(value)) {
+              alerts.push({
+                content: `El valor '${value}' en la fila ${
+                  index + 1
+                } de la columna '${
+                  columnNames[columnIndex]
+                }' no cumple con el formato de fecha YYYY-MM-DD o DD/MM/YYYY (Ejemplo: 2003-01-01 o 01/01/2003).`,
+                type: "advertency",
+              });
+            } else {
+              let formattedDate = value;
+              // Si el formato es DD/MM/YYYY, lo transformamos a YYYY-MM-DD
+              if (value.includes("/")) {
+                const parts = value.split("/");
+                formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+              }
+              if (!isValid(parseISO(formattedDate))) {
+                alerts.push({
+                  content: `El valor '${value}' en la fila ${
+                    index + 1
+                  } de la columna '${
+                    columnNames[columnIndex]
+                  }' no es una fecha válida.`,
+                  type: "advertency",
+                });
+              }
+            }
+          });
+          break;
+
         default:
           break;
       }

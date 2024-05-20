@@ -8,7 +8,7 @@ const validateUsername = (
 
 
 
-  const usernameRegex = /^[a-zA-Z][a-zA-Z0-9_]{7,19}$/;
+  const usernameRegex = /^[a-zA-Z][a-zA-Z0-9_]{7,29}$/;
   const isValidFormat = usernameRegex.test(username);
 
   if (isValidFormat) {
@@ -20,8 +20,8 @@ const validateUsername = (
         messageError = "El nombre de usuario no puede ser un número";
     }else if (username.length < 8) {
       messageError = "El nombre de usuario debe tener al menos 8 caracteres.";
-    } else if (username.length > 20) {
-      messageError = "El nombre de usuario no debe tener más de 20 caracteres.";
+    } else if (username.length > 30) {
+      messageError = "El nombre de usuario no debe tener más de 30 caracteres.";
     } else if (!/^[a-zA-Z]/.test(username)) {
       messageError =
         "El nombre de usuario debe comenzar con una letra del alfabeto.";

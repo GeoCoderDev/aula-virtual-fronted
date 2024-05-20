@@ -1,3 +1,4 @@
+import generatePassword from "@/lib/helpers/generators/passwordGenerator";
 import Image from "next/image";
 import React, { ChangeEventHandler, useState } from "react";
 
@@ -11,6 +12,8 @@ const InputPassword = ({
   disabled = false,
   required = true,
   placeholder = "Contraseña*",
+  generator = false,
+  setPassword,
 }: {
   onChange: ChangeEventHandler<HTMLInputElement>;
   value: string;
@@ -21,6 +24,8 @@ const InputPassword = ({
   required?: boolean;
   className?: string;
   placeholder?: string;
+  generator?: boolean;
+  setPassword?: (password: string) => void;
 }) => {
   const [visiblePassword, setVisiblePassword] = useState(false);
 
@@ -36,19 +41,38 @@ const InputPassword = ({
         type={visiblePassword ? "text" : "password"}
         placeholder={placeholder}
         value={value}
-        min={min}
-        max={max}
+        minLength={min}
+        maxLength={max}
       />
-      <Image
-        width={34}
-        height={34}
-        onClick={(e) => {
-          setVisiblePassword(!visiblePassword);
-        }}
-        src={visiblePassword ? "/icons/ojo.svg" : "/icons/ojo_cerrado.svg"}
-        alt="Icono-Ojo"
-        className="-border-2 cursor-pointer absolute aspect-auto w-6 top-0 right-2 bottom-1/2 translate-y-1/2"
-      />
+
+      <div className="flex items-center justify-center gap-x-3 absolute top-0 right-2 bottom-1/2 translate-y-1/2">
+        <Image
+          width={34}
+          height={34}
+          onClick={(e) => {
+            setVisiblePassword(!visiblePassword);
+          }}
+          src={visiblePassword ? "/icons/ojo.svg" : "/icons/ojo_cerrado.svg"}
+          alt="Icono-Ojo"
+          title={visiblePassword ? "Ocultar Constraseña" : "Ver Contraseña"}
+          className="-border-2 cursor-pointer  aspect-auto w-6 "
+        />
+
+        {generator && (
+          <Image
+            width={34}
+            height={34}
+            onClick={(e) => {
+              const passwordGenerated = generatePassword(undefined, "chavez");
+              setPassword?.(passwordGenerated);
+            }}
+            src="/icons/Foco Icono.svg"
+            alt="Icono-Foco"
+            title="Generar Contraseña"
+            className="-border-2 cursor-pointer aspect-auto w-[1rem]"
+          />
+        )}
+      </div>
     </div>
   );
 };

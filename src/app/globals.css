@@ -95,11 +95,15 @@
 
 @layer components {
   .custom-input {
-    @apply outline-none w-[60%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black;
+    @apply outline-none w-[60%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black max-w-[80vw];
     box-shadow: 0 0 10px 4px rgba(0, 255, 111, 0.31);
   }
   .button-with-loader {
     @apply bg-verde-spotify rounded-lg py-3 px-4 font-semibold flex items-center justify-center gap-x-2 disabled:grayscale-[0.5];
+  }
+
+  .section-tittle {
+    @apply text-4xl font-extrabold;
   }
 }
 
@@ -118,7 +122,8 @@
   height: 100%;
   border-radius: 1rem;
   background-color: #b4b4b4;
-  /*Colordelborde*/z-index: -1;
+  /*Colordelborde*/
+  z-index: -1;
   animation: border-animation 2s 1 ease-in-out forwards;
 }
 
