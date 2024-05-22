@@ -10,16 +10,18 @@ const Administradores = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className="flex flex-col w-full">
         <div className="flex">
-          <Link href={"../administradores"}>
+          <Link href="/administradores" as={"/administradores"}>
             <div className="cursor-pointer hover:underline">
               Administradores
             </div>
           </Link>
 
-          {(pathname.endsWith("registrar")) && <Link className="flex" href={"./registrar"}>
-            &nbsp;&gt;&nbsp;
-            <div className="cursor-pointer hover:underline">Registrar</div>
-          </Link>}
+          {pathname.endsWith("registrar") && (
+            <Link className="flex" href={"./registrar"}>
+              &nbsp;&gt;&nbsp;
+              <div className="cursor-pointer hover:underline">Registrar</div>
+            </Link>
+          )}
         </div>
         {children}
       </div>

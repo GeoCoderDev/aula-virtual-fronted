@@ -10,7 +10,7 @@ const Estudiantes = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className="flex flex-wrap flex-col w-full -border-2">
         <div className="flex">
-          <Link href={`../estudiantes`}>
+          <Link href={`/estudiantes`} as={`/estudiantes`}>
             <div className="cursor-pointer hover:underline">Estudiantes</div>
           </Link>
 
@@ -19,6 +19,15 @@ const Estudiantes = ({ children }: { children: React.ReactNode }) => {
               &nbsp;&gt;&nbsp;
               <div className="cursor-pointer hover:underline">Registrar</div>
             </Link>
+          )}
+
+          {pathname.includes("editar/") && (
+            <>
+              &nbsp;&gt;&nbsp;
+              <div className="cursor-pointer hover:underline">
+                Editar Estudiante
+              </div>
+            </>
           )}
         </div>
         {children}

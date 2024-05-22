@@ -65,6 +65,7 @@ const RegisterStudentForm = ({
         <input
           className="custom-input w-[8rem]"
           name="DNI_Estudiante"
+          value={form.DNI_Estudiante}
           type="text"
           minLength={8}
           maxLength={8}
@@ -100,7 +101,7 @@ const RegisterStudentForm = ({
           onChange={handleChange}
           value={form.Contraseña_Usuario}
           min={8}
-          max={20} 
+          max={20}
         />
       </label>
 

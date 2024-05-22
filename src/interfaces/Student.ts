@@ -6,8 +6,7 @@ export interface Student extends User {
   Seccion: string;
 }
 
-export interface StudentForm {
-  DNI_Estudiante: string;
+export interface StudentEditionForm {
   Grado: string;
   Seccion: string;
   Nombres: string;
@@ -19,4 +18,13 @@ export interface StudentForm {
   Nombre_Contacto_Emergencia: string;
   Parentezco_Contacto_Emergencia: string;
   Telefono_Contacto_Emergencia: string;
+}
+
+export interface StudentForm extends StudentEditionForm {
+  DNI_Estudiante: string;
+}
+
+export interface StudentResponse extends StudentEditionForm {
+  Estado: number;
+  Foto_Perfil_URL: string;
 }
