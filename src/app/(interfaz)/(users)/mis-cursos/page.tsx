@@ -1,5 +1,6 @@
 "use client";
 import useToken from "@/app/hooks/useToken";
+import CourseCard from "@/components/shared/Courses/CourseCard";
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
 
@@ -16,8 +17,10 @@ const MisCursosHome = ({
     <>
       {/* {student}
       {teacher} */}
-      <div>MisCursosHome</div>
-    </>
+      <div>MisCursosHome
+        <CourseCard />
+      </div>
+    </> 
   );
 };
 
