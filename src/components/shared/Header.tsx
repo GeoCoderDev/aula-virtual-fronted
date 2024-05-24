@@ -1,5 +1,6 @@
 "use client";
 // Header.tsx
+import React, { useState } from 'react';//HE AGREGADO ESTE IMPORT
 import { usePathname } from "next/navigation";
 import NotificacionesIcon from "../icons/header/NotificacionesIcon";
 import MensajesIcon from "../icons/header/MensajesIcon";
@@ -23,6 +24,14 @@ const Header = () => {
   const isLoginPage = pathname.startsWith("/login");
 
   const dispatch = useDispatch();
+
+  //Estado para controlar la visibilidad del menú desplegable
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  // Función para cambiar la visibilidad del menú
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
 
   useEffect(() => {
     const resizeObserverHeader = new ResizeObserver((entries) => {
@@ -62,6 +71,7 @@ const Header = () => {
   }, []);
 
   if (isLoginPage) return null; // No renderizar el componente en la ruta /login
+  
 
   return (
     <header
@@ -93,9 +103,23 @@ const Header = () => {
           <NotificacionesIcon className="aspect-auto w-8" fillColor="black" />
           <div className="flex items-center justify-center">
             <PerfilIcon className="aspect-auto w-11" fillColor="black" />
-            <DespliegueIcon className="aspect-auto w-8" fillColor="black" />
+            {/* Paso 3: Agrega el evento de clic al DespliegueIcon */}
+            <div onClick={toggleMenu} className="relative"> {/* Agrega el evento de clic al contenedor */}
+              <DespliegueIcon className="aspect-auto w-8" fillColor="black" />
+            </div>
           </div>
+            {/* Paso 4: Renderiza el menú basado en el estado */}
+            {menuVisible && (
+              <div className="absolute bg-white p-4 mt-3 rounded-lg shadow-xl top-full">
+              {/* Contenido de tu menú */}
+                <ul className="grid justify-items-start">
+                  <li className="pb-2">Editar Perfil</li>
+                  <li className=" border-t border-gray-200  pt-2">Cerrar Sesión</li>
+                </ul>
+              </div>
+            )}
         </div>
+
       </div>
     </header>
   );
