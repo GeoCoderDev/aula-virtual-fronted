@@ -32,6 +32,16 @@ const Header = () => {
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
+  
+  // Función para manejar el cierre de sesión
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/close", { method: "PUT" });
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
 
   useEffect(() => {
     const resizeObserverHeader = new ResizeObserver((entries) => {
@@ -105,7 +115,7 @@ const Header = () => {
             <PerfilIcon className="aspect-auto w-11" fillColor="black" />
             {/* Paso 3: Agrega el evento de clic al DespliegueIcon */}
             <div onClick={toggleMenu} className="relative"> {/* Agrega el evento de clic al contenedor */}
-              <DespliegueIcon className="aspect-auto w-8" fillColor="black" />
+              <DespliegueIcon className="aspect-auto w-8 hover:cursor-pointer" fillColor="black" />
             </div>
           </div>
             {/* Paso 4: Renderiza el menú basado en el estado */}
@@ -113,8 +123,8 @@ const Header = () => {
               <div className="absolute bg-white p-4 mt-3 rounded-lg shadow-xl top-full">
               {/* Contenido de tu menú */}
                 <ul className="grid justify-items-start">
-                  <li className="pb-2">Editar Perfil</li>
-                  <li className=" border-t border-gray-200  pt-2">Cerrar Sesión</li>
+                  <li className="pb-2 hover:font-bold cursor-pointer">Editar Perfil</li>
+                  <li className=" border-t border-gray-200 pt-2 hover:font-bold cursor-pointer" onClick={handleLogout}>Cerrar Sesión</li>
                 </ul>
               </div>
             )}
