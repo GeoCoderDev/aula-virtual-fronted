@@ -11,6 +11,11 @@ import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 
 const limitStudentsRequired = 50;
 
+const tableContainerStyle = {
+  overflowX: "auto",
+  WebkitOverflowScrolling: "touch", // Agrega desplazamiento suave en iOS
+};
+
 interface SearchTermsStudent {
   dni?: string; // DNI del estudiante
   nombre?: string; // Nombre del estudiante
@@ -105,7 +110,7 @@ const Estudiantes = () => {
             type="button"
             className="bg-verde-spotify rounded-lg py-3 px-4 font-semibold flex items-center justify-center gap-x-2 "
           >
-            Registrar Estudiante
+            Registrar Estudiantes
           </button>
         </Link>
       </div>
@@ -196,34 +201,38 @@ const Estudiantes = () => {
         </select>
       </form>
 
-      <div className="flex flex-col items-center justify-center gap-y-4  min-w-[100%] max-w-[80vw] overflow-x-auto overflow-y-hidden">
-        <table className="w-full min-w-full">
-          <colgroup>
-            <col className="w-[6rem]" />
-            <col className="w-[12rem]" />
-            <col className="w-[12rem]" />
-            <col className="w-[3rem]" />
-            <col className="w-[3rem]" />
-            <col className="w-[6rem]" />
-            <col className="w-[15rem]" />
-          </colgroup>
-          <thead>
-            <tr className="font-semibold bg-verde-spotify text-black">
-              <th className="text-center px-4 py-2 rounded-l">DNI</th>
-              <th className="text-center px-4 py-2">Nombre</th>
-              <th className="text-center px-4 py-2">Apellidos</th>
-              <th className="text-center px-4 py-2">Grado</th>
-              <th className="text-center px-4 py-2">Sección</th>
-              <th className="text-center px-4 py-2">Estado</th>
-              <th className="text-center px-30 py-2 rounded-r">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {results.map((student, index) => (
-              <StudentRow key={index} {...student} />
-            ))}
-          </tbody>
-        </table>
+      <div className="flex flex-col items-center justify-center gap-y-4 w-full">
+
+        <div className="w-full max-w-[70vw] overflow-auto max-h-[300px]">
+          
+          <table className="w-full min-w-full">
+            <colgroup>
+              <col className="w-[6rem]" />
+              <col className="w-[12rem]" />
+              <col className="w-[12rem]" />
+              <col className="w-[3rem]" />
+              <col className="w-[3rem]" />
+              <col className="w-[6rem]" />
+              <col className="w-[15rem]" />
+            </colgroup>
+            <thead>
+              <tr className="font-semibold bg-verde-spotify text-black">
+                <th className="text-center px-4 py-2 rounded-l">DNI</th>
+                <th className="text-center px-4 py-2">Nombre</th>
+                <th className="text-center px-4 py-2">Apellidos</th>
+                <th className="text-center px-4 py-2">Grado</th>
+                <th className="text-center px-4 py-2">Sección</th>
+                <th className="text-center px-4 py-2">Estado</th>
+                <th className="text-center px-30 py-2 rounded-r">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {results.map((student, index) => (
+                <StudentRow key={index} {...student} />
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {!error && isLoading && (
           <Loader
