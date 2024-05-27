@@ -1,4 +1,4 @@
 export interface ChangePasswordForm {
-  password: string;
-  confirmPassword: string;
+  Contraseña: string;
+  "Confirm-Contraseña": string;
 }

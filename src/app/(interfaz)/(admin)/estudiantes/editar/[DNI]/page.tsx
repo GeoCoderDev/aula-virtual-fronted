@@ -153,7 +153,7 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
       {!isSomethingLoading && form && (
         <>
           <form
-            className="flex w-full flex-wrap gap-x-18 items-center content-center"
+            className="flex w-full flex-wrap gap-x-14 items-center justify-center"
             onSubmit={handleSubmit}
           >
             <div className="py-5 flex-col gap-y-4 flex items-center justify-start -border-2">
@@ -188,7 +188,7 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
               </label>
             </div>
 
-            <div className="flex items-center flex-1 justify-between item-center w-full flex-wrap gap-x-6 gap-y-8 py-5">
+            <div className="flex flex-1 items-center justify-between item-center  flex-wrap gap-x-6 gap-y-8 py-5">
               <label className="flex flex-col gap-y-2 font-bold">
                 Nombres:
                 <input

@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 
 // Constants
@@ -32,7 +32,7 @@ const Cursos = () => {
   };
 
   const handleSelectChange = async (
-    e:React.ChangeEvent<HTMLSelectElement>
+    e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
   };
@@ -42,7 +42,7 @@ const Cursos = () => {
     <div className="flex flex-col items-start justify-start gap-y-6 -border-2 md:flex-row md:flex-wrap md:justify-center">
       <div className="flex justify-between items-start w-full ">
         <h1 className=" text-4x1 md:text-5xl font-extrabold">Buscar Cursos</h1>
-       
+
         <Link href={"cursos/registrar"}>
           <button className="px-4 py-3  rounded-[0.5rem] bg-verde-spotify font-bold">
             Registrar Cursos
@@ -80,7 +80,7 @@ const Cursos = () => {
         <table className="w-full">
           <thead>
             <tr className="font-semibold bg-verde-spotify text-black">
-              <td className="px-8 py-3 rounded-l">COD</td>
+              <td className="px-8 py-3 rounded-l">ID</td>
               <td className="px-8 py-3">Nombre de asignaturas</td>
               <td className="px-8 py-3">Grados</td>
               <td className="px-60 py-3 rounded-r">Acciones</td>
@@ -89,7 +89,7 @@ const Cursos = () => {
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Cursos
+export default Cursos;

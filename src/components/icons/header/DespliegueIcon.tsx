@@ -2,6 +2,7 @@ import { IconProps } from "../icon.interface";
 const DespliegueIcon = ({ className, fillColor }: IconProps) => {
   return (
     <svg
+    
     className={className}
       width="18"
       height="9"

@@ -16,8 +16,8 @@ import SuccessMessage from "../../messages/SuccessMessage";
 import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
 
 const initialForm: ChangePasswordForm = {
-  password: "",
-  confirmPassword: "",
+  Contraseña: "",
+  "Confirm-Contraseña": "",
 };
 
 const AdministratorChangePasswordModal = ({
@@ -39,7 +39,7 @@ const AdministratorChangePasswordModal = ({
 
   const updatePassword = async () => {
     try {
-      if (form.password !== form.confirmPassword)
+      if (form.Contraseña !== form["Confirm-Contraseña"])
         return setError(() => ({ message: "Las contraseñas no coinciden" }));
 
       setIsSomethingLoading(true);
@@ -57,9 +57,9 @@ const AdministratorChangePasswordModal = ({
 
       if (!res.ok) {
         const { message }: ErrorAPI = await res.json();
-        if(!message) throw new Error();
+        if (!message) throw new Error();
         setError(() => ({
-          message
+          message,
         }));
       } else {
         const { message }: SuccessMessageAPI = await res.json();
@@ -103,12 +103,12 @@ const AdministratorChangePasswordModal = ({
         <label className="flex flex-col gap-y-2 font-bold">
           Nueva Contraseña:
           <InputPassword
-            name="password"
+            name="Contraseña"
             min={8}
             max={20}
             className=""
             onChange={handleChange}
-            value={form.password}
+            value={form.Contraseña}
             disabled={isSomethingLoading}
           />
         </label>
@@ -117,9 +117,9 @@ const AdministratorChangePasswordModal = ({
           <InputPassword
             disabled={isSomethingLoading}
             className="custom-input w-44 text-[1rem] py-2"
-            name="confirmPassword"
+            name="Confirm-Contraseña"
             onChange={handleChange}
-            value={form.confirmPassword}
+            value={form["Confirm-Contraseña"]}
             min={8}
             max={20}
           />

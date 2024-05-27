@@ -16,6 +16,8 @@ const tableContainerStyle = {
   WebkitOverflowScrolling: "touch", // Agrega desplazamiento suave en iOS
 };
 
+
+
 interface SearchTermsStudent {
   dni?: string; // DNI del estudiante
   nombre?: string; // Nombre del estudiante
@@ -201,9 +203,9 @@ const Estudiantes = () => {
         </select>
       </form>
 
-      <div className="flex flex-col items-center justify-center gap-y-4 w-full">
+      <div className="flex flex-col items-center justify-center gap-y-4 ">
 
-        <div className="w-full max-w-[70vw] overflow-auto max-h-[300px]">
+        <div className="w-full max-w-[80vw] overflow-auto max-h-[300px]"  style={{ overflowX: "auto", margin: "0", padding: "0" }}>
           
           <table className="w-full min-w-full">
             <colgroup>
@@ -216,11 +218,11 @@ const Estudiantes = () => {
               <col className="w-[15rem]" />
             </colgroup>
             <thead>
-              <tr className="font-semibold bg-verde-spotify text-black">
-                <th className="text-center px-4 py-2 rounded-l">DNI</th>
+              <tr className="font-semibold bg-verde-spotify text-black ">
+                <th className="text-center px-4 py-2 rounded-l ">DNI</th>
                 <th className="text-center px-4 py-2">Nombre</th>
                 <th className="text-center px-4 py-2">Apellidos</th>
-                <th className="text-center px-4 py-2">Grado</th>
+                <th className="text-center px-4 py-2 ">Grado</th>
                 <th className="text-center px-4 py-2">Sección</th>
                 <th className="text-center px-4 py-2">Estado</th>
                 <th className="text-center px-30 py-2 rounded-r">Acciones</th>
