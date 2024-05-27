@@ -24,20 +24,18 @@ const StudentRow = ({
             href={`/editar/${DNI_Estudiante}`}
             as={`estudiantes/editar/${DNI_Estudiante}`}
           >
-            <button className="text-white font-medium px-2 py-1 rounded-lg bg-amarillo-pooh">
-              Editar
-            </button>
+            <button className="edition-button">Editar</button>
           </Link>
           <Link
             href={`/ver/${DNI_Estudiante}`}
             as={`estudiantes/ver/${DNI_Estudiante}`}
           >
-            <button className="text-white font-medium px-2 py-1 rounded-lg bg-azul-pablo">
+            <button className="ver-button">
               Ver
             </button>
           </Link>
           <button
-            className={`text-white font-medium px-2 py-1 rounded-lg ${
+            className={`deshabilitar-habilitar-button ${
               Estado === 1 ? "bg-rojo-orange" : "bg-teal-400"
             }`}
           >
