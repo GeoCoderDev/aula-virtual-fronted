@@ -1,6 +1,5 @@
 import InputPassword from "@/components/shared/InputPassword";
-import { ModalNoActions } from "@/interfaces/ModalNoActions";
-import { StudentForm } from "@/interfaces/Student";
+import { StudentRegisterForm } from "@/interfaces/Student";
 
 import React, {
   ChangeEventHandler,
@@ -21,9 +20,9 @@ const RegisterStudentForm = ({
   setFile,
 }: {
   handleChange: ChangeEventHandler<HTMLInputElement | HTMLSelectElement>;
-  form: StudentForm;
+  form: StudentRegisterForm;
   selectGrado: MutableRefObject<HTMLSelectElement | undefined>;
-  setForm: Dispatch<SetStateAction<StudentForm>>;
+  setForm: Dispatch<SetStateAction<StudentRegisterForm>>;
   handleSelectChange: React.ChangeEventHandler<HTMLSelectElement>;
   availableSections: string[];
   handleFileChange: ChangeEventHandler<HTMLInputElement>;
@@ -184,6 +183,20 @@ const RegisterStudentForm = ({
       </label>
 
       <label className="flex flex-col gap-y-2 font-bold text-[0.9rem]">
+        Telefono:
+        <input
+          className="custom-input w-[10rem]"
+          name="Telefono"
+          value={form.Telefono}
+          type="tel"
+          required
+          onChange={handleChange}
+          maxLength={4}
+          minLength={9}
+        />
+      </label>
+
+      <label className="flex flex-col gap-y-2 font-bold text-[0.9rem]">
         En caso de emergencia comunicarse con:
         <input
           className="custom-input w-[15rem]"
@@ -212,7 +225,7 @@ const RegisterStudentForm = ({
       </label>
 
       <label className="flex flex-col gap-y-2 font-bold text-[0.9rem]">
-        Teléfono:
+        Teléfono Contacto Emergencia:
         <input
           className="custom-input w-[10rem]"
           name="Telefono_Contacto_Emergencia"
@@ -222,20 +235,6 @@ const RegisterStudentForm = ({
           onChange={handleChange}
           maxLength={4}
           minLength={9}
-        />
-      </label>
-
-      <label className="flex flex-col gap-y-2 font-bold" htmlFor="address">
-        Domicilio:
-        <input
-          className="custom-input w-[18rem]"
-          name="Direccion_Domicilio"
-          type="text"
-          required
-          minLength={1}
-          maxLength={200}
-          onChange={handleChange}
-          value={form.Direccion_Domicilio}
         />
       </label>
     </>

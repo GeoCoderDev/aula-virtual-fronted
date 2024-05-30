@@ -5,12 +5,7 @@ import Loader from "@/components/shared/Loader";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import SuccessMessage from "@/components/shared/messages/SuccessMessage";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
-import {
-  Student,
-  StudentEditionForm,
-  StudentForm,
-  StudentResponse,
-} from "@/interfaces/Student";
+import { StudentEditionForm, StudentResponse } from "@/interfaces/Student";
 import { equalObjects } from "@/lib/helpers/equalObjects";
 import validateDNI from "@/lib/helpers/validations/validateDNI";
 import React, { ChangeEventHandler, useEffect, useRef, useState } from "react";
@@ -114,6 +109,7 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
     formData.append("Fecha_Nacimiento", form.Fecha_Nacimiento);
     formData.append("Nombre_Usuario", form.Nombre_Usuario);
     formData.append("Direccion_Domicilio", form.Direccion_Domicilio);
+    formData.append("Telefono", form.Telefono);
     formData.append(
       "Nombre_Contacto_Emergencia",
       form.Nombre_Contacto_Emergencia
@@ -363,6 +359,20 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
               </label>
 
               <label className="flex flex-col gap-y-2 font-bold text-[0.9rem]">
+                Teléfono:
+                <input
+                  className="custom-input w-[10rem]"
+                  name="Telefono"
+                  value={form.Telefono}
+                  type="tel"
+                  required
+                  onChange={handleChange}
+                  minLength={4}
+                  maxLength={9}
+                />
+              </label>
+
+              <label className="flex flex-col gap-y-2 font-bold text-[0.9rem]">
                 En caso de emergencia comunicarse con:
                 <input
                   className="custom-input w-[15rem]"
@@ -391,7 +401,7 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
               </label>
 
               <label className="flex flex-col gap-y-2 font-bold text-[0.9rem]">
-                Teléfono:
+                Teléfono Contacto Emergencia:
                 <input
                   className="custom-input w-[10rem]"
                   name="Telefono_Contacto_Emergencia"

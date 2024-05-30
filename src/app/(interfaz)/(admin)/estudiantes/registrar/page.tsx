@@ -1,6 +1,6 @@
 "use client";
 import InputPassword from "@/components/shared/InputPassword";
-import { Student, StudentForm } from "../../../../../interfaces/Student";
+
 import { ChangeEventHandler, FormEventHandler, useRef, useState } from "react";
 import useCSVRegister from "@/app/hooks/useCSVRegister";
 import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
@@ -15,8 +15,9 @@ import RegisterStudentForm from "./_components/RegisterStudentForm";
 import validateUsername from "@/lib/helpers/validations/validateUsername";
 import validatePassword from "@/lib/helpers/validations/validatePassword";
 import validateDNI from "@/lib/helpers/validations/validateDNI";
+import { StudentRegisterForm } from "@/interfaces/Student";
 
-const initialForm: StudentForm = {
+const initialForm: StudentRegisterForm = {
   DNI_Estudiante: "",
   Grado: "",
   Seccion: "",
@@ -26,6 +27,7 @@ const initialForm: StudentForm = {
   Nombre_Usuario: "",
   Contraseña_Usuario: "",
   Direccion_Domicilio: "",
+  Telefono: "",
   Nombre_Contacto_Emergencia: "",
   Parentezco_Contacto_Emergencia: "",
   Telefono_Contacto_Emergencia: "",
@@ -57,7 +59,7 @@ const RegistrarEstudiante = () => {
     setIsThereFileUploaded,
     csvData,
     setCsvData,
-  } = useCSVRegister<StudentForm>(initialForm);
+  } = useCSVRegister<StudentRegisterForm>(initialForm);
 
   const [file, setFile] = useState<File | null>(null);
 
@@ -74,6 +76,7 @@ const RegistrarEstudiante = () => {
     formData.append("Nombre_Usuario", form.Nombre_Usuario);
     formData.append("Contraseña_Usuario", form.Contraseña_Usuario);
     formData.append("Direccion_Domicilio", form.Direccion_Domicilio);
+    formData.append("Telefono", form.Telefono);
     formData.append(
       "Nombre_Contacto_Emergencia",
       form.Nombre_Contacto_Emergencia
@@ -278,7 +281,7 @@ const RegistrarEstudiante = () => {
         }`}
       >
         {registerWithCSV ? (
-          <UploadCSVForm<StudentForm>
+          <UploadCSVForm<StudentRegisterForm>
             HelpComponent={(props) => {
               return <HelpCSVStudentRegister {...props} />;
             }}
@@ -304,6 +307,7 @@ const RegistrarEstudiante = () => {
               "string",
               "string",
               "string",
+              "string",
             ]}
             minMaxLenghtColumns={[
               [8, 8],
@@ -315,9 +319,10 @@ const RegistrarEstudiante = () => {
               [8, 30],
               [8, 20],
               [1, 200],
+              [1, 9],
               [1, 200],
               [1, 40],
-              [4, 9],
+              [1, 9],
             ]}
             columnsUnique={["DNI_Estudiante", "Nombre_Usuario"]}
             setError={setError}

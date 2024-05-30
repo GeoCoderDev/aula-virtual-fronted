@@ -14,12 +14,13 @@ export interface StudentEditionForm {
   Fecha_Nacimiento: string;
   Nombre_Usuario: string;
   Direccion_Domicilio: string;
+  Telefono: string;
   Nombre_Contacto_Emergencia: string;
   Parentezco_Contacto_Emergencia: string;
   Telefono_Contacto_Emergencia: string;
 }
 
-export interface StudentForm extends StudentEditionForm {
+export interface StudentRegisterForm extends StudentEditionForm {
   DNI_Estudiante: string;
   Contraseña_Usuario: string;
 }

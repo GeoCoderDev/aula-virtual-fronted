@@ -3,7 +3,8 @@ export interface User {
     Nombres:                        string;
     Apellidos:                      string;
     Fecha_Nacimiento:               Date;
-    Nombre_Usuario:                 string;
+    Nombre_Usuario:                 string;  
+    Telefono:                       string;
     Direccion_Domicilio:            string;
     Nombre_Contacto_Emergencia:     string;
     Parentezco_Contacto_Emergencia: string;

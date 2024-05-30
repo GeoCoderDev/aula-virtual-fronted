@@ -127,6 +127,10 @@ const VerEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
                   {student.Direccion_Domicilio}
                 </span>
               </span>
+              <span className="font-bold">
+                Telefono:{" "}
+                <span className="font-normal">{student.Telefono}</span>
+              </span>
 
               <div className="self-start flex flex-col items-center justify-center gap-y-4">
                 <span className="text-rojo-orange font-extrabold">
