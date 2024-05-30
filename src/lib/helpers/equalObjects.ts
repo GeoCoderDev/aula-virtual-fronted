@@ -1,4 +1,8 @@
 export function equalObjects(objetoA: any, objetoB: any): boolean {
+  
+  if (objetoA === objetoB) return true;
+  if (!objetoA || !objetoB) return false;
+
   // Obtener las claves de cada objeto
   const clavesA = Object.keys(objetoA);
   const clavesB = Object.keys(objetoB);

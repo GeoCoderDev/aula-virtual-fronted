@@ -29,6 +29,15 @@ const Estudiantes = ({ children }: { children: React.ReactNode }) => {
               </div>
             </>
           )}
+
+          {pathname.includes("ver/") && (
+            <>
+              &nbsp;&gt;&nbsp;
+              <div className="cursor-pointer hover:underline">
+                Ver Estudiante
+              </div>
+            </>
+          )}
         </div>
         {children}
       </div>

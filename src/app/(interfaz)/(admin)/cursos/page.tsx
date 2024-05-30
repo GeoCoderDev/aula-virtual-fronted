@@ -14,13 +14,13 @@ const limitCourseRequired = 50;
 // Interfaces
 interface SearchTermsCourse {
   nombre?: string; // Nombre del curso
-  grado?: string; // Grado del curso
+  grados?: string; // Grado del curso
 }
 
 // Initial states
 const searchTermsInitial: SearchTermsCourse = {
   nombre: "",
-  grado: "",
+  grados: "",
 };
 
 // Component
@@ -71,7 +71,7 @@ const Cursos = () => {
         <input
           ref={inputNombre as React.LegacyRef<HTMLInputElement>}
           maxLength={100}
-          name="username"
+          name="nombre"
           style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
           className="outline-none w-full md:w-64 px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
           type="text"
@@ -79,8 +79,8 @@ const Cursos = () => {
         />
         <select
           ref={selectGrado as React.LegacyRef<HTMLSelectElement>}
-          name="grado"
-          value={searchTerms.grado}
+          name="grados"
+          value={searchTerms.grados}
           onChange={handleSelectChange}
           className="bg-verde-spotify text-center outline-none px-3 py-2 rounded-[1rem] w-48 md:w-32"
         >

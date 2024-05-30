@@ -13,7 +13,6 @@ export interface StudentEditionForm {
   Apellidos: string;
   Fecha_Nacimiento: string;
   Nombre_Usuario: string;
-  Contraseña_Usuario: string;
   Direccion_Domicilio: string;
   Nombre_Contacto_Emergencia: string;
   Parentezco_Contacto_Emergencia: string;
@@ -22,9 +21,12 @@ export interface StudentEditionForm {
 
 export interface StudentForm extends StudentEditionForm {
   DNI_Estudiante: string;
+  Contraseña_Usuario: string;
 }
 
 export interface StudentResponse extends StudentEditionForm {
+  DNI_Estudiante: string;
   Estado: number;
-  Foto_Perfil_URL: string;
+  Foto_Perfil_URL?: string;
+  Id_Usuario: number;
 }

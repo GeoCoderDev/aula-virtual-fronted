@@ -3,13 +3,15 @@ import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
 import InputPassword from "@/components/shared/InputPassword";
 import Loader from "@/components/shared/Loader";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
-import { ErrorAPI } from "@/interfaces/API";
+import SuccessMessage from "@/components/shared/messages/SuccessMessage";
+import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
 import {
   Student,
   StudentEditionForm,
   StudentForm,
   StudentResponse,
 } from "@/interfaces/Student";
+import { equalObjects } from "@/lib/helpers/equalObjects";
 import validateDNI from "@/lib/helpers/validations/validateDNI";
 import React, { ChangeEventHandler, useEffect, useRef, useState } from "react";
 
@@ -17,7 +19,10 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
   const selectGrado = useRef<HTMLSelectElement>();
 
   const [errorDNI, setErrorDNI] = useState<ErrorAPI | null>(null);
-  const [imgUrl, setImgUrl] = useState<string | null>(null);
+  const [imgUrl, setImgUrl] = useState<string | undefined>();
+  const [initialForm, setInitialForm] = useState<StudentEditionForm | null>(
+    null
+  );
   const [form, setForm] = useState<StudentEditionForm | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [availableSections, setAvailableSections] = useState<string[]>([]);
@@ -54,7 +59,9 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
           setError(() => ({ message }));
         } else {
           const student: StudentResponse = await res.json();
+
           setImgUrl(() => student.Foto_Perfil_URL);
+          setInitialForm(() => student);
           setForm(() => student);
           //Obteniendo las secciones del grado del estudiante
           const fetchCancelableSection = fetchAPI(
@@ -87,15 +94,82 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
     setForm((prev) => {
       return { ...prev!, [e.target.name]: e.target.value };
     });
+    reset();
   };
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const reset = () => {
+    setError(null);
+    setSuccessMessage(null);
+  };
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    if (!form) return;
+    const formData = new FormData();
+
+    formData.append("Grado", form.Grado);
+    formData.append("Seccion", form.Seccion);
+    formData.append("Nombres", form.Nombres);
+    formData.append("Apellidos", form.Apellidos);
+    formData.append("Fecha_Nacimiento", form.Fecha_Nacimiento);
+    formData.append("Nombre_Usuario", form.Nombre_Usuario);
+    formData.append("Direccion_Domicilio", form.Direccion_Domicilio);
+    formData.append(
+      "Nombre_Contacto_Emergencia",
+      form.Nombre_Contacto_Emergencia
+    );
+    formData.append(
+      "Parentezco_Contacto_Emergencia",
+      form.Parentezco_Contacto_Emergencia
+    );
+    formData.append(
+      "Telefono_Contacto_Emergencia",
+      form.Telefono_Contacto_Emergencia
+    );
+    if (file) {
+      formData.append("Foto_Perfil", file);
+    }
+
+    try {
+      const fetchCancelable = fetchAPI(
+        `/api/students/${DNI}`,
+        "POST",
+        null,
+        formData,
+        false
+      );
+      if (!fetchCancelable) return;
+
+      setIsSomethingLoading(true);
+
+      const res = await fetchCancelable.fetch();
+
+      if (!res.ok) {
+        const { message }: ErrorAPI = await res.json();
+
+        if (!message) throw new Error();
+
+        setError(() => ({ message }));
+      } else {
+        const { message }: SuccessMessageAPI = await res.json();
+        setSuccessMessage(() => ({ message }));
+        setInitialForm(() => form);
+        setFile(() => null);
+      }
+      setIsSomethingLoading(false);
+    } catch (e) {
+      setError(() => ({ message: "No se pudo actualizar el estudiante" }));
+      setIsSomethingLoading(false);
+    }
   };
 
   const handleFileChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files && e.target.files.length > 0) {
+      reset();
       setFile(e.target.files[0]);
+
+      const objetoURL = URL.createObjectURL(e.target.files[0]);
+      setImgUrl(() => objetoURL);
     }
   };
 
@@ -105,6 +179,7 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
     handleChange(e);
     setForm((prev) => ({ ...prev!, Seccion: "" }));
     setAvailableSections([]);
+    reset();
     if (e.target.value === "") {
       setAvailableSections([]);
     } else {
@@ -128,7 +203,8 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
     <>
       <h1 className="section-tittle">
         Editar Estudiante{" "}
-        {form && ` - ${form.Nombres} ${form.Apellidos} (${DNI})`}
+        {initialForm &&
+          ` - ${initialForm.Nombres} ${initialForm.Apellidos} (${DNI})`}
       </h1>
       {!form && (errorDNI || error) && (
         <ErrorMessage
@@ -140,7 +216,7 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
         />
       )}
 
-      {isSomethingLoading && (
+      {isSomethingLoading && !initialForm && (
         <Loader
           color="black"
           className="self-center mt-6"
@@ -150,20 +226,20 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
         />
       )}
 
-      {!isSomethingLoading && form && (
+      {(!isSomethingLoading || initialForm) && form && (
         <>
           <form
             className="flex w-full flex-wrap gap-x-14 items-center justify-center"
             onSubmit={handleSubmit}
           >
-            <div className="py-5 flex-col gap-y-4 flex items-center justify-start -border-2">
-              {imgUrl && (
-                <img
-                  className="aspect-square border-2 w-40 rounded-[50%] bg-contain object-cover bg-no-repeat bg-center"
-                  src={imgUrl}
-                  alt="Foto Perfil"
-                />
-              )}
+            <div className="py-5 flex-col gap-y-4 flex items-center justify-start">
+              <img
+                className={`aspect-square  w-40 rounded-[50%] bg-contain object-cover bg-no-repeat bg-center ${
+                  imgUrl ? "border-2" : ""
+                }`}
+                src={imgUrl ?? "/svg/No-Foto-Perfil.svg"}
+                alt="Foto Perfil"
+              />
 
               <label
                 onMouseUp={() => {
@@ -323,8 +399,8 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
                   type="tel"
                   required
                   onChange={handleChange}
-                  maxLength={4}
-                  minLength={9}
+                  minLength={4}
+                  maxLength={9}
                 />
               </label>
 
@@ -345,16 +421,25 @@ const EditarEstudiante = ({ params: { DNI } }: { params: { DNI: string } }) => {
                 />
               </label>
             </div>
-            <div className="min-w-full flex items-center justify-center">
+            <div className="min-w-full flex items-center justify-center flex-col gap-y-4">
+              {error && <ErrorMessage message={error.message} />}
+              {successMessage && (
+                <SuccessMessage message={successMessage.message} />
+              )}
               <button
                 className="button-with-loader max-w-[70%] py-2 self-center"
-                disabled={isSomethingLoading || Boolean(error)}
+                disabled={
+                  isSomethingLoading ||
+                  Boolean(error) ||
+                  (equalObjects(initialForm, form) && !file)
+                }
                 type="submit"
               >
                 Guardar Cambios
-                {isSomethingLoading && (
-                  <Loader backgroundSize="8px" width="25px" color="black" />
-                )}
+                {isSomethingLoading &&
+                  (!equalObjects(initialForm, form) || Boolean(file)) && (
+                    <Loader backgroundSize="8px" width="25px" color="black" />
+                  )}
               </button>
             </div>
           </form>
