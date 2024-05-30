@@ -16,6 +16,7 @@ const RegisterCourse = ({ eliminateModal }: ModalNoActions) => {
         <figcaption className="max-w-[min(80vw,40rem)] w-full text-wrap break-words italic font-normal">
           Formato de CSV para registro de Cursos
         </figcaption>
+        
       </figure>
     </ModalContainer>
   );

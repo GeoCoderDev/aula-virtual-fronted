@@ -1,26 +1,33 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import CourseRow from "./_components/CourseRow";
 import useBatchAPI from "@/app/hooks/useBatchAPI";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import { Course } from "@/interfaces/Course";
+import useAPI from "@/app/hooks/useAPI";
 import Loader from "@/components/shared/Loader";
 import WarningMessage from "@/components/shared/messages/WarningMessage";
 
 // Constants
 const limitCourseRequired = 50;
 
+// IOS
+const tableContainerStyle = {
+  overflowX: "auto",
+  WebkitOverflowScrolling: "touch", // Agrega desplazamiento suave en iOS
+};
+
 // Interfaces
 interface SearchTermsCourse {
   nombre?: string; // Nombre del curso
-  grados?: string; // Grado del curso
+  grado?: string; // Grado del curso
 }
 
 // Initial states
 const searchTermsInitial: SearchTermsCourse = {
   nombre: "",
-  grados: "",
+  grado: "",
 };
 
 // Component
@@ -38,8 +45,10 @@ const Cursos = () => {
       limitCourseRequired,
       0,
       searchTerms as any,
-      [inputNombre, selectGrado],
-      "GET"
+      [ 
+        inputNombre, 
+        selectGrado,
+      ]
     );
 
   // Handlers
@@ -55,60 +64,72 @@ const Cursos = () => {
 
   // Render
   return (
-    <div className="flex flex-col items-start justify-start gap-y-6 -border-2 md:flex-row md:flex-wrap md:justify-center">
+    <div className="flex flex-col items-start justify-center gap-y-6">
       <div className="flex justify-between items-start w-full ">
-        <h1 className=" text-4x1 md:text-5xl font-extrabold">Buscar Cursos</h1>
+        <h1 className="section-tittle">Buscar Cursos</h1>
 
         <Link href={"cursos/registrar"}>
-          <button className="px-4 py-3  rounded-[0.5rem] bg-verde-spotify font-bold">
+          <button  
+            type="button" 
+            className="bg-verde-spotify rounded-lg py-3 px-4 font-semibold flex items-center justify-center gap-x-2 ">
             Registrar Cursos
           </button>
         </Link>
       </div>
 
-      <div className="flex  items-center gap-3 w-full">
-        <p className="font-semibold">NOMBRE DE ASIGNATURAS:</p>
-        <input
-          ref={inputNombre as React.LegacyRef<HTMLInputElement>}
-          maxLength={100}
-          name="nombre"
-          style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
-          className="outline-none w-full md:w-64 px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
-          type="text"
-          onChange={handleInputTextChange}
-        />
-        <select
-          ref={selectGrado as React.LegacyRef<HTMLSelectElement>}
-          name="grados"
-          value={searchTerms.grados}
-          onChange={handleSelectChange}
-          className="bg-verde-spotify text-center outline-none px-3 py-2 rounded-[1rem] w-48 md:w-32"
-        >
-          <option value="">GRADO</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-      </div>
-      <div className="flex flex-col items-center justify-center gap-y-4 w-full">
-        <table className="w-full">
-          <thead>
-            <tr className="font-semibold bg-verde-spotify text-black">
-              <td className="px-8 py-3 rounded-l">ID</td>
-              <td className="px-8 py-3">Nombre de asignaturas</td>
-              <td className="px-8 py-3">Grados</td>
-              <td className="px-60 py-3 rounded-r">Acciones</td>
-            </tr>
-          </thead>
+      <form className="flex flex-wrap max-w-full items-center gap-x-5 gap-y-4 justify-start">
+          <label className="font-semibold flex w-min flex-row items-center gap-x-3">
+          <input
+            ref={inputNombre as React.LegacyRef<HTMLInputElement>}
+            maxLength={60}
+            name="username"
+            className="custom-input w-[10rem]"
+            type="text"
+            placeholder=""
+            onChange={handleInputTextChange}
+          />
+          </label>
 
-          <tbody>
-            {results.map((course, index) => (
-              <CourseRow course={course} key={index} />
-            ))}
-          </tbody>
-        </table>
+          <select
+            ref={selectGrado as React.LegacyRef<HTMLSelectElement>}
+            name="grado"
+            value={searchTerms.grado}
+            onChange={handleSelectChange}
+            className="bg-verde-spotify text-center outline-none px-3 py-2 rounded-[1rem]"
+          >
+            <option value="">GRADO</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+      </form>
+        
+      <div className="flex flex-col items-center justify-center gap-y-4">
+        <div className="w-full max-w-[80vw] overflow-auto max-h-[300px]"  style={{ overflowX: "auto", margin: "0", padding: "0" }}>
+          <table className="w-full min-w-full">
+            <colgroup>
+              <col className="w-[6rem]" />
+              <col className="w-[12rem]" />
+              <col className="w-[3rem]" />
+              <col className="w-[15rem]" />
+            </colgroup>
+            <thead>
+              <tr className="font-semibold bg-verde-spotify text-black">
+                <th className="text-center px-4 py-2 rounded-l">ID</th>
+                <th className="text-center px-100 py-2">Nombre de asignaturas</th>
+                <th className="text-center px-4 py-2">Grados</th>
+                <th className="text-center px-30 py-2 rounded-r">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {results.map((course, index) => (
+                <CourseRow course={course} key={index} />
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {!error && !isLoading && results.length === 0 && (
           <WarningMessage message="No se encontraron resultados" />
@@ -130,7 +151,7 @@ const Cursos = () => {
               fetchNextResults?.();
             }}
           >
-            Cargar mas
+            Cargar más
           </button>
         )}
 
