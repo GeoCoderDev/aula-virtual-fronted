@@ -1,11 +1,9 @@
 "use client";
-import { Student } from "@/interfaces/Student";
 import React, { useRef, useState } from "react";
 import Link from "next/link";
 import useBatchAPI from "@/app/hooks/useBatchAPI";
 import Loader from "@/components/shared/Loader";
 import WarningMessage from "@/components/shared/messages/WarningMessage";
-import useAPI from "@/app/hooks/useAPI";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import TeacherRow from "./_components/TeacherRow";
 import { Teacher } from "@/interfaces/Teacher";

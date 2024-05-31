@@ -1,24 +1,20 @@
-import { ModalNoActions } from "@/interfaces/ModalNoActions";
 import React from "react";
-import ModalContainer from "../ModalContainer";
+import Loader from "../../Loader";
+import ErrorMessage from "../../messages/ErrorMessage";
+import SuccessMessage from "../../messages/SuccessMessage";
+import ButtonsYerOrNot from "../../ButtonsYerOrNot";
 import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
-import ErrorMessage from "../messages/ErrorMessage";
-import SuccessMessage from "../messages/SuccessMessage";
-import Loader from "../Loader";
+import ModalContainer from "../../ModalContainer";
+import { ModalNoActions } from "@/interfaces/ModalNoActions";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
-import ButtonsYerOrNot from "../ButtonsYerOrNot";
 
-const ToggleStateModal = ({
+const AddSection = ({
   eliminateModal,
-  currentState,
-  userType,
-  toggleStateFunction,
-  DNI,
+  grado,
+  addSectionInResults,
 }: ModalNoActions & {
-  currentState: number;
-  userType: "profesor" | "estudiante";
-  DNI: string;
-  toggleStateFunction: () => void;
+  grado: string;
+  addSectionInResults: (grado: string) => void;
 }) => {
   const {
     error,
@@ -30,14 +26,11 @@ const ToggleStateModal = ({
     successMessage,
   } = useRequestAPIFeatures();
 
-  const handleToggleState = async () => {
-    setError(() => null);
+  const addSection = async () => {
     try {
       const fetchCancelable = fetchAPI(
-        `/api/${
-          userType === "estudiante" ? "students" : "teachers"
-        }/${DNI}/toggleState`,
-        "PUT"
+        `/api/classrooms/grade/${grado}/sections`,
+        "POST"
       );
 
       if (!fetchCancelable) return;
@@ -46,22 +39,16 @@ const ToggleStateModal = ({
 
       if (!res.ok) {
         const { message }: ErrorAPI = await res.json();
-
         if (!message) throw new Error();
         setError(() => ({ message }));
       } else {
         const { message }: SuccessMessageAPI = await res.json();
-
         setSuccessMessage(() => ({ message }));
-        toggleStateFunction();
+        addSectionInResults(grado);
       }
       setIsSomethingLoading(false);
     } catch (e) {
-      setError(() => ({
-        message: `No se pudo ${
-          currentState === 0 ? "habilitar" : "deshabilitar"
-        } el ${userType}`,
-      }));
+      setError(() => ({ message: "No se pudo agregar la sección" }));
       setIsSomethingLoading(false);
     }
   };
@@ -72,19 +59,20 @@ const ToggleStateModal = ({
         if (!isSomethingLoading) eliminateModal(e);
       }}
     >
-      <div className="flex flex-col items-center justify-center gap-y-3">
-        <span>
-          ¿Estas seguro de{" "}
-          <b>{currentState === 0 ? "habilitar" : "deshabilitar"}</b> el{" "}
-          {userType}?
-        </span>
+      <div className="flex flex-col justify-center gap-y-4 items-center">
+        <h3>
+          Se agregara una seccion en el grado <b>{grado}</b>, ¿Desea continuar?
+        </h3>
 
         {!successMessage && !error && isSomethingLoading && (
           <Loader color="black" width="30px" backgroundSize="9px" />
         )}
 
         {!successMessage && !isSomethingLoading && error && (
-          <ErrorMessage message={error.message} />
+          <ErrorMessage
+            className="max-w-[min(20rem,60vw)] text-center"
+            message={error.message}
+          />
         )}
 
         {!error && !isSomethingLoading && successMessage && (
@@ -95,11 +83,11 @@ const ToggleStateModal = ({
         )}
 
         {!successMessage && !error && !isSomethingLoading && (
-          <ButtonsYerOrNot onClickYes={handleToggleState} onClickNo={eliminateModal}/>
+          <ButtonsYerOrNot onClickYes={addSection} onClickNo={eliminateModal} />
         )}
       </div>
     </ModalContainer>
   );
 };
 
-export default ToggleStateModal;
+export default AddSection;

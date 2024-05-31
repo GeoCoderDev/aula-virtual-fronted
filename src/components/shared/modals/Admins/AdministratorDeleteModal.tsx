@@ -73,9 +73,9 @@ const AdministratorDeleteModal = ({
       }}
     >
       <div className="flex flex-col gap-y-2 items-center justify-center">
-        <h2>
+        <h3>
           ¿Estas seguro de eliminar al administrador <b>{Nombre_Usuario}</b>?
-        </h2>
+        </h3>
 
         {!successMessage && !error && isSomethingLoading && (
           <Loader color="black" width="30px" backgroundSize="9px" />

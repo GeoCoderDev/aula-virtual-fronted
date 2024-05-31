@@ -2,9 +2,10 @@
 import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
 import { GradosSecciones } from "@/interfaces/Classrooms";
 import React, { useEffect, useState } from "react";
-import SectionElement from "./_components/SectionElement";
 import Loader from "@/components/shared/Loader";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
+import { ErrorAPI } from "@/interfaces/API";
+import SectionsRow from "./_components/SectionsRow";
 
 const GestionSecciones = () => {
   const [sectionsByGrade, setSectionsByGrade] = useState<
@@ -14,10 +15,8 @@ const GestionSecciones = () => {
   const {
     error,
     setError,
-    fetchCancelables,
     isSomethingLoading,
     setIsSomethingLoading,
-
     fetchAPI,
   } = useRequestAPIFeatures();
 
@@ -32,7 +31,11 @@ const GestionSecciones = () => {
 
         const res = await fetchCancelable.fetch();
 
-        if (!res.ok) throw new Error();
+        if (!res.ok) {
+          const { message }: ErrorAPI = await res.json();
+          if (!message) throw new Error();
+          setError(() => ({ message }));
+        }
 
         const resp: GradosSecciones = await res.json();
 
@@ -50,117 +53,89 @@ const GestionSecciones = () => {
     fetchSections();
   }, [fetchAPI]);
 
-  // Estilo común para las celdas de la tabla
-  const cellStyle = {
-    border: "2px solid #black", // Cambiar el color de las líneas de las celdas a gris claro
-    padding: "13px",
-    minWidth: "80px", // Ancho mínimo de celda
-    whiteSpace: "nowrap", // Evitar que el contenido se desborde
-    overflow: "hidden", // Ocultar el contenido que se desborda
-    textOverflow: "ellipsis", // Mostrar puntos suspensivos cuando el contenido se desborda
+  const addSectionInResults = (grado: string) => {
+    // Verificamos si el grado existe en el estado
+    if (sectionsByGrade && grado in sectionsByGrade) {
+      // Clonamos el estado actual
+      const updatedSectionsByGrade = { ...sectionsByGrade };
+      // Obtenemos el array de secciones del grado especificado
+      const sections = updatedSectionsByGrade[grado];
+      // Obtenemos la última sección del array
+      const lastSection = sections[sections.length - 1];
+      // Generamos la nueva sección basada en la última sección existente
+      const newSection = String.fromCharCode(lastSection.charCodeAt(0) + 1);
+      // Agregamos la nueva sección al final del array de secciones del grado especificado
+      updatedSectionsByGrade[grado].push(newSection);
+      // Actualizamos el estado con la nueva información
+      setSectionsByGrade(() => updatedSectionsByGrade);
+    }
+  };
+
+  const removeSectionInResults = (grado: string) => {
+    // Verificamos si el grado existe en el estado y si tiene secciones
+    if (
+      sectionsByGrade &&
+      grado in sectionsByGrade &&
+      sectionsByGrade[grado].length > 0
+    ) {
+      // Clonamos el estado actual
+      const updatedSectionsByGrade = { ...sectionsByGrade };
+      // Eliminamos la última sección del array de secciones del grado especificado
+      updatedSectionsByGrade[grado].pop();
+      // Actualizamos el estado con la nueva información
+      setSectionsByGrade(() => updatedSectionsByGrade);
+    }
   };
 
   return (
-    <div
-      style={{ overflowX: "auto", margin: "0", padding: "0" }}
-      className="w-full flex items-start justify-start"
-    >
-      <div style={{ maxWidth: "80vw" }}>
-        {" "}
+    <div className="flex items-start justify-start">
+      <div
+        style={{ maxWidth: "80vw" }}
+        className="flex flex-col items-center justify-center gap-y-4"
+      >
         {/* Ancho máximo de la ventana */}
-        <div className="flex flex-col items-start justify-center gap-y-6 h-full">
+        <div className="w-max flex flex-col items-start justify-center gap-y-6 h-full">
           <h1 className="section-tittle">Gestión de Secciones</h1>{" "}
           {/* Texto agregado */}
-          <div className="max-h-full overflow-auto relative">
-            <table
-              className="min-w-full border-collapse border border-gray-200"
-              style={{ border: "none" }}
-            >
-              <thead className="sticky top-0">
-                <tr className="font-semibold bg-verde-spotify text-black">
-                  <th
-                    className="px-8 py-3 border border-r-0"
-                    style={cellStyle}
-                  ></th>
-                  <th className="px-8 py-3 border border-r-0" style={cellStyle}>
-                    Grado
-                  </th>
-                  <th className="px-8 py-3 border border-r-0" style={cellStyle}>
-                    Secciones
-                  </th>
+          <div className="max-h-full w-max overflow-auto relative">
+            <table className="w-max ">
+              <colgroup>
+                <col className="w-[9rem]" />
+                <col className="w-[4rem]" />
+                <col className="w-[min(50vw,30rem)] max-w-[min(50vw,30rem)]" />
+              </colgroup>
+              <thead className="sticky top-0 ">
+                <tr className="font-semibold bg-verde-spotify text-black rounded-lg">
+                  <th className="px-3 py-2 "></th>
+                  <th className="px-3 py-2 ">Grado</th>
+                  <th className="px-6 py-2 ">Secciones</th>
                 </tr>
               </thead>
               {sectionsByGrade && (
                 <tbody>
-                  {Object.keys(sectionsByGrade).map((grado) => (
-                    <tr
-                      key={grado}
-                      className={`border-b-[0.1rem] border-black w-full`}
-                    >
-                      <td
-                        className="py-4 text-center px-8"
-                        style={{
-                          ...cellStyle,
-                          borderRight: "none",
-                          display: "flex",
-                          flexWrap: "wrap",
-                          justifyContent: "auto-center",
-                          alignItems: "auto-center",
-                          gap: "0.9rem",
-                        }}
-                      >
-                        <div className="w-full flex">
-                          <button
-                            type="button"
-                            className="text-white bg-verde-spotify rounded-[1.0rem] py-1 px-3 font-semibold text-[0.9rem]"
-                          >
-                            +
-                          </button>
-                          <button
-                            type="button"
-                            className="text-white bg-verde-spotify rounded-[1.0rem] py-1 px-3 font-semibold text-[0.9rem]"
-                          >
-                            -
-                          </button>
-                        </div>
-                      </td>
-
-                      <td
-                        className="py-4 text-center px-8"
-                        style={{
-                          ...cellStyle,
-                          borderRight: "none",
-                          display: "flex",
-                          flexWrap: "wrap",
-                          justifyContent: "auto-center",
-                          alignItems: "auto-center",
-                          gap: "0.9rem",
-                        }}
-                      >
-                        {grado}
-                      </td>
-
-                      <td className="flex">
-                        {sectionsByGrade[grado].map((section, index) => (
-                          <SectionElement key={index} section={section} />
-                        ))}
-                      </td>
-                    </tr>
+                  {Object.keys(sectionsByGrade).map((grado, index) => (
+                    <SectionsRow
+                      addSectionInResults={addSectionInResults}
+                      removeSectionInResults={removeSectionInResults}
+                      key={index}
+                      grado={grado}
+                      sections={sectionsByGrade[grado]}
+                    />
                   ))}
                 </tbody>
               )}
             </table>
           </div>
-          {!error && isSomethingLoading && (
-            <Loader
-              color="black"
-              durationSegundos={1}
-              backgroundSize="12px"
-              width="40px"
-            />
-          )}
-          {error && <ErrorMessage message={error.message} />}
         </div>
+        {!error && isSomethingLoading && (
+          <Loader
+            color="black"
+            durationSegundos={1}
+            backgroundSize="12px"
+            width="40px"
+          />
+        )}
+        {error && <ErrorMessage message={error.message} />}
       </div>
     </div>
   );

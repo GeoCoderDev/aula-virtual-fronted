@@ -70,7 +70,8 @@ const Cursos = () => {
       </div>
 
       <form className="flex flex-wrap max-w-full items-center gap-x-5 gap-y-4 justify-start">
-        <label className="font-semibold flex w-min flex-row items-center gap-x-3">
+        <label className="font-semibold flex w-min flex-row items-center gap-x-3 text-[1rem]">
+          NOMBRE:
           <input
             ref={inputNombre as React.LegacyRef<HTMLInputElement>}
             maxLength={60}
