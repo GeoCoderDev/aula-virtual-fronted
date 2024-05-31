@@ -1,8 +1,9 @@
+import { ModalNoActions } from "@/interfaces/ModalNoActions";
 import ModalContainer from "../../ModalContainer";
 
-const DeleteCourse = () => {
+const DeleteCourse = ({ eliminateModal }: ModalNoActions) => {
   return (
-    <ModalContainer eliminateModal={}>
+    <ModalContainer eliminateModal={eliminateModal}>
       <div>DeleteCourse</div>
     </ModalContainer>
   );

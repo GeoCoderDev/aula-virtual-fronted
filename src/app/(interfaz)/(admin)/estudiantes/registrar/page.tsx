@@ -10,7 +10,7 @@ import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import SuccessMessage from "@/components/shared/messages/SuccessMessage";
 import Image from "next/image";
 import UploadCSVForm from "@/components/shared/forms/UploadCSVForm";
-import HelpCSVStudentRegister from "@/components/shared/modals/Students/HelpCSVStudentRegister";
+import HelpCSVStudentRegister from "@/components/shared/modals/Estudiantes/HelpCSVStudentRegister";
 import RegisterStudentForm from "./_components/RegisterStudentForm";
 import validateUsername from "@/lib/helpers/validations/validateUsername";
 import validatePassword from "@/lib/helpers/validations/validatePassword";

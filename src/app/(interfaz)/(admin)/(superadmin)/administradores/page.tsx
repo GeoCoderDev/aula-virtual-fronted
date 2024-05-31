@@ -85,7 +85,7 @@ const Administradores = () => {
 
       <div className="flex flex-col items-center justify-center gap-y-4">
         <table>
-          <thead>
+          <thead className="sticky top-0">
             <tr className="font-semibold bg-verde-spotify text-black">
               <td className="px-8 py-3 rounded-l">ID</td>
               <td className="px-8 py-3">Nombre de Usuario</td>

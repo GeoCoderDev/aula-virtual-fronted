@@ -1,30 +1,24 @@
 import InputPassword from "@/components/shared/InputPassword";
 import { StudentRegisterForm } from "@/interfaces/Student";
+import { TeacherRegisterForm } from "@/interfaces/Teacher";
 
-import React, {
+import {
   ChangeEventHandler,
   Dispatch,
-  MutableRefObject,
   SetStateAction,
 } from "react";
 
-const RegisterStudentForm = ({
+const RegisterTeacherForm = ({
   form,
   handleChange,
-  selectGrado,
   setForm,
-  handleSelectChange,
-  availableSections,
   handleFileChange,
   file,
   setFile,
 }: {
   handleChange: ChangeEventHandler<HTMLInputElement | HTMLSelectElement>;
-  form: StudentRegisterForm;
-  selectGrado: MutableRefObject<HTMLSelectElement | undefined>;
-  setForm: Dispatch<SetStateAction<StudentRegisterForm>>;
-  handleSelectChange: React.ChangeEventHandler<HTMLSelectElement>;
-  availableSections: string[];
+  form: TeacherRegisterForm;
+  setForm: Dispatch<SetStateAction<TeacherRegisterForm>>;
   handleFileChange: ChangeEventHandler<HTMLInputElement>;
   file: File | null;
   setFile: Dispatch<SetStateAction<File | null>>;
@@ -63,8 +57,8 @@ const RegisterStudentForm = ({
         DNI:
         <input
           className="custom-input w-[8rem]"
-          name="DNI_Estudiante"
-          value={form.DNI_Estudiante}
+          name="DNI_Profesor"
+          value={form.DNI_Profesor}
           type="text"
           minLength={8}
           maxLength={8}
@@ -115,48 +109,6 @@ const RegisterStudentForm = ({
           placeholder="dd / mm / aa"
           onChange={handleChange}
         />
-      </label>         
-
-      <label className="flex flex-col gap-y-2 font-bold">
-        Grado:
-        <select
-          ref={selectGrado as React.LegacyRef<HTMLSelectElement>}
-          className="custom-input w-max px-3 text-center"
-          name="Grado"
-          required
-          value={form.Grado}
-          onChange={handleSelectChange}
-        >
-          <option disabled value={""}>
-            - seleccione -
-          </option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-      </label>
-
-      <label className="flex flex-col gap-y-2 font-bold">
-        Sección:
-        <select
-          required
-          value={form.Seccion}
-          className="custom-input w-max px-3 text-center"
-          name="Seccion"
-          disabled={availableSections.length === 0}
-          onChange={handleChange}
-        >
-          <option disabled value="">
-            - seleccione -
-          </option>
-          {availableSections.map((section, index) => (
-            <option value={section} key={index}>
-              {section}
-            </option>
-          ))}
-        </select>
       </label>
 
       <label
@@ -183,6 +135,20 @@ const RegisterStudentForm = ({
       </label>
 
       <label className="flex flex-col gap-y-2 font-bold">
+        Telefono:
+        <input
+          className="custom-input w-[10rem]"
+          name="Telefono"
+          value={form.Telefono}
+          type="tel"
+          required
+          onChange={handleChange}
+          minLength={4}
+          maxLength={9}
+        />
+      </label>
+
+      <label className="flex flex-col gap-y-2 font-bold">
         Domicilio:
         <input
           className="custom-input w-[15rem]"
@@ -193,20 +159,6 @@ const RegisterStudentForm = ({
           minLength={1}
           maxLength={255}
           onChange={handleChange}
-        />
-      </label>
-
-      <label className="flex flex-col gap-y-2 font-bold">
-        Telefono:
-        <input
-          className="custom-input w-[10rem]"
-          name="Telefono"
-          value={form.Telefono}
-          type="tel"
-          required
-          onChange={handleChange}
-          maxLength={4}
-          minLength={9}
         />
       </label>
 
@@ -247,12 +199,12 @@ const RegisterStudentForm = ({
           type="tel"
           required
           onChange={handleChange}
-          maxLength={4}
-          minLength={9}
+          minLength={4}
+          maxLength={9}
         />
       </label>
     </>
   );
 };
 
-export default RegisterStudentForm;
+export default RegisterTeacherForm;

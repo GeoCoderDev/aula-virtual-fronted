@@ -11,12 +11,6 @@ import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 
 const limitStudentsRequired = 50;
 
-const tableContainerStyle = {
-  overflowX: "auto",
-  WebkitOverflowScrolling: "touch", // Agrega desplazamiento suave en iOS
-};
-
-
 
 interface SearchTermsStudent {
   dni?: string; // DNI del estudiante
@@ -50,21 +44,27 @@ const Estudiantes = () => {
 
   const { fetchAPI } = useAPI();
 
-  const { fetchNextResults, results, isLoading, allResultsGetted, error } =
-    useBatchAPI<Student>(
-      "/api/students",
-      limitStudentsRequired,
-      0,
-      searchTerms as any,
-      [
-        inputDNI,
-        inputName,
-        inputApellido,
-        selectGrado,
-        selectSeccion,
-        selectEstado,
-      ]
-    );
+  const {
+    fetchNextResults,
+    results,
+    isLoading,
+    allResultsGetted,
+    error,
+    setResults,
+  } = useBatchAPI<Student>(
+    "/api/students",
+    limitStudentsRequired,
+    0,
+    searchTerms as any,
+    [
+      inputDNI,
+      inputName,
+      inputApellido,
+      selectGrado,
+      selectSeccion,
+      selectEstado,
+    ]
+  );
 
   const handleSelectChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -101,6 +101,23 @@ const Estudiantes = () => {
 
   const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
+  };
+
+  const toggleEstadoEstudiante = (dni: string) => {
+    // Buscar al estudiante por su DNI_Estudiante en el array results
+    const updatedResults = results.map((estudiante) => {
+      // Si el DNI_Estudiante coincide, cambiar su estado
+      if (estudiante.DNI_Estudiante === dni) {
+        return {
+          ...estudiante,
+          Estado: estudiante.Estado === 1 ? 0 : 1,
+        };
+      }
+      return estudiante; // Devolver el estudiante sin cambios si no coincide el DNI_Estudiante
+    });
+
+    // Actualizar el estado del array results con el estudiante actualizado
+    setResults(updatedResults);
   };
 
   return (
@@ -204,9 +221,10 @@ const Estudiantes = () => {
       </form>
 
       <div className="flex flex-col items-center justify-center gap-y-4 ">
-
-        <div className="w-full max-w-[80vw] overflow-auto max-h-[300px]"  style={{ overflowX: "auto", margin: "0", padding: "0" }}>
-          
+        <div
+          className="w-full max-w-[80vw] overflow-auto relative max-h-[300px]"
+          style={{ overflowX: "auto", margin: "0", padding: "0" }}
+        >
           <table className="w-full min-w-full">
             <colgroup>
               <col className="w-[6rem]" />
@@ -217,7 +235,7 @@ const Estudiantes = () => {
               <col className="w-[6rem]" />
               <col className="w-[15rem]" />
             </colgroup>
-            <thead>
+            <thead className="sticky top-0">
               <tr className="font-semibold bg-verde-spotify text-black ">
                 <th className="text-center px-4 py-2 rounded-l ">DNI</th>
                 <th className="text-center px-4 py-2">Nombre</th>
@@ -230,7 +248,11 @@ const Estudiantes = () => {
             </thead>
             <tbody>
               {results.map((student, index) => (
-                <StudentRow key={index} {...student} />
+                <StudentRow
+                  togleStateFunction={toggleEstadoEstudiante}
+                  key={index}
+                  {...student}
+                />
               ))}
             </tbody>
           </table>
@@ -248,7 +270,7 @@ const Estudiantes = () => {
         {!error && !isLoading && results.length === 0 && (
           <WarningMessage message="No se encontraron resultados" />
         )}
-        
+
         {!error && !isLoading && !allResultsGetted && (
           <button
             className="bg-amarillo-pooh text-white px-3 py-2 rounded-[0.5rem]"

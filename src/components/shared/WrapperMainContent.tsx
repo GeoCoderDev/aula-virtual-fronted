@@ -20,7 +20,7 @@ const WrapperMainContent = ({
     <>
       <div
         id="main-content"
-        className=" w-full flex items-start justify-center p-8"
+        className=" w-full flex items-start justify-start p-8"
       >
         {children}
       </div>
