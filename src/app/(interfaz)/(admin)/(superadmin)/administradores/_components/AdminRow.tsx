@@ -26,14 +26,14 @@ const AdminRow = ({
       <tr className="">
         <td className="p-3 text-center sm:p-2 md:p-3">{admin.Id_Admin}</td>
         <td className="p-3 text-center sm:p-2 md:p-3">{admin.Nombre_Usuario}</td>
-        <td className="p-3 text-center flex justify-center sm:p-2 md:p-3">
-          <div className="flex gap-2 sm:gap-1 md:gap-2">
+        <td className="p-3 text-center sm:p-2 md:p-3 w-full">
+          <div className="flex justify-center space-x-2">
             <button
               onClick={() => {
                 setDeleteModalIsShowing(true);
               }}
               type="button"
-              className="text-white bg-rojo-orange rounded-[0.5rem] py-2 px-4 font-semibold text-[0.9rem] disabled:grayscale-[0.5] sm:py-1 sm:px-2 sm:text-[0.8rem] md:py-2 md:px-4 md:text-[0.9rem]"
+              className="text-white bg-rojo-orange rounded-[0.5rem] py-2 px-4 font-semibold text-[0.9rem] whitespace-nowrap disabled:grayscale-[0.5] sm:py-1 sm:px-2 sm:text-[0.8rem] md:py-2 md:px-4 md:text-[0.9rem]"
             >
               Eliminar
             </button>
@@ -42,18 +42,18 @@ const AdminRow = ({
                 setChangeUsernameModalIsShowing(true);
               }}
               type="button"
-              className="text-white bg-amarillo-pooh rounded-[0.5rem] py-2 px-4 font-semibold text-[0.9rem] disabled:grayscale-[0.5] sm:py-1 sm:px-2 sm:text-[0.8rem] md:py-2 md:px-4 md:text-[0.9rem]"
+              className="text-white bg-amarillo-pooh rounded-[0.5rem] py-2 px-4 font-semibold text-[0.9rem] whitespace-nowrap disabled:grayscale-[0.5] sm:py-1 sm:px-2 sm:text-[0.8rem] md:py-2 md:px-4 md:text-[0.9rem]"
             >
-              Cambiar
+              Cambiar Nombre de Usuario
             </button>
             <button
               onClick={() => {
                 setChangePasswordModalIsShowing(true);
               }}
               type="button"
-              className="text-white bg-azul-pablo rounded-[0.5rem] py-2 px-4 font-semibold disabled:grayscale-[0.5] text-[0.9rem] sm:py-1 sm:px-2 sm:text-[0.8rem] md:py-2 md:px-4 md:text-[0.9rem]"
+              className="text-white bg-azul-pablo rounded-[0.5rem] py-2 px-4 font-semibold disabled:grayscale-[0.5] text-[0.9rem] whitespace-nowrap sm:py-1 sm:px-2 sm:text-[0.8rem] md:py-2 md:px-4 md:text-[0.9rem]"
             >
-              Contraseña
+              Cambiar Contraseña
             </button>
           </div>
         </td>
