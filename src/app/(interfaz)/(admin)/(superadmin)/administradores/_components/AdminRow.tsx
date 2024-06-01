@@ -23,41 +23,39 @@ const AdminRow = ({
 
   return (
     <>
-      <tr className=" border-b-[0.1rem] border-black">
-        <td className="py-4  text-center items-center justify-center">
-          {admin.Id_Admin}
-        </td>
-        <td className="py-4 text-center items-center justify-center">
-          {admin.Nombre_Usuario}
-        </td>
-        <td className="py-4 flex items-center justify-center flex-wrap gap-x-2">
-          <button
-            onClick={() => {
-              setDeleteModalIsShowing(true);
-            }}
-            type="button"
-            className="text-white bg-rojo-orange rounded-[0.5rem] py-2 px-4 font-semibold  text-[0.9rem] gap-x-2 disabled:grayscale-[0.5] inline-block mr-2"
-          >
-            Eliminar
-          </button>
-          <button
-            onClick={() => {
-              setChangeUsernameModalIsShowing(true);
-            }}
-            type="button"
-            className="text-white bg-amarillo-pooh rounded-[0.5rem] py-2 px-4 font-semibold  text-[0.9rem] gap-x-2 disabled:grayscale-[0.5] inline-block mr-2"
-          >
-            Cambiar Nombre de Usuario
-          </button>
-          <button
-            onClick={() => {
-              setChangePasswordModalIsShowing(true);
-            }}
-            type="button"
-            className="text-white bg-azul-pablo rounded-[0.5rem] py-2 px-4 font-semibold  gap-x-2 disabled:grayscale-[0.5] inline-block text-[0.9rem]"
-          >
-            Cambiar Contraseña
-          </button>
+      <tr className="">
+        <td className="p-3 text-center sm:p-2 md:p-3">{admin.Id_Admin}</td>
+        <td className="p-3 text-center sm:p-2 md:p-3">{admin.Nombre_Usuario}</td>
+        <td className="p-3 text-center flex justify-center sm:p-2 md:p-3">
+          <div className="flex gap-2 sm:gap-1 md:gap-2">
+            <button
+              onClick={() => {
+                setDeleteModalIsShowing(true);
+              }}
+              type="button"
+              className="text-white bg-rojo-orange rounded-[0.5rem] py-2 px-4 font-semibold text-[0.9rem] disabled:grayscale-[0.5] sm:py-1 sm:px-2 sm:text-[0.8rem] md:py-2 md:px-4 md:text-[0.9rem]"
+            >
+              Eliminar
+            </button>
+            <button
+              onClick={() => {
+                setChangeUsernameModalIsShowing(true);
+              }}
+              type="button"
+              className="text-white bg-amarillo-pooh rounded-[0.5rem] py-2 px-4 font-semibold text-[0.9rem] disabled:grayscale-[0.5] sm:py-1 sm:px-2 sm:text-[0.8rem] md:py-2 md:px-4 md:text-[0.9rem]"
+            >
+              Cambiar
+            </button>
+            <button
+              onClick={() => {
+                setChangePasswordModalIsShowing(true);
+              }}
+              type="button"
+              className="text-white bg-azul-pablo rounded-[0.5rem] py-2 px-4 font-semibold disabled:grayscale-[0.5] text-[0.9rem] sm:py-1 sm:px-2 sm:text-[0.8rem] md:py-2 md:px-4 md:text-[0.9rem]"
+            >
+              Contraseña
+            </button>
+          </div>
         </td>
       </tr>
       {deleteModalIsShowing && (

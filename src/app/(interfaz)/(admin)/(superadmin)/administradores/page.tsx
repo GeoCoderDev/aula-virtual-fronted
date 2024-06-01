@@ -59,37 +59,54 @@ const Administradores = () => {
   };
 
   return (
-    <div className="flex flex-col items-start justify-start gap-y-6 -border-2">
-      <div className="flex justify-between items-start w-full">
-        <h1 className=" text-4xl  font-extrabold">Buscar Administrador</h1>
+    <div className="flex flex-col items-start justify-center gap-y-6 ">
+      <div className="flex justify-between items-center w-full">
+        <h1 className="section-tittle">Buscar Admin</h1>
 
         <Link href={"/administradores/registrar"}>
-          <button className="px-4 py-3  rounded-[0.5rem] bg-verde-spotify font-bold">
+          <button 
+            type="button"
+            className="bg-verde-spotify rounded-lg py-3 px-4 font-semibold flex items-center justify-center gap-x-2"
+          >
             Registrar Administradores
           </button>
         </Link>
       </div>
 
-      <div className="flex  items-center gap-3">
-        <p className="font-semibold">NOMBRE DE USUARIO:</p>
+
+      <form className="flex flex-wrap max-w-full items-center gap-x-5 gap-y-4 justify-start">
+        <label className="font-semibold flex w-min flex-row items-center gap-x-3">
+          ACCOUNTS:
         <input
           ref={inputUsername as React.LegacyRef<HTMLInputElement>}
-          maxLength={100}
+          maxLength={60}
           name="username"
-          style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
-          className="outline-none w-[50%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
+          className="custom-input w-[10rem]"
           type="text"
+          placeholder=""
           onChange={handleInputTextChange}
         />
-      </div>
+        </label>
+      </form>
 
       <div className="flex flex-col items-center justify-center gap-y-4">
-        <table>
+        <div
+          className="w-full max-w-[80vw] overflow-auto max-h-[300px]"
+          style={{ overflowX: "auto", margin: "0", padding: "0" }}
+        >
+        <table className="w-full min-w-full">
+        <colgroup>
+              <col className="w-[6rem]" />
+              <col className="w-[12rem]" />
+              <col className="w-[15rem]" />
+            </colgroup>
           <thead className="sticky top-0">
             <tr className="font-semibold bg-verde-spotify text-black">
-              <td className="px-8 py-3 rounded-l">ID</td>
-              <td className="px-8 py-3">Nombre de Usuario</td>
-              <td className="px-60 py-3 rounded-r">Acciones</td>
+              <th className="text-center px-4 py-2 rounded-1">ID</th>
+              <th className="text-center px-100 py-2">
+                Nombre de Usuario
+                </th>
+              <td className="text-center px-30 py-2 rounded-r">Acciones</td>
             </tr>
           </thead>
           <tbody>
@@ -103,7 +120,7 @@ const Administradores = () => {
             ))}
           </tbody>
         </table>
-
+        </div>
         {!error && isLoading && (
           <Loader
             color="black"
