@@ -1,6 +1,6 @@
 "use client";
 // Header.tsx
-import React, { useState } from "react"; //HE AGREGADO ESTE IMPORT
+import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import NotificacionesIcon from "../icons/header/NotificacionesIcon";
 import MensajesIcon from "../icons/header/MensajesIcon";
@@ -97,64 +97,58 @@ const Header = () => {
     <header
       style={{ boxShadow: "0 0px 2px 2px rgba(0,0,0,0.2)" }}
       id="header"
-      className="flex w-screen text-center z-[5] bg-verde-spotify py-2 sticky top-0 left-0 max-w-full pl-6 pr-4"
+      className="flex w-screen text-center z-[5] bg-verde-spotify py-2 sticky top-0 left-0 max-w-full pl-4 pr-2 sm:pl-6 sm:pr-4 text-sm sm:text-base"
     >
-      <div className="flex items-center justify-between w-full gap-x-7">
-        <div className=" flex-1">
+      <div className="flex items-center justify-between w-full gap-x-4 sm:gap-x-7 flex-wrap">
+        <div className="flex-1">
           <div
             className="cursor-pointer select-none"
             onClick={() => dispatch(switchSidebarIsOpen(null))}
           >
-            <HamburguesaIcon className="aspect-auto w-8" fillColor="black" />
+            <HamburguesaIcon className="aspect-auto w-6 sm:w-8" fillColor="black" />
           </div>
         </div>
 
         <div className="flex flex-col items-start">
           <h1
-            className="font-extrabold text-left"
+            className="font-extrabold text-left text-lg sm:text-xl"
             style={{ margin: "-0.15rem 0" }}
           >
             {UserSessionData.username}
           </h1>
-          <p className="text-left" style={{ margin: "-0.15rem 0" }}>
+          <p className="text-left text-sm sm:text-base" style={{ margin: "-0.15rem 0" }}>
             {RolesEspañol[UserSessionData.role]}
           </p>
         </div>
 
-        <div className="flex items-center justify-end gap-x-3">
-          <MensajesIcon className="aspect-auto w-8" fillColor="black" />
-          <NotificacionesIcon className="aspect-auto w-8" fillColor="black" />
+        <div className="flex items-center justify-end gap-x-2 sm:gap-x-3">
+          <MensajesIcon className="aspect-auto w-6 sm:w-8  sm:block" fillColor="black" />
+          <NotificacionesIcon className="aspect-auto w-6 sm:w-8 sm:block" fillColor="black" />
           <div className="flex items-center justify-center">
-            <PerfilIcon className="aspect-auto w-11" fillColor="black" />
-            {/* Paso 3: Agrega el evento de clic al DespliegueIcon */}
-            <div id="despliegue-icon" onClick={toggleMenu} className="relative">
-              {" "}
-              {/* Agrega el evento de clic al contenedor */}
+            <PerfilIcon className="aspect-auto w-8 sm:w-9 md:w-11" fillColor="black" />
+            <div id="despliegue-icon" onClick={toggleMenu} className="relative mr-2">
               <DespliegueIcon
-                className="aspect-auto w-8 hover:cursor-pointer"
+                className="aspect-auto w-6 sm:w-8 hover:cursor-pointer"
                 fillColor="black"
               />
             </div>
           </div>
-          {/* Paso 4: Renderiza el menú basado en el estado */}
           {menuVisible && (
             <ul
               id="Menu-deplegable"
               style={{ boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.2)" }}
-              className="absolute bg-white w-36 flex flex-col items-center justify-center mt-3 rounded-lg top-full "
+              className="absolute bg-white w-auto max-w-[90vw] min-w-[9rem] flex flex-col items-center justify-center mt-3 rounded-lg top-full"
               onClick={() => {
                 setMenuVisible(false);
               }}
             >
-              {/* Contenido de tu menú */}
-
               <Link href={"/editar_perfil"} as={"/editar-perfil"}>
-                <li className=" hover:font-bold cursor-pointer h-12 flex items-center justify-center">
+                <li className="hover:font-bold cursor-pointer h-12 flex items-center justify-center px-4">
                   Editar Perfil
                 </li>
               </Link>
               <li
-                className=" border-t border-gray-200 h-12 hover:font-bold cursor-pointer flex items-center justify-center"
+                className="border-t border-gray-200 h-12 hover:font-bold cursor-pointer flex items-center justify-center px-4"
                 onClick={handleLogout}
               >
                 Cerrar Sesión
