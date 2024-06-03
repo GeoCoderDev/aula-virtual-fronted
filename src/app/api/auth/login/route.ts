@@ -21,7 +21,7 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
       secure: process.env.NODE_ENV === "production",
       path: "/",
       sameSite: "strict",
-      maxAge: 1000 * 60 * 60 * 24, // 24 hours in ms
+      maxAge: 60 * 60 * 24, // 24 hours in ms
     });
 
     return new Response(null, {

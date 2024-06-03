@@ -26,6 +26,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+  if(token && (pathname.startsWith("/administradores") || pathname.startsWith("/configuraciones"))){
+    
+  }
+
   // Si hay un token o está en la ruta de inicio de sesión, permitir el acceso
   return NextResponse.next();
 }

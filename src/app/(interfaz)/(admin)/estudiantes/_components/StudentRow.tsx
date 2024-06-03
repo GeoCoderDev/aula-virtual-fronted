@@ -23,7 +23,7 @@ const StudentRow = ({
       <td className="p-4 text-center">{Grado}</td>
       <td className="p-4 text-center">{Seccion}</td>
       <td className="p-4 text-center">{EstadosInterpretacion[Estado]}</td>
-      <td>
+      <td className=" px-6">
         <div className="w-full flex justify-center gap-x-4">
           <Link
             href={`/editar/${DNI_Estudiante}`}

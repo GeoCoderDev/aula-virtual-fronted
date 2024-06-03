@@ -5,15 +5,12 @@ import Loader from "@/components/shared/Loader";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import SuccessMessage from "@/components/shared/messages/SuccessMessage";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
-import { StudentEditionForm, StudentResponse } from "@/interfaces/Student";
 import { TeacherEditionForm, TeacherResponse } from "@/interfaces/Teacher";
 import { equalObjects } from "@/lib/helpers/equalObjects";
 import validateDNI from "@/lib/helpers/validations/validateDNI";
 import React, { ChangeEventHandler, useEffect, useRef, useState } from "react";
 
 const EditarProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
-  const selectGrado = useRef<HTMLSelectElement>();
-
   const [errorDNI, setErrorDNI] = useState<ErrorAPI | null>(null);
   const [imgUrl, setImgUrl] = useState<string | undefined>();
   const [initialForm, setInitialForm] = useState<TeacherEditionForm | null>(
@@ -57,7 +54,7 @@ const EditarProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
 
           setImgUrl(() => teacher.Foto_Perfil_URL);
           setInitialForm(() => teacher);
-          setForm(() => teacher);          
+          setForm(() => teacher);
         }
 
         setIsSomethingLoading(false);

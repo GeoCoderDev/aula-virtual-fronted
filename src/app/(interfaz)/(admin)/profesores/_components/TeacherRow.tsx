@@ -1,6 +1,5 @@
 import { EstadosInterpretacion } from "@/app/assets/EstadosInterpretacion";
 import ToggleStateModal from "@/components/shared/modals/ToggleStateModal";
-import { Student } from "@/interfaces/Student";
 import { Teacher } from "@/interfaces/Teacher";
 import Link from "next/link";
 import { useState } from "react";
@@ -20,7 +19,7 @@ const TeacherRow = ({
       <td className="p-4 text-center">{Nombres}</td>
       <td className="p-4 text-center">{Apellidos}</td>
       <td className="p-4 text-center">{EstadosInterpretacion[Estado]}</td>
-      <td>
+      <td className="px-6">
         <div className="w-full flex items-center justify-center gap-x-4">
           <Link
             href={`/editar/${DNI_Profesor}`}

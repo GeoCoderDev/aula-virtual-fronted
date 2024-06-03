@@ -111,7 +111,7 @@
   }
 
   .deshabilitar-habilitar-button {
-    @apply text-white font-medium px-2 py-1 rounded-lg;
+    @apply text-white font-medium py-1 w-[6.5rem] rounded-lg;
   }
 
   .ver-button {

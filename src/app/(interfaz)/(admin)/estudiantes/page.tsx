@@ -1,6 +1,6 @@
 "use client";
 import { Student } from "@/interfaces/Student";
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import StudentRow from "./_components/StudentRow";
 import Link from "next/link";
 import useBatchAPI from "@/app/hooks/useBatchAPI";

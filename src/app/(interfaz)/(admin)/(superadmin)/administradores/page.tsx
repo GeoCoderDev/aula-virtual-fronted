@@ -59,9 +59,9 @@ const Administradores = () => {
   };
 
   return (
-    <div className="flex flex-col items-start justify-center gap-y-6 ">
-      <div className="flex justify-between items-center w-full">
-        <h1 className="section-tittle">Buscar Admin</h1>
+    <div className="flex flex-col items-start justify-center gap-y-6 w-max ">
+      <div className="flex justify-between items-center w-full flex-wrap gap-x-6">
+        <h1 className="section-tittle">Buscar Administrador</h1>
 
         <Link href={"/administradores/registrar"}>
           <button

@@ -105,28 +105,47 @@ const Header = () => {
             className="cursor-pointer select-none"
             onClick={() => dispatch(switchSidebarIsOpen(null))}
           >
-            <HamburguesaIcon className="aspect-auto w-6 sm:w-8" fillColor="black" />
+            <HamburguesaIcon
+              className="aspect-auto w-6 sm:w-8"
+              fillColor="black"
+            />
           </div>
         </div>
 
         <div className="flex flex-col items-start">
           <h1
-            className="font-extrabold text-left text-lg sm:text-xl"
+            className="font-extrabold text-left text-[1.1rem]"
             style={{ margin: "-0.15rem 0" }}
           >
             {UserSessionData.username}
           </h1>
-          <p className="text-left text-sm sm:text-base" style={{ margin: "-0.15rem 0" }}>
+          <p
+            className="text-left  text-[0.9rem]"
+            style={{ margin: "-0.15rem 0" }}
+          >
             {RolesEspañol[UserSessionData.role]}
           </p>
         </div>
 
         <div className="flex items-center justify-end gap-x-2 sm:gap-x-3">
-          <MensajesIcon className="aspect-auto w-6 sm:w-8  sm:block" fillColor="black" />
-          <NotificacionesIcon className="aspect-auto w-6 sm:w-8 sm:block" fillColor="black" />
+          <MensajesIcon
+            className="aspect-auto w-6 sm:w-8  sm:block"
+            fillColor="black"
+          />
+          <NotificacionesIcon
+            className="aspect-auto w-6 sm:w-8 sm:block"
+            fillColor="black"
+          />
           <div className="flex items-center justify-center">
-            <PerfilIcon className="aspect-auto w-8 sm:w-9 md:w-11" fillColor="black" />
-            <div id="despliegue-icon" onClick={toggleMenu} className="relative mr-2">
+            <PerfilIcon
+              className="aspect-auto w-8 sm:w-9 md:w-11"
+              fillColor="black"
+            />
+            <div
+              id="despliegue-icon"
+              onClick={toggleMenu}
+              className="relative mr-2"
+            >
               <DespliegueIcon
                 className="aspect-auto w-6 sm:w-8 hover:cursor-pointer"
                 fillColor="black"

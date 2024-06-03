@@ -87,7 +87,7 @@ export default function LoginForm({
     <>
       <div
         style={{ boxShadow: "0 0 22px 6px #00FF6F50" }}
-        className="flex flex-row flex-wrap max-w-[83%] min-h-[28rem] rounded-[2rem] border-red-100 -border-2 overflow-hidden justify-center"
+        className="flex flex-row flex-wrap max-w-[85%] min-h-[28rem] rounded-[2rem] border-red-100 -border-2 overflow-hidden justify-center"
       >
         {/* PRIMERA MITAD */}
         <form

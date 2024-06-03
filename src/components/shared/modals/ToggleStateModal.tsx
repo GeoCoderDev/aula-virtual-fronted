@@ -73,11 +73,13 @@ const ToggleStateModal = ({
       }}
     >
       <div className="flex flex-col items-center justify-center gap-y-3">
-        <span>
-          ¿Estas seguro de{" "}
-          <b>{currentState === 0 ? "habilitar" : "deshabilitar"}</b> el{" "}
-          {userType}?
-        </span>
+        {!successMessage && (
+          <span>
+            ¿Estas seguro de{" "}
+            <b>{currentState === 0 ? "habilitar" : "deshabilitar"}</b> el{" "}
+            {userType}?
+          </span>
+        )}
 
         {!successMessage && !error && isSomethingLoading && (
           <Loader color="black" width="30px" backgroundSize="9px" />
@@ -95,7 +97,10 @@ const ToggleStateModal = ({
         )}
 
         {!successMessage && !error && !isSomethingLoading && (
-          <ButtonsYerOrNot onClickYes={handleToggleState} onClickNo={eliminateModal}/>
+          <ButtonsYerOrNot
+            onClickYes={handleToggleState}
+            onClickNo={eliminateModal}
+          />
         )}
       </div>
     </ModalContainer>

@@ -6,6 +6,7 @@ import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
 import Loader from "@/components/shared/Loader";
 import SuccessMessage from "../../messages/SuccessMessage";
 import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
+import ButtonsYerOrNot from "../../ButtonsYerOrNot";
 
 export interface AdministratorDeleteModalProps {
   admin: Admin;
@@ -94,20 +95,12 @@ const AdministratorDeleteModal = ({
 
         {!successMessage && !error && !isSomethingLoading && (
           <div className="flex w-full items-center justify-center gap-x-3">
-            <button
-              onClick={eliminateAdmin}
-              className="w-10 py-2 text-black font-normal rounded-lg bg-verde-spotify"
-            >
-              Si
-            </button>
-            <button
-              onClick={() => {
+            <ButtonsYerOrNot
+              onClickYes={eliminateAdmin}
+              onClickNo={() => {
                 setDeleteModalIsShowing(false);
               }}
-              className="w-10 py-2 text-white font-normal rounded-lg bg-rojo-orange"
-            >
-              No
-            </button>
+            />
           </div>
         )}
       </div>
