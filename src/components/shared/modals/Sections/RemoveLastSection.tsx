@@ -62,10 +62,12 @@ const RemoveLastSection = ({
       }}
     >
       <div className="flex flex-col justify-center gap-y-4 items-center">
-        <h3>
-          Se eliminara la seccion <b>{sectionToDelete}</b> en el grado{" "}
-          <b>{grado}</b>, ¿Desea continuar?
-        </h3>
+        {!successMessage && (
+          <h3>
+            Se eliminara la seccion <b>{sectionToDelete}</b> en el grado{" "}
+            <b>{grado}</b>, ¿Desea continuar?
+          </h3>
+        )}
 
         {!successMessage && !error && isSomethingLoading && (
           <Loader color="black" width="30px" backgroundSize="9px" />

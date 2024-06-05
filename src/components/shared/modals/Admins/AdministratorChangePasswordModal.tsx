@@ -77,6 +77,7 @@ const AdministratorChangePasswordModal = ({
     }
   };
 
+
   const [form, setForm] = useState<ChangePasswordForm>(initialForm);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
