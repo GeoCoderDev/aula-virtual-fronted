@@ -60,8 +60,8 @@ const Administradores = () => {
 
   return (
     <div className="flex flex-col items-start justify-center gap-y-6 w-max ">
-      <div className="flex justify-between items-center w-full flex-wrap gap-x-6">
-        <h1 className="section-tittle">Buscar Administrador</h1>
+      <div className="flex justify-between items-center max-w-[80vw] flex-wrap gap-x-6 gap-y-4">
+        <h1 className="section-tittle flex flex-wrap">Buscar Administrador</h1>
 
         <Link href={"/administradores/registrar"}>
           <button
@@ -73,9 +73,8 @@ const Administradores = () => {
         </Link>
       </div>
 
-
       <form className="flex flex-wrap max-w-full items-center gap-x-5 gap-y-4 justify-start">
-        <label className="font-semibold flex w-min flex-row items-center gap-x-3 whitespace-nowrap">
+        <label className="font-semibold flex w-max flex-row items-center gap-x-3 whitespace-nowrap flex-wrap max-w-[80vw] gap-4">
           Nombre de usuario:
           <input
             ref={inputUsername as React.LegacyRef<HTMLInputElement>}
@@ -103,9 +102,7 @@ const Administradores = () => {
             <thead className="sticky top-0">
               <tr className="font-semibold bg-verde-spotify text-black">
                 <th className="text-center px-4 py-2 rounded-1">ID</th>
-                <th className="text-center px-100 py-2">
-                  Nombre de Usuario
-                </th>
+                <th className="text-center px-100 py-2">Nombre de Usuario</th>
                 <td className="text-center px-30 py-2 rounded-r">Acciones</td>
               </tr>
             </thead>

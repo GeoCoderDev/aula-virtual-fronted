@@ -9,7 +9,7 @@ import DespliegueIcon from "../icons/header/DespliegueIcon";
 import HamburguesaIcon from "../icons/header/HamburguesaIcon";
 import { UserSessionData } from "@/lib/utils/UserSessionData";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setHeaderHeight } from "@/state/ElementDimensions/headerHeight";
 import { setWindowHeight } from "@/state/ElementDimensions/windowHeight";
 import {
@@ -20,8 +20,13 @@ import { setWindowWidth } from "@/state/ElementDimensions/windowWidth";
 import { RolesEspañol } from "@/app/assets/RolesEspañol";
 import Link from "next/link";
 import { delegarEvento } from "@/lib/utils/delegacionDeEventos";
+import { RootState } from "@/store";
 
 const Header = () => {
+  const sidebarIsOpen = useSelector(
+    (state: RootState) => state.flags.sidebarIsOpen
+  );
+
   const pathname = usePathname();
   const isLoginPage = pathname.startsWith("/login");
 
@@ -97,7 +102,7 @@ const Header = () => {
     <header
       style={{ boxShadow: "0 0px 2px 2px rgba(0,0,0,0.2)" }}
       id="header"
-      className="flex w-screen text-center z-[5] bg-verde-spotify py-2 sticky top-0 left-0 max-w-full pl-4 pr-2 sm:pl-6 sm:pr-4 text-xs sm:text-base"
+      className="flex w-screen text-center z-[5] bg-verde-spotify py-4 sticky top-0 left-0 max-w-full pl-4 pr-2 sm:pl-6 sm:pr-4 text-xs sm:text-base "
     >
       <div className="flex items-center justify-between w-full gap-x-4 sm:gap-x-7 flex-wrap">
         <div className="flex items-center">
@@ -105,45 +110,60 @@ const Header = () => {
             className="cursor-pointer select-none"
             onClick={() => dispatch(switchSidebarIsOpen(null))}
           >
-            <HamburguesaIcon className="aspect-auto w-5 sm:w-7" fillColor="black" />
+            <HamburguesaIcon
+              title={sidebarIsOpen ? "Ocultar Sidebar" : "Mostrar Sidebar"}
+              className="aspect-auto w-5 sm:w-7"
+              fillColor="black"
+            />
           </div>
 
-          <div className="bg-white rounded-xl px-3 sm:px-4 py-3 shadow-xl flex items-center ml-3">
-              <img src="/svg/Logo Colegio.svg" alt="Logo Colegio" className="w-auto h-8 sm:h-10" />
-              <div className="text-left text-xs sm:text-sm hidden sm:flex flex-col justify-center ml-2">
-                  <p className="font-bold leading-tight mb-0.5">JOSÉ BUENAVENTURA</p>
-                  <p className="font-bold leading-tight">SEPÚLVEDA FERNÁNDEZ</p>
-              </div>
+          <div
+            style={{ boxShadow: "0 0 7px 1px #00000040" }}
+            className="bg-white rounded-xl px-3 sm:px-4 py-2 flex items-center ml-4"
+          >
+            <img
+              src="/svg/Logo Colegio.svg"
+              alt="Logo Colegio"
+              className="w-auto h-8 sm:h-10"
+            />
+            <div className="text-left text-xs sm:text-sm hidden sm:flex flex-col justify-center ml-2">
+              <p className="font-bold leading-tight mb-0.5">
+                JOSÉ BUENAVENTURA
+              </p>
+              <p className="font-bold leading-tight">SEPÚLVEDA FERNÁNDEZ</p>
+            </div>
           </div>
-
-
-
-          
         </div>
       </div>
-      
 
-
-      <div className="flex items-center gap-x-1 sm:gap-x-2">
-        <div className="flex flex-col items-start">
-          <h1
-            className="font-extrabold text-left text-sm sm:text-base"
-            style={{ margin: "-0.1rem 0" }}
-          >
+      <div className="flex items-center gap-x-1 sm:gap-x-2 ">
+        <div className="flex flex-col items-start mr-2 justify-center gap-y-1">
+          <h1 className="font-extrabold text-left text-[1.1rem] leading-5">
             {UserSessionData.username}
           </h1>
-          <p className="text-left text-xs sm:text-sm" style={{ margin: "-0.1rem 0" }}>
+          <p className="text-left text-[0.9rem] leading-4">
             {RolesEspañol[UserSessionData.role]}
           </p>
         </div>
 
         <div className="flex items-center justify-end gap-x-1 sm:gap-x-2">
-          <div className="hidden sm:flex items-center gap-x-1">
-            <MensajesIcon className="aspect-auto w-5 sm:w-7" fillColor="black" />
-            <NotificacionesIcon className="aspect-auto w-5 sm:w-7" fillColor="black" />
+          <div className="hidden sm:flex items-center gap-x-2">
+            <MensajesIcon
+              className="aspect-auto w-8 cursor-pointer"
+              fillColor="black"
+              title="Chat"
+            />
+            <NotificacionesIcon
+              className="aspect-auto w-8 cursor-pointer"
+              fillColor="black"
+              title="Notificaciones"
+            />
           </div>
           <div className="flex items-center justify-center">
-            <PerfilIcon className="aspect-auto w-8 sm:w-8 md:w-9 mr-1 sm:mr-2" fillColor="black" />
+            <PerfilIcon
+              className="aspect-auto w-10 max-md:mr-2"
+              fillColor="black"
+            />
             <div id="despliegue-icon" onClick={toggleMenu} className="relative">
               <DespliegueIcon
                 className="aspect-auto w-5 sm:w-7 hover:cursor-pointer"
@@ -152,9 +172,6 @@ const Header = () => {
             </div>
           </div>
 
-          
-
-          
           {menuVisible && (
             <ul
               id="Menu-deplegable"
@@ -164,28 +181,35 @@ const Header = () => {
                 setMenuVisible(false);
               }}
             >
+              <div className="flex sm:hidden items-center justify-center gap-x-4  h-10 w-[7rem]">
+                <MensajesIcon
+                  title="Chat"
+                  className="aspect-auto w-5 sm:w-7 mr-2 cursor-pointer"
+                  fillColor="black"
+                />
+                <NotificacionesIcon
+                  title="Notificaciones"
+                  className="aspect-auto w-5 sm:w-7 cursor-pointer"
+                  fillColor="black"
+                />
+              </div>
               <Link href={"/editar_perfil"} as={"/editar-perfil"}>
-                <li className="hover:font-bold cursor-pointer h-10 flex items-center justify-center px-3 sm:px-4">
+                <li className="hover:font-bold cursor-pointer h-10 flex items-center justify-center px-3 border-t border-gray-200 w-[8rem]">
                   Editar Perfil
                 </li>
               </Link>
               <li
-                className="border-t border-gray-200 h-10 hover:font-bold cursor-pointer flex items-center justify-center px-3 sm:px-4"
+                className="border-t border-gray-200 h-10 hover:font-bold cursor-pointer flex items-center justify-center px-3 w-[8rem]"
                 onClick={handleLogout}
               >
                 Cerrar Sesión
               </li>
-              <div className="flex sm:hidden items-center">
-                  <MensajesIcon className="aspect-auto w-5 sm:w-7 mr-2" fillColor="black" />
-                  <NotificacionesIcon className="aspect-auto w-5 sm:w-7" fillColor="black" />
-              </div>
             </ul>
           )}
         </div>
       </div>
     </header>
   );
-
 };
 
 export default Header;

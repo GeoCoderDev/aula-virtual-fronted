@@ -7,7 +7,7 @@ interface EditarPerfilProps {
   tipoUsuario: string;
 }
 
-const EditarPerfil: React.FC<EditarPerfilProps> = ({
+const EditarPerfilProfesorEstudiante: React.FC<EditarPerfilProps> = ({
   nombreUsuario,
   tipoUsuario,
 }) => {
@@ -246,4 +246,4 @@ const EditarPerfil: React.FC<EditarPerfilProps> = ({
   );
 };
 
-export default EditarPerfil;
+export default EditarPerfilProfesorEstudiante;

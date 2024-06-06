@@ -3,7 +3,6 @@ import { PageApp } from "@/app/assets/routes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserSessionData } from "../../lib/utils/UserSessionData";
-import { useEffect, useState } from "react";
 
 const SideBarElement = ({ IconTSX, route, text, allowedRoles }: PageApp) => {
   const pathName = usePathname();
@@ -16,7 +15,7 @@ const SideBarElement = ({ IconTSX, route, text, allowedRoles }: PageApp) => {
   return (
     <Link href={`/${route}`} as={`/${route}`}>
       <li
-        className={`flex items-center pl-5 pr-8 h-[4.2rem] gap-x-4 overflow-hidden min-w-[12.5rem] max-w-[25rem] text-ellipsis text-nowrap${
+        className={` flex items-center pl-5 pr-8 h-[4.2rem] gap-x-4 overflow-hidden min-w-[12.5rem] max-w-[25rem] text-ellipsis text-nowrap${
           !isSelected && "hover:bg-gray-200"
         } ${isSelected && "bg-black"}`}
         title={text}
@@ -26,7 +25,7 @@ const SideBarElement = ({ IconTSX, route, text, allowedRoles }: PageApp) => {
           fillColor={isSelected ? "#fff" : "black"}
         />
         <span
-          className={`w-max  text-[0.95rem] ${isSelected && "text-white"} `}
+          className={`w-max text-[0.95rem] ${isSelected && "text-white"} `}
         >
           {text}
         </span>
