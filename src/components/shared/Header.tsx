@@ -108,13 +108,15 @@ const Header = () => {
             <HamburguesaIcon className="aspect-auto w-5 sm:w-7" fillColor="black" />
           </div>
 
-          <div className="bg-white rounded-xl px-3 sm:px-4 py-1 shadow-xl flex items-center ml-3">
-            <img src="/svg/Logo Colegio.svg" alt="Logo Colegio" className="w-auto h-8 sm:h-10 " />
-            <div className="text-left text-xs hidden sm:block ml-1">
-              <p className="font-semibold leading-tight text-xs sm:text-sm">JOSÉ BUENAVENTURA</p>
-              <p className="font-semibold leading-tight text-xs sm:text-sm">SEPÚLVEDA FERNÁNDEZ</p>
-            </div>
+          <div className="bg-white rounded-xl px-3 sm:px-4 py-3 shadow-xl flex items-center ml-3">
+              <img src="/svg/Logo Colegio.svg" alt="Logo Colegio" className="w-auto h-8 sm:h-10" />
+              <div className="text-left text-xs sm:text-sm hidden sm:flex flex-col justify-center ml-2">
+                  <p className="font-bold leading-tight mb-0.5">JOSÉ BUENAVENTURA</p>
+                  <p className="font-bold leading-tight">SEPÚLVEDA FERNÁNDEZ</p>
+              </div>
           </div>
+
+
 
           
         </div>
