@@ -141,7 +141,7 @@ const Header = () => {
           <h1 className="font-extrabold text-left text-[1.1rem] leading-5">
             {UserSessionData.username}
           </h1>
-          <p className="text-left text-[0.9rem] leading-4">
+          <p className="text-left text-[0.9rem] leading-4 italic">
             {RolesEspañol[UserSessionData.role]}
           </p>
         </div>
@@ -160,10 +160,19 @@ const Header = () => {
             />
           </div>
           <div className="flex items-center justify-center">
-            <PerfilIcon
-              className="aspect-auto w-10 max-md:mr-2"
-              fillColor="black"
-            />
+            {UserSessionData.urlImage ? (
+              <img
+                className="aspect-square min-w-10 max-w-10  max-md:mr-2 -border-2 bg-cover rounded-[50%] border border-black"
+                src={UserSessionData.urlImage}
+                alt="Tu foto de perfil"
+              />
+            ) : (
+              <PerfilIcon
+                className="aspect-square w-10 max-md:mr-2"
+                fillColor="black"
+              />
+            )}
+
             <div id="despliegue-icon" onClick={toggleMenu} className="relative">
               <DespliegueIcon
                 className="aspect-auto w-5 sm:w-7 hover:cursor-pointer"

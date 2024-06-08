@@ -18,6 +18,7 @@ const EditarProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
   );
   const [form, setForm] = useState<TeacherEditionForm | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  
   const {
     error,
     setError,

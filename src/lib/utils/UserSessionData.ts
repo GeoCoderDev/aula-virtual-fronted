@@ -1,11 +1,11 @@
-
 import { Role } from "@/interfaces/Role";
 import { UserSessionDataErrors } from "../errors/UserSessionData";
 import { CustomError } from "./CustomError";
 
-export interface User {
+export interface UserData {
   username: string;
   role: Role;
+  urlImage?: string | null;
 }
 
 export class UserSessionData {
@@ -33,9 +33,19 @@ export class UserSessionData {
     return usernameGetted;
   }
 
-  getObjectData(): User {
+  static set urlImage(value: string | undefined) {
+    localStorage.setItem("urlImage", value ?? "");
+  }
+
+  static get urlImage(): string | undefined | null {
+    const urlImageGetted = localStorage.getItem("urlImage");
+    return urlImageGetted || undefined;
+  }
+
+  getObjectData(): UserData {
     const username = localStorage.getItem("username");
     const role = localStorage.getItem("role");
+    const urlImage = localStorage.getItem("urlImage");
 
     if (!username)
       throw new CustomError(
@@ -44,6 +54,6 @@ export class UserSessionData {
     if (!role)
       throw new CustomError(UserSessionDataErrors.NOT_ROLE_IN_LOCAL_STORAGE);
 
-    return { username, role: role as Role };
+    return { username, role: role as Role, urlImage };
   }
 }

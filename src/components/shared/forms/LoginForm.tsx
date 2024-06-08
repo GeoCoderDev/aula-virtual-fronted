@@ -4,7 +4,7 @@ import Loader from "../Loader";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Image from "next/image";
-import { UserSessionData } from "@/lib/utils/UserSessionData";
+import { UserData, UserSessionData } from "@/lib/utils/UserSessionData";
 import InputPassword from "../InputPassword";
 
 interface LoginForm {
@@ -59,7 +59,7 @@ export default function LoginForm({
         return setErrorMessage(objectResponse.message);
       }
 
-      const { token, role } = objectResponse;
+      const { token, role, urlImage } = objectResponse;
 
       const res = await fetch("/api/auth/login", {
         method: "POST",
@@ -71,6 +71,7 @@ export default function LoginForm({
 
       UserSessionData.role = role;
       UserSessionData.username = form.username;
+      UserSessionData.urlImage = urlImage;
 
       // Redirigir al usuario al home
 
