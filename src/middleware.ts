@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { serialize } from "cookie";
 import { isStaticAsset } from "./lib/helpers/isStaticAsset";
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
   const pathname = url.pathname;
-  const token = request.cookies.get("myToken");
 
   // Excluir las rutas de la API del middleware
   if (pathname.startsWith("/api")) {
@@ -16,6 +16,61 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  const token = request.cookies.get("myToken");
+  const role = request.cookies.get("myRole");
+
+  // Si está en la ruta de inicio de sesión (/login) o sus subrutas, permitir el acceso
+  if (!token && (pathname === "/login" || pathname.startsWith("/login/"))) {
+    return NextResponse.next();
+  }
+
+  /*
+    Explicación de la expresión regular:
+
+    ^ y $ son los delimitadores de inicio y fin de la cadena, respectivamente.
+
+    \s* coincide con cero o más espacios en blanco.
+
+    (?:admin|superadmin|teacher|student) es un grupo sin captura que coincide con cualquiera de los roles válidos.
+
+    \s* coincide con cero o más espacios en blanco al final.
+
+    /i hace que la coincidencia sea insensible a mayúsculas y minúsculas.
+  */
+
+  // Comprobando si el rol es un rol válido
+  if (
+    !role ||
+    !/^\s*(?:admin|superadmin|teacher|student)\s*$/i.test(role.value)
+  ) {
+    console.log("Valor de role.value:", role?.value);
+    // Eliminar las cookies
+    const deletedTokenCookie = serialize("myToken", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      sameSite: "strict",
+      maxAge: 0, // Expirar la cookie inmediatamente
+    });
+
+    const deletedRoleCookie = serialize("myRole", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      sameSite: "strict",
+      maxAge: 0, // Expirar la cookie inmediatamente
+    });
+
+    // Redirigir a la página de inicio de sesión
+    return NextResponse.redirect(new URL("/login", request.url), {
+      headers: {
+        "Set-Cookie": `${deletedTokenCookie}, ${deletedRoleCookie}`,
+      },
+    });
+  }
+
+  
+
   // Si hay un token y el usuario intenta acceder a la ruta /login o sus subrutas
   if (token && (pathname === "/login" || pathname.startsWith("/login/"))) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -26,8 +81,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if(token && (pathname.startsWith("/administradores") || pathname.startsWith("/configuraciones"))){
-    
+  if (
+    token &&
+    (pathname.startsWith("/administradores") ||
+      pathname.startsWith("/configuraciones"))
+  ) {
   }
 
   // Si hay un token o está en la ruta de inicio de sesión, permitir el acceso

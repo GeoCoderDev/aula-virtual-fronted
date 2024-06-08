@@ -7,11 +7,18 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
 
     const jsonData = JSON.parse(bodyString);
 
-    const { token } = jsonData;
+    const { token, role } = jsonData;
 
     if (!token) {
       return new Response(
         JSON.stringify({ message: "Missing token on request body" }),
+        { status: 401 }
+      );
+    }
+
+    if (!role) {
+      return new Response(
+        JSON.stringify({ message: "Missing role on request body" }),
         { status: 401 }
       );
     }
@@ -21,12 +28,20 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
       secure: process.env.NODE_ENV === "production",
       path: "/",
       sameSite: "strict",
-      maxAge: 60 * 60 * 24, // 24 hours in ms
+      maxAge: 60 * 60 * 24, // 24 hours in seg
+    });
+
+    const roleSerialize = serialize("myRole", role, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24, // 24 hours in seg
     });
 
     return new Response(null, {
       status: 201,
-      headers: { "Set-Cookie": tokenSerialize },
+      headers: { "Set-Cookie": `${tokenSerialize}, ${roleSerialize}` },
     });
   } catch (error) {
     console.log(error);
