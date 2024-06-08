@@ -45,6 +45,7 @@ const Header = () => {
     try {
       await fetch("/api/auth/close", { method: "PUT" });
       window.location.href = "/login";
+      localStorage.clear();
     } catch (error) {
       console.error("Error during logout:", error);
     }
@@ -162,7 +163,7 @@ const Header = () => {
           <div className="flex items-center justify-center">
             {UserSessionData.urlImage ? (
               <img
-                className="aspect-square min-w-10 max-w-10  max-md:mr-2 -border-2 bg-cover rounded-[50%] border border-black"
+                className="aspect-square min-w-10 max-w-10  max-md:mr-2 -border-2  rounded-[50%] border border-black bg-contain object-cover bg-no-repeat bg-center"
                 src={UserSessionData.urlImage}
                 alt="Tu foto de perfil"
               />

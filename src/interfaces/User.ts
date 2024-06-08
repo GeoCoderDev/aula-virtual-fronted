@@ -13,3 +13,4 @@ export interface User {
     Estado:                         number;
     Foto_Perfil_URL?:               string;
 }
+
