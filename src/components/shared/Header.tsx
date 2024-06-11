@@ -103,7 +103,7 @@ const Header = () => {
     <header
       style={{ boxShadow: "0 0px 2px 2px rgba(0,0,0,0.2)" }}
       id="header"
-      className="flex w-screen text-center z-[5] bg-verde-spotify py-4 sticky top-0 left-0 max-w-full pl-4 pr-2 sm:pl-6 sm:pr-4 text-xs sm:text-base "
+      className="flex w-screen text-center z-[5] bg-verde-spotify py-2.5 sticky top-0 left-0 max-w-full pl-4 pr-2 sm:pl-6 sm:pr-4 text-xs sm:text-base "
     >
       <div className="flex items-center justify-between w-full gap-x-4 sm:gap-x-7 flex-wrap">
         <div className="flex items-center">
@@ -120,20 +120,21 @@ const Header = () => {
 
           <div
             style={{ boxShadow: "0 0 7px 1px #00000040" }}
-            className="bg-white rounded-xl px-3 sm:px-4 py-2 flex items-center ml-4"
+            className="bg-white rounded-xl px-3 sm:px-3 py-1 flex items-center ml-4"
           >
             <img
               src="/svg/Logo Colegio.svg"
               alt="Logo Colegio"
               className="w-auto h-8 sm:h-10"
             />
-            <div className="text-left text-xs sm:text-sm hidden sm:flex flex-col justify-center ml-2">
-              <p className="font-bold leading-tight mb-0.5">
+            <div className="text-left text-xxs sm:text-xs hidden sm:flex flex-col justify-center ml-2">
+              <p className="font-bold leading-tight mb-0.1">
                 JOSÉ BUENAVENTURA
               </p>
               <p className="font-bold leading-tight">SEPÚLVEDA FERNÁNDEZ</p>
             </div>
           </div>
+
         </div>
       </div>
 
