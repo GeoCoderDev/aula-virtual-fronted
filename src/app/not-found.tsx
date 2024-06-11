@@ -2,7 +2,7 @@ import React from 'react'
 
 const notFound = () => {
   return (
-    <div>No se encontro el Recurso :(</div>
+    <div>404 - No se encontro el Recurso :(</div>
   )
 }
 

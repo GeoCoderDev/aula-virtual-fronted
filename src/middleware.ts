@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { serialize } from "cookie";
 import { isStaticAsset } from "./lib/helpers/isStaticAsset";
+import validateCourseId from "./lib/helpers/validations/validateCursoID";
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
@@ -69,8 +70,6 @@ export async function middleware(request: NextRequest) {
     });
   }
 
-  
-
   // Si hay un token y el usuario intenta acceder a la ruta /login o sus subrutas
   if (token && (pathname === "/login" || pathname.startsWith("/login/"))) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -86,6 +85,20 @@ export async function middleware(request: NextRequest) {
     (pathname.startsWith("/administradores") ||
       pathname.startsWith("/configuraciones"))
   ) {
+  }
+
+  if (pathname.startsWith("/mis-cursos/")) {
+    // Obtener la parte de la URL después de "/mis-cursos/"
+    const parts = pathname.replace("/mis-cursos/", "").split("/");
+    const courseId = parts[0]; // El primer segmento será el ID del curso
+    console.log("ID del curso:", courseId);
+
+    const { status } = validateCourseId(courseId);
+    console.log("Estado de la validación del ID del curso:", status);
+
+    if (!status) {
+      return NextResponse.redirect(new URL("/mis-cursos", request.url));
+    }
   }
 
   // Si hay un token o está en la ruta de inicio de sesión, permitir el acceso

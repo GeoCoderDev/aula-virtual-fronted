@@ -163,6 +163,7 @@ const Header = () => {
           <div className="flex items-center justify-center">
             {UserSessionData.urlImage ? (
               <img
+                style={{boxShadow:"0 0px 8px rgba(0, 0, 0, 0.2)"}}
                 className="aspect-square min-w-10 max-w-10  max-md:mr-2 -border-2  rounded-[50%] border border-black bg-contain object-cover bg-no-repeat bg-center"
                 src={UserSessionData.urlImage}
                 alt="Tu foto de perfil"

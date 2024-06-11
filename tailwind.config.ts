@@ -37,6 +37,8 @@ const config: Config = {
         "rojo-orange": "#FF0000",
         "azul-pablo": "#1400FF",
         "amarillo-pooh": "#FFB800",
+        "negro": "#000",
+        "negro-claro": "#777",
       },
     },
   },
