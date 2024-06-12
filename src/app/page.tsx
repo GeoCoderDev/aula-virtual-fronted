@@ -65,6 +65,12 @@ const Home = () => {
               Andry Emilio Diego Calagua
               <br />
               Jesús Ernesto Guevara Ramos
+              <br />
+              Camilo Acevedo Centeno
+              <br />
+              Victor Curipaco Marquez
+              <br />
+              Deivis Quinteros Baldoseda
             </p>
           </div>
         </div>
