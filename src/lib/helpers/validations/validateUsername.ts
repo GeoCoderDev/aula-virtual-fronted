@@ -6,7 +6,7 @@ const validateUsername = (
   setError?: React.Dispatch<React.SetStateAction<ErrorAPI | null>>
 ): ValidationsResponse => {
 
-  const usernameRegex = /^[a-zA-ZÑñ][a-zA-ZÑñ0-9_]{7,29}$/;
+  const usernameRegex = /^[a-zA-Z\u00D1\u00F1][a-zA-Z\u00D1\u00F10-9_]{7,29}$/gi;
   const isValidFormat = usernameRegex.test(username);
 
   if (isValidFormat) {

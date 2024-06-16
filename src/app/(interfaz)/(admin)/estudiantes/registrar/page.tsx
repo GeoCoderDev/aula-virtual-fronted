@@ -197,6 +197,7 @@ const RegistrarEstudiante = () => {
     HTMLInputElement | HTMLSelectElement
   > = (e) => {
     setError(null);
+    setSuccessMessage(null);
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 

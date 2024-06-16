@@ -5,7 +5,6 @@ import CourseRow from "./_components/CourseRow";
 import useBatchAPI from "@/app/hooks/useBatchAPI";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import { Course } from "@/interfaces/Course";
-import useAPI from "@/app/hooks/useAPI";
 import Loader from "@/components/shared/Loader";
 import WarningMessage from "@/components/shared/messages/WarningMessage";
 import RegisterCourse from "@/components/shared/modals/Cursos/RegisterCourse";
@@ -35,14 +34,20 @@ const Cursos = () => {
   const [searchTerms, setSearchTerms] = useState(searchTermsInitial);
   const [viewRegisterCourseModal, setViewRegisterCourseModal] = useState(false);
 
-  const { allResultsGetted, error, fetchNextResults, isLoading, results } =
-    useBatchAPI<Course>(
-      "/api/courses",
-      limitCourseRequired,
-      0,
-      searchTerms as any,
-      [inputNombre, selectGrado]
-    );
+  const {
+    allResultsGetted,
+    error,
+    fetchNextResults,
+    isLoading,
+    results,
+    setResults,
+  } = useBatchAPI<Course>(
+    "/api/courses",
+    limitCourseRequired,
+    0,
+    searchTerms as any,
+    [inputNombre, selectGrado]
+  );
 
   // Handlers
   const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +58,41 @@ const Cursos = () => {
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdateCourse = (
+    id: number,
+    newNombre: string,
+    newGrados: string
+  ) => {
+    setResults((prevResults) =>
+      prevResults.map((course) =>
+        course.Id_Curso === id
+          ? { ...course, Nombre_Curso: newNombre, Grados: newGrados }
+          : course
+      )
+    );
+  };
+
+  const handleDeleteCourse = (id: number) => {
+    setResults((prevResults) =>
+      prevResults.filter((course) => course.Id_Curso !== id)
+    );
+  };
+
+  const handleAddNewCourseRow = (
+    id: number,
+    nombre: string,
+    grados: string
+  ) => {
+    const newCourse: Course = {
+      Id_Curso: id,
+      Nombre_Curso: nombre,
+      Grados: grados,
+      // Agrega cualquier otra propiedad necesaria de acuerdo a la interfaz Course
+    };
+
+    setResults((prevResults) => [...prevResults, newCourse]);
   };
 
   // Render
@@ -69,7 +109,7 @@ const Cursos = () => {
               setViewRegisterCourseModal(true);
             }}
           >
-            Registrar Cursos
+            Registrar Curso
           </button>
         </div>
 
@@ -119,7 +159,7 @@ const Cursos = () => {
                 <tr className="font-semibold bg-verde-spotify text-black">
                   <th className="text-center px-4 py-2 rounded-l">ID</th>
                   <th className="text-center px-100 py-2">
-                    Nombre de asignaturas
+                    Nombre de asignatura
                   </th>
                   <th className="text-center px-4 py-2">Grados</th>
                   <th className="text-center px-30 py-2 rounded-r">Acciones</th>
@@ -127,7 +167,12 @@ const Cursos = () => {
               </thead>
               <tbody className="mt-4">
                 {results.map((course, index) => (
-                  <CourseRow course={course} key={index} />
+                  <CourseRow
+                    handleDeleteCourse={handleDeleteCourse}
+                    handleUpdateCourse={handleUpdateCourse}
+                    course={course}
+                    key={index}
+                  />
                 ))}
               </tbody>
             </table>
@@ -162,6 +207,7 @@ const Cursos = () => {
       </div>
       {viewRegisterCourseModal && (
         <RegisterCourse
+          handleAddNewCourseRow={handleAddNewCourseRow}
           eliminateModal={() => {
             setViewRegisterCourseModal(false);
           }}

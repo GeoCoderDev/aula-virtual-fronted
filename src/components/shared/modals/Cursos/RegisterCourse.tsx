@@ -18,7 +18,12 @@ const initialForm: RegisterCourseForm = {
   grados: new Set(),
 };
 
-const RegisterCourse = ({ eliminateModal }: ModalNoActions) => {
+const RegisterCourse = ({
+  eliminateModal,
+  handleAddNewCourseRow,
+}: ModalNoActions & {
+  handleAddNewCourseRow: (id: number, nombre: string, grados: string) => void;
+}) => {
   const [form, setForm] = useState(initialForm);
 
   const {
@@ -58,7 +63,9 @@ const RegisterCourse = ({ eliminateModal }: ModalNoActions) => {
     e.preventDefault();
 
     if (form.grados.size === 0)
-      return setError(() => ({ message: "Debes seleccionar almenos un grado" }));
+      return setError(() => ({
+        message: "Debes seleccionar almenos un grado",
+      }));
 
     // Convertir el Set de grados a una cadena separada por comas
     const gradosSeleccionados = setToCommaSeparatedString(form.grados);
@@ -86,7 +93,12 @@ const RegisterCourse = ({ eliminateModal }: ModalNoActions) => {
           message,
         }));
       } else {
-        const { message }: SuccessMessageAPI = await res.json();
+        const { message, Id }: SuccessMessageAPI = await res.json();
+
+        if (Id) {
+          handleAddNewCourseRow(Id, form.nombre, gradosSeleccionados);
+        }
+
         setSuccessMessage(() => ({
           message: message ?? "Curso Registrado",
         }));

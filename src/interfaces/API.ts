@@ -8,4 +8,5 @@ export interface ErrorAPI {
 export interface SuccessMessageAPI {
   message: string;
   alerts?: Alerts;
+  Id?: number
 }

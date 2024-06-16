@@ -58,7 +58,7 @@ const RegistrarProfesor = () => {
 
   const [file, setFile] = useState<File | null>(null);
 
-  const registrarEstudiante = async () => {
+  const registrarProfesor = async () => {
     const formData = new FormData();
     formData.append("DNI_Profesor", form.DNI_Profesor);
     formData.append("Nombres", form.Nombres);
@@ -131,7 +131,7 @@ const RegistrarProfesor = () => {
       } else {
         const { message }: SuccessMessageAPI = await res.json();
         setSuccessMessage(() => ({
-          message: message ?? "Estudiante Registrado",
+          message: message ?? "Profesor Registrado",
         }));
 
         setForm(initialForm);
@@ -139,12 +139,12 @@ const RegistrarProfesor = () => {
 
       setIsSomethingLoading(false);
     } catch (e) {
-      setError(() => ({ message: "No se pudo registrar el estudiante" }));
+      setError(() => ({ message: "No se pudo registrar el profesor" }));
       setIsSomethingLoading(false);
     }
   };
 
-  const registrarEstudiantes = async () => {
+  const registrarProfesores = async () => {
     try {
       if (!csvData)
         return setError(() => ({
@@ -175,13 +175,14 @@ const RegistrarProfesor = () => {
       setIsThereFileUploaded(false);
       setIsSomethingLoading(false);
     } catch (e) {
-      setError(() => ({ message: "No se pudo registrar los estudiantes" }));
+      setError(() => ({ message: "No se pudo registrar los profesores" }));
       setIsSomethingLoading(false);
     }
   };
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setError(null);
+    setSuccessMessage(null);
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -194,9 +195,9 @@ const RegistrarProfesor = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (registerWithCSV) {
-      registrarEstudiantes();
+      registrarProfesores();
     } else {
-      registrarEstudiante();
+      registrarProfesor();
     }
   };
 
@@ -318,7 +319,7 @@ const RegistrarProfesor = () => {
             }
             type="submit"
           >
-            {registerWithCSV ? "Registrar con CSV" : "Registrar Estudiante"}
+            {registerWithCSV ? "Registrar con CSV" : "Registrar Profesor"}
             {isSomethingLoading && (
               <Loader backgroundSize="8px" width="25px" color="black" />
             )}
