@@ -23,6 +23,10 @@ import { delegarEvento } from "@/lib/utils/delegacionDeEventos";
 import { RootState } from "@/store";
 
 const Header = () => {
+  const urlAPI = useSelector<RootState>(
+    (state) => state.globalConstants.urlAPI
+  );
+
   const sidebarIsOpen = useSelector(
     (state: RootState) => state.flags.sidebarIsOpen
   );
@@ -91,6 +95,33 @@ const Header = () => {
       true
     );
 
+    const getPhotoPerfilImage = async () => {
+      if (isLoginPage) return;
+
+      const resToken = await fetch("/api/auth/myToken");
+      if (!resToken.ok) return;
+
+      const { token } = await resToken.json();
+
+      const resImage = await fetch(`${urlAPI}/api/auth/me/image`, {
+        method: "GET",
+        headers: { Authorization: token },
+      });
+
+      if (resImage.ok) {
+        const { Foto_Perfil_URL } = await resImage.json();
+        UserSessionData.urlImage = Foto_Perfil_URL;
+      }
+    };
+
+    // Solicitando la imagen de perfil del usuario
+    if (
+      UserSessionData.role === "student" ||
+      UserSessionData.role === "teacher"
+    ) {
+      getPhotoPerfilImage();
+    }
+
     return () => {
       resizeObserverHeader.observe(headerHTML);
       window.removeEventListener("resize", handleResize);
@@ -134,7 +165,6 @@ const Header = () => {
               <p className="font-bold leading-tight">SEPÚLVEDA FERNÁNDEZ</p>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -164,7 +194,7 @@ const Header = () => {
           <div className="flex items-center justify-center">
             {UserSessionData.urlImage ? (
               <img
-                style={{boxShadow:"0 0px 8px rgba(0, 0, 0, 0.2)"}}
+                style={{ boxShadow: "0 0px 8px rgba(0, 0, 0, 0.2)" }}
                 className="aspect-square min-w-10 max-w-10  max-md:mr-2 -border-2  rounded-[50%] border border-black bg-contain object-cover bg-no-repeat bg-center"
                 src={UserSessionData.urlImage}
                 alt="Tu foto de perfil"
