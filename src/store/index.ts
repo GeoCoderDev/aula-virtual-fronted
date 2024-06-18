@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+
 import globalConstantsReducer from "@/state/Constants";
 import elementDimensionsReducer from "@/state/ElementDimensions/index";
 import flagsReducer from "@/state/Flags";

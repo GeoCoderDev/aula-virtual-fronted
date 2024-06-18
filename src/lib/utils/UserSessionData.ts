@@ -9,14 +9,15 @@ export interface UserData {
 }
 
 export class UserSessionData {
+  
   static set role(value: Role) {
     localStorage.setItem("role", value);
   }
 
-  static get role(): Role {
+  static get role(): Role | undefined {
     const roleGetted = localStorage.getItem("role");
-    if (!roleGetted)
-      throw new CustomError(UserSessionDataErrors.NOT_ROLE_IN_LOCAL_STORAGE);
+    if (!roleGetted) return undefined;
+    // throw new CustomError(UserSessionDataErrors.NOT_ROLE_IN_LOCAL_STORAGE);
     return roleGetted as Role;
   }
 
@@ -24,12 +25,12 @@ export class UserSessionData {
     localStorage.setItem("username", value);
   }
 
-  static get username() {
+  static get username(): string | undefined {
     const usernameGetted = localStorage.getItem("username");
-    if (!usernameGetted)
-      throw new CustomError(
-        UserSessionDataErrors.NOT_USERNAME_IN_LOCAL_STORAGE
-      );
+    if (!usernameGetted) return undefined;
+    // throw new CustomError(
+    //   UserSessionDataErrors.NOT_USERNAME_IN_LOCAL_STORAGE
+    // );
     return usernameGetted;
   }
 
@@ -42,18 +43,5 @@ export class UserSessionData {
     return urlImageGetted || undefined;
   }
 
-  getObjectData(): UserData {
-    const username = localStorage.getItem("username");
-    const role = localStorage.getItem("role");
-    const urlImage = localStorage.getItem("urlImage");
 
-    if (!username)
-      throw new CustomError(
-        UserSessionDataErrors.NOT_USERNAME_IN_LOCAL_STORAGE
-      );
-    if (!role)
-      throw new CustomError(UserSessionDataErrors.NOT_ROLE_IN_LOCAL_STORAGE);
-
-    return { username, role: role as Role, urlImage };
-  }
 }

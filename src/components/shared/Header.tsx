@@ -174,7 +174,7 @@ const Header = () => {
             {UserSessionData.username}
           </h1>
           <p className="text-left text-[0.9rem] leading-4 italic">
-            {RolesEspañol[UserSessionData.role]}
+            {RolesEspañol[UserSessionData.role!]}
           </p>
         </div>
 
