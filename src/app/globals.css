@@ -14,7 +14,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-
 }
 
 /* CLASE UTILES */
@@ -106,7 +105,7 @@
   }
 
   .section-tittle {
-    @apply text-4xl font-extrabold;
+    @apply text-4xl font-extrabold flex flex-wrap;
   }
 
   .edition-button {
@@ -119,6 +118,10 @@
 
   .ver-button {
     @apply text-white font-medium px-2 py-1 rounded-lg bg-azul-pablo;
+  }
+
+  .separator-courses {
+    @apply h-[0.2rem] w-full bg-black rounded-full border-none;
   }
 }
 

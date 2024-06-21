@@ -11,9 +11,14 @@ import { UserSessionData } from "@/lib/utils/UserSessionData";
 import { useEffect, useState } from "react";
 import DropDownTopic from "./DropDownTopic";
 import { CourseDataResponse } from "@/interfaces/Course";
+import AddTopicIcon from "@/components/icons/courses/AddTopicIcon";
+
+const TEACHER_ASOCIATED_NOT_FOUND = "No hay ningun profesor asignado";
 
 const CourseData = ({ idCourseClassroom }: { idCourseClassroom: number }) => {
-  const [courseData, setCourseData] = useState<CourseDataResponse>();
+  const [courseData, setCourseData] = useState<
+    CourseDataResponse & { isTeacher: boolean }
+  >();
 
   const {
     error,
@@ -46,7 +51,10 @@ const CourseData = ({ idCourseClassroom }: { idCourseClassroom: number }) => {
         } else {
           const courseData: CourseDataResponse = await res.json();
 
-          setCourseData(() => courseData);
+          setCourseData(() => ({
+            ...courseData,
+            isTeacher: !Boolean(courseData.Profesor_Asociado),
+          }));
         }
 
         setIsSomethingLoading(false);
@@ -80,30 +88,44 @@ const CourseData = ({ idCourseClassroom }: { idCourseClassroom: number }) => {
       )}
 
       {!error && !isSomethingLoading && courseData && (
-        <div className="w-full flex flex-col">
-          <h1 className="section-tittle">
-            {courseData.Nombre_Curso} - {GradosInterpretacion[courseData.Grado]}{" "}
-            {courseData.Seccion}
-          </h1>
-          {courseData.Profesor_Asociado ? (
-            <h3 className="text-[1.5rem]">
-              Prof. {courseData.Profesor_Asociado}
+        <div className="w-full flex flex-col -border-2">
+          <div className="flex gap-4 items-center flex-wrap justify-center w-max max-w-[90%]">
+            <h1 className="section-tittle break-words">
+              {courseData.Nombre_Curso} -{" "}
+              {GradosInterpretacion[courseData.Grado]} {courseData.Seccion}
+            </h1>
+
+            {courseData.isTeacher && (
+              <button
+                title="Agregar Tema"
+                className="bg-verde-spotify py-2 px-3 rounded-[0.5rem]"
+              >
+                <AddTopicIcon className="aspect-square w-8" />
+              </button>
+            )}
+          </div>
+          {courseData.Profesor_Asociado && (
+            <h3 className="text-[1.5rem] mt-2 mb-1">
+              {courseData.Profesor_Asociado !== TEACHER_ASOCIATED_NOT_FOUND &&
+                "Prof."}{" "}
+              {courseData.Profesor_Asociado}
             </h3>
-          ) : (
-            UserSessionData.role === "student" && (
-              <h3 className="text-[1.5rem]">No hay ningun profesor asignado</h3>
-            )
           )}
 
-          {courseData.Temas ? (
-            courseData.Temas.map((topic, index) => (
-              <DropDownTopic topic={topic} key={index} />
-            ))
-          ) : (
-            <>
-              <div>Aun no se han agregado temas a este curso</div>
-            </>
-          )}
+          <hr className="separator-courses mt-2" />
+
+          <div className="mt-6 flex flex-col gap-8">
+            {courseData.Temas
+              ? courseData.Temas.map((topic, index) => (
+                  <DropDownTopic
+                    isTeacher={courseData.isTeacher}
+                    topic={topic}
+                    key={index}
+                    index={index + 1}
+                  />
+                ))
+              : "Aun no se han agregado temas a este curso"}
+          </div>
         </div>
       )}
     </>

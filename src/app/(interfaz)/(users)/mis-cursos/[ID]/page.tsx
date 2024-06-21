@@ -32,8 +32,8 @@ const Curso = ({ params: { ID } }: { params: { ID: number } }) => {
   }, [fetchAPI]);
 
   return (
-    <div className="flex flex-col gap-y-4">
-      <div className="flex">
+    <div className="flex flex-col gap-y-1 w-full">
+      <div className="flex -border-2">
         <Link href="/mis-cursos" as={"/mis-cursos"}>
           <div className="cursor-pointer hover:underline">Mis Cursos</div>
         </Link>
