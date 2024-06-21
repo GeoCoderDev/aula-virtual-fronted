@@ -3,8 +3,8 @@ import { serialize } from "cookie";
 import { isStaticAsset } from "./lib/helpers/isStaticAsset";
 import validateCourseId from "./lib/helpers/validations/validateCursoID";
 
-// const urlAPIBackend = "http://ec2-3-140-253-127.us-east-2.compute.amazonaws.com";
-const urlAPIBackend = "http://localhost";
+const urlAPIBackend = "http://ec2-3-140-253-127.us-east-2.compute.amazonaws.com";
+// const urlAPIBackend = "http://localhost";
 
 export async function middleware(request: NextRequest) {
   const deleteCookies = () => {

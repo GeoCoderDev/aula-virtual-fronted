@@ -21,6 +21,7 @@ import { RolesEspañol } from "@/app/assets/RolesEspañol";
 import Link from "next/link";
 import { delegarEvento } from "@/lib/utils/delegacionDeEventos";
 import { RootState } from "@/store";
+import { logout } from "@/lib/helpers/logout";
 
 const Header = () => {
   const urlAPI = useSelector<RootState>(
@@ -42,17 +43,6 @@ const Header = () => {
   // Función para cambiar la visibilidad del menú
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
-  };
-
-  // Función para manejar el cierre de sesión
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/close", { method: "PUT" });
-      window.location.href = "/login";
-      localStorage.clear();
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
   };
 
   useEffect(() => {
@@ -242,7 +232,7 @@ const Header = () => {
               </Link>
               <li
                 className="border-t border-gray-200 h-10 hover:font-bold cursor-pointer flex items-center justify-center px-3 w-[8rem]"
-                onClick={handleLogout}
+                onClick={logout}
               >
                 Cerrar Sesión
               </li>

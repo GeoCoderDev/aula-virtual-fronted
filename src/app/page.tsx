@@ -71,6 +71,8 @@ const Home = () => {
               Victor Curipaco Marquez
               <br />
               Deivis Quinteros Baldoseda
+              <br />
+              Yrvin Pachas Saravia
             </p>
           </div>
         </div>

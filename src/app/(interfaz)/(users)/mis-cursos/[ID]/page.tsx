@@ -6,6 +6,7 @@ import { ErrorAPI } from "@/interfaces/API";
 import validateCourseId from "@/lib/helpers/validations/validateCursoID";
 import React, { useEffect, useState } from "react";
 import CourseData from "../_components/CourseData";
+import Link from "next/link";
 
 const Curso = ({ params: { ID } }: { params: { ID: number } }) => {
   const [errorCursoID, setErrorCursoID] = useState<ErrorAPI | null>(null);
@@ -32,6 +33,12 @@ const Curso = ({ params: { ID } }: { params: { ID: number } }) => {
 
   return (
     <div className="flex flex-col gap-y-4">
+      <div className="flex">
+        <Link href="/mis-cursos" as={"/mis-cursos"}>
+          <div className="cursor-pointer hover:underline">Mis Cursos</div>
+        </Link>
+      </div>
+
       {errorCursoID && (
         <ErrorMessage
           message={
@@ -51,7 +58,9 @@ const Curso = ({ params: { ID } }: { params: { ID: number } }) => {
         />
       )}
 
-      {!errorCursoID && !isSomethingLoading && <CourseData />}
+      {!errorCursoID && !isSomethingLoading && (
+        <CourseData idCourseClassroom={ID} />
+      )}
     </div>
   );
 };
