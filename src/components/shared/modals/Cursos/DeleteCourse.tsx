@@ -45,14 +45,14 @@ const DeleteCourse = ({
       } else {
         const { message }: SuccessMessageAPI = await res.json();
         setSuccessMessage(() => ({
-          message: message ?? "Administrador Eliminado",
+          message: message ?? "Curso Eliminado",
         }));
       }
 
       setIsSomethingLoading(false);
     } catch (e) {
       setError(() => ({
-        message: "No se pudo eliminar el administrador",
+        message: "No se pudo eliminar el Curso",
       }));
 
       setIsSomethingLoading(false);

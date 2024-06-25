@@ -12,7 +12,7 @@ const MoreOptionsIcon = ({
       title={title}
       onClick={onClick}
       id={Id}
-      className="w-6 -border-2 flex justify-center"
+      className="w-6 -border-2 flex justify-center cursor-pointer"
     >
       <svg
         viewBox="0 0 8 33"

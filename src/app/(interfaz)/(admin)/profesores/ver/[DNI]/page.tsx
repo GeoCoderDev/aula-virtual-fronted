@@ -3,7 +3,6 @@ import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
 import Loader from "@/components/shared/Loader";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import { ErrorAPI } from "@/interfaces/API";
-import { StudentResponse } from "@/interfaces/Student";
 import { TeacherResponse } from "@/interfaces/Teacher";
 import { transformFechaGuionesASlash } from "@/lib/helpers/transformFechaGuionesASlash";
 import validateDNI from "@/lib/helpers/validations/validateDNI";
@@ -64,8 +63,9 @@ const VerProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
     setSuccessMessage(null);
   };
 
+
   return (
-    <>
+    <div className="container mx-auto max-w-screen-lg px-1 py-6">
       {isSomethingLoading && !teacher && (
         <Loader
           color="black"
@@ -81,13 +81,15 @@ const VerProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
       ) : (
         teacher && (
           <div className="w-full mt-4 flex flex-wrap justify-between">
-            <div className="flex justify-between items-center -border-2 min-w-full">
-              <h1 className="section-tittle text-[2.5rem] flex flex-wrap break-words">
-                {teacher.Nombres} {teacher.Apellidos}
-              </h1>
+            <div className="flex justify-between items-center w-full flex-wrap mb-4">
+              <div className="bg-verde-spotify p-4 rounded-lg ">
+                <h1 className="section-title text-[3rem] flex flex-wrap break-words font-bold">
+                  {teacher.Nombres} {teacher.Apellidos}
+                </h1>
+              </div>
 
               <img
-                className="w-64 aspect-square m-0 p-0 rounded-[50%]"
+                className="w-70 sm:w-48 md:w-64 aspect-square m-0 p-0 rounded-full"
                 src={teacher.Foto_Perfil_URL ?? "/svg/No-Foto-Perfil.svg"}
                 alt={
                   teacher.Foto_Perfil_URL
@@ -97,7 +99,7 @@ const VerProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
               />
             </div>
 
-            <div className="flex flex-col w-[min(80%,20rem)]  gap-y-3 border-2">
+            <div className="flex flex-col w-full md:w-1/2 lg:w-5/12 p-4 gap-y-3 bg-white rounded-lg shadow-md text-xl space-y-3 mb-4">
               <span className="font-bold">
                 Nombre de Usuario:{" "}
                 <span className="font-normal">{teacher.Nombre_Usuario}</span>
@@ -112,7 +114,8 @@ const VerProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
                 </span>
               </span>
             </div>
-            <div className="flex flex-col w-[min(80%,20rem)] gap-y-3 border-2">
+
+            <div className="flex flex-col w-full md:w-1/2 lg:w-5/12 p-4 gap-y-3 bg-white rounded-lg shadow-md text-xl space-y-3 mb-4">
               <span className="font-bold">
                 Domicilio:{" "}
                 <span className="font-normal">
@@ -124,12 +127,12 @@ const VerProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
                 <span className="font-normal">{teacher.Telefono}</span>
               </span>
 
-              <div className="self-start flex flex-col items-center justify-center gap-y-4">
+              <div className="self-start flex flex-col items-center justify-center gap-y-4 mt-4">
                 <span className="text-rojo-orange font-extrabold">
                   En caso de emergencia comunicarse con:
                 </span>
 
-                <div className="flex flex-col gap-y-2 p-4 bg-[#ccc] rounded-lg ">
+                <div className="flex flex-col gap-y-2 p-4 bg-verde-spotify rounded-lg shadow-md text-xl">
                   <span>
                     {teacher.Nombre_Contacto_Emergencia} ({" "}
                     {teacher.Parentezco_Contacto_Emergencia} )
@@ -143,10 +146,11 @@ const VerProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
                 </div>
               </div>
             </div>
+
           </div>
         )
       )}
-    </>
+    </div>
   );
 };
 

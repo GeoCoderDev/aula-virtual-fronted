@@ -42,6 +42,7 @@ const config: Config = {
         "amarillo-pooh-dark": "#b38000",
         "negro": "#000000",
         "negro-claro": "#303030",
+        "color-interfaz":"#667788"
       },
     },
   },
