@@ -4,7 +4,7 @@ import { isStaticAsset } from "./lib/helpers/isStaticAsset";
 import validateCourseId from "./lib/helpers/validations/validateCursoID";
 
 const urlAPIBackend =
-  "http://ec2-18-218-163-145.us-east-2.compute.amazonaws.com";
+  "http://ec2-3-140-247-8.us-east-2.compute.amazonaws.com";
 // const urlAPIBackend = "http://localhost";
 
 export async function middleware(request: NextRequest) {

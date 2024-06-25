@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState =
-  "http://ec2-18-218-163-145.us-east-2.compute.amazonaws.com";
+  "http://ec2-3-140-247-8.us-east-2.compute.amazonaws.com";
 // const initialState = "http://localhost";
 
 const urlAPISlice = createSlice({
