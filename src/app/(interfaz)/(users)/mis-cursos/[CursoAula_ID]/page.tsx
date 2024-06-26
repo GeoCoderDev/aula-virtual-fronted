@@ -13,13 +13,8 @@ const Curso = ({ params: { CursoAula_ID } }: { params: { CursoAula_ID: number } 
 
   const {
     error,
-    setError,
-    fetchCancelables,
     isSomethingLoading,
-    setIsSomethingLoading,
-    successMessage,
-    setSuccessMessage,
-    fetchAPI,
+    fetchAPI
   } = useRequestAPIFeatures();
 
   useEffect(() => {

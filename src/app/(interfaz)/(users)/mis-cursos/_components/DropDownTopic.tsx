@@ -5,7 +5,8 @@ import { Topic } from "@/interfaces/Topic";
 import { useEffect, useState } from "react";
 import DropdownOptions from "./DropDownOptions";
 import { delegarEvento } from "@/lib/utils/delegacionDeEventos";
-import AddFileToTopic from "@/components/shared/modals/TopicResources/AddFile";
+import AddFileToTopic from "@/components/shared/modals/Recursos-Tema/AddFile";
+import ChangeTopicName from "@/components/shared/modals/Temas/ChangeTopicName";
 
 const DropDownTopic = ({
   topic,
@@ -20,6 +21,7 @@ const DropDownTopic = ({
   const [moreOptionsDisplayed, setMoreOptionsDisplayed] = useState(false);
 
   const [viewAddFileToTopicModal, setViewAddFileToTopicModal] = useState(false);
+  const [viewChangeTopicName, setViewChangeTopicName] = useState(false);  
 
   useEffect(() => {
     delegarEvento(
@@ -56,6 +58,7 @@ const DropDownTopic = ({
               />
               {moreOptionsDisplayed && (
                 <DropdownOptions
+                  setViewChangeTopicName={setViewChangeTopicName}
                   setViewAddFileToTopicModal={setViewAddFileToTopicModal}
                 />
               )}
@@ -64,6 +67,7 @@ const DropDownTopic = ({
         </div>
         <div className="border-t-2 border-black"></div>
       </div>
+
       {viewAddFileToTopicModal && (
         <AddFileToTopic
           topic={topic}
@@ -73,6 +77,10 @@ const DropDownTopic = ({
           }}
         />
       )}
+
+      {viewChangeTopicName && <ChangeTopicName eliminateModal={()=>{
+        setViewChangeTopicName(false);
+      }}/>}
     </>
   );
 };

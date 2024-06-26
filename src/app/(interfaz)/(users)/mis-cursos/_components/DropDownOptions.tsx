@@ -2,8 +2,10 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 const DropdownOptions = ({
   setViewAddFileToTopicModal,
+  setViewChangeTopicName,
 }: {
   setViewAddFileToTopicModal: Dispatch<SetStateAction<boolean>>;
+  setViewChangeTopicName: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
     <>
@@ -12,7 +14,12 @@ const DropdownOptions = ({
         className="absolute top-[100%] right-0 mt-1 bg-white p-4 z-[200] rounded-[0.8rem]"
       >
         <ul className="list-none flex flex-col gap-y-1 w-[9rem]">
-          <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
+          <li
+            className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]"
+            onClick={() => {
+              setViewChangeTopicName(true);
+            }}
+          >
             Cambiar Nombre
           </li>
           <h5 className="font-bold hover:cursor-default p-1">
@@ -42,7 +49,6 @@ const DropdownOptions = ({
           </li>
         </ul>
       </div>
-      
     </>
   );
 };

@@ -6,12 +6,12 @@ import Loader from "@/components/shared/Loader";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import { ErrorAPI } from "@/interfaces/API";
 
-import { UserSessionData } from "@/lib/utils/UserSessionData";
-
 import { useEffect, useState } from "react";
 import DropDownTopic from "./DropDownTopic";
 import { CourseDataResponse } from "@/interfaces/Course";
 import AddTopicIcon from "@/components/icons/courses/AddTopicIcon";
+import AddTopic from "@/components/shared/modals/Temas/AddTopic";
+import { Topic } from "@/interfaces/Topic";
 
 const TEACHER_ASOCIATED_NOT_FOUND = "No hay ningun profesor asignado";
 
@@ -20,12 +20,12 @@ const CourseData = ({ idCourseClassroom }: { idCourseClassroom: number }) => {
     CourseDataResponse & { isTeacher: boolean }
   >();
 
+  const [viewAddTopic, setViewAddTopic] = useState(false);
+
   const {
     error,
     fetchAPI,
     isSomethingLoading,
-    setSuccessMessage,
-    successMessage,
     setError,
     setIsSomethingLoading,
   } = useRequestAPIFeatures();
@@ -67,6 +67,15 @@ const CourseData = ({ idCourseClassroom }: { idCourseClassroom: number }) => {
     fetchCourseData();
   }, [fetchAPI]);
 
+  const addTopicFrontend = (newTopic: Topic) => {
+    if (!courseData) return;
+
+    setCourseData((prevData) => ({
+      ...prevData!,
+      Temas: [...(prevData!.Temas ?? []), newTopic]
+    }));
+  };
+
   return (
     <>
       {isSomethingLoading && (
@@ -99,6 +108,9 @@ const CourseData = ({ idCourseClassroom }: { idCourseClassroom: number }) => {
               <button
                 title="Agregar Tema"
                 className="bg-verde-spotify py-2 px-3 rounded-[0.5rem]"
+                onClick={() => {
+                  setViewAddTopic(true);
+                }}
               >
                 <AddTopicIcon className="aspect-square w-8" />
               </button>
@@ -127,6 +139,16 @@ const CourseData = ({ idCourseClassroom }: { idCourseClassroom: number }) => {
               : "Aun no se han agregado temas a este curso"}
           </div>
         </div>
+      )}
+
+      {viewAddTopic && (
+        <AddTopic
+          addTopicFrontend={addTopicFrontend}
+          idCourseClassroom={idCourseClassroom}
+          eliminateModal={() => {
+            setViewAddTopic(false);
+          }}
+        />
       )}
     </>
   );
