@@ -72,8 +72,25 @@ const CourseData = ({ idCourseClassroom }: { idCourseClassroom: number }) => {
 
     setCourseData((prevData) => ({
       ...prevData!,
-      Temas: [...(prevData!.Temas ?? []), newTopic]
+      Temas: [...(prevData!.Temas ?? []), newTopic],
     }));
+  };
+
+  const changeNameTopicFrontend = (idTema: number, newName: string) => {
+    if (!courseData) return;
+
+    setCourseData((prevData) => {
+      if (!prevData) return prevData;
+
+      const updatedTemas = prevData!.Temas!.map((topic) =>
+        topic.Id_Tema === idTema ? { ...topic, Nombre_Tema: newName } : topic
+      );
+
+      return {
+        ...prevData,
+        Temas: updatedTemas,
+      };
+    });
   };
 
   return (
@@ -130,6 +147,10 @@ const CourseData = ({ idCourseClassroom }: { idCourseClassroom: number }) => {
             {courseData.Temas
               ? courseData.Temas.map((topic, index) => (
                   <DropDownTopic
+                    Nombre_Curso={courseData.Nombre_Curso}
+                    Grado={courseData.Grado}
+                    Seccion={courseData.Seccion}
+                    changeNameTopicFrontend={changeNameTopicFrontend}
                     isTeacher={courseData.isTeacher}
                     topic={topic}
                     key={index}

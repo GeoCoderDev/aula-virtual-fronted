@@ -1,5 +1,4 @@
-
-import globalConstantsReducer from "@/state/Constants";
+import globalConstantsReducer from "@/state/constants";
 import elementDimensionsReducer from "@/state/ElementDimensions/index";
 import flagsReducer from "@/state/Flags";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";

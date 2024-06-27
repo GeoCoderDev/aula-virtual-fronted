@@ -5,23 +5,35 @@ import { Topic } from "@/interfaces/Topic";
 import { useEffect, useState } from "react";
 import DropdownOptions from "./DropDownOptions";
 import { delegarEvento } from "@/lib/utils/delegacionDeEventos";
-import AddFileToTopic from "@/components/shared/modals/Recursos-Tema/AddFile";
+import AddFileToTopic from "@/components/shared/modals/Recursos-Tema/AddFileToTopic";
 import ChangeTopicName from "@/components/shared/modals/Temas/ChangeTopicName";
+import AddHomeworkToTopic from "@/components/shared/modals/Recursos-Tema/AddHomeworkToTopic";
 
 const DropDownTopic = ({
   topic,
   index,
   isTeacher,
+  Nombre_Curso,
+  Grado,
+  Seccion,
+  changeNameTopicFrontend,
 }: {
   topic: Topic;
   index: number;
   isTeacher: boolean;
+  changeNameTopicFrontend: (idTema: number, newName: string) => void;
+  Nombre_Curso: string;
+  Grado: string;
+  Seccion: string;
 }) => {
   const IDMoreOptionsIcon = `LIST-${index}`;
   const [moreOptionsDisplayed, setMoreOptionsDisplayed] = useState(false);
 
+  const [viewChangeTopicName, setViewChangeTopicName] = useState(false);
+
   const [viewAddFileToTopicModal, setViewAddFileToTopicModal] = useState(false);
-  const [viewChangeTopicName, setViewChangeTopicName] = useState(false);  
+
+  const [viewAddHomeworkTopic, setViewAddHomeworkTopic] = useState(false);
 
   useEffect(() => {
     delegarEvento(
@@ -58,6 +70,7 @@ const DropDownTopic = ({
               />
               {moreOptionsDisplayed && (
                 <DropdownOptions
+                  setViewAddHomeworkTopic={setViewAddHomeworkTopic}
                   setViewChangeTopicName={setViewChangeTopicName}
                   setViewAddFileToTopicModal={setViewAddFileToTopicModal}
                 />
@@ -68,8 +81,21 @@ const DropDownTopic = ({
         <div className="border-t-2 border-black"></div>
       </div>
 
+      {viewChangeTopicName && (
+        <ChangeTopicName
+          changeNameTopicFrontend={changeNameTopicFrontend}
+          topic={topic}
+          eliminateModal={() => {
+            setViewChangeTopicName(false);
+          }}
+        />
+      )}
+
       {viewAddFileToTopicModal && (
         <AddFileToTopic
+          Nombre_Curso={Nombre_Curso}
+          Grado={Grado}
+          Seccion={Seccion}
           topic={topic}
           index={index}
           eliminateModal={() => {
@@ -78,9 +104,18 @@ const DropDownTopic = ({
         />
       )}
 
-      {viewChangeTopicName && <ChangeTopicName eliminateModal={()=>{
-        setViewChangeTopicName(false);
-      }}/>}
+      {viewAddHomeworkTopic && (
+        <AddHomeworkToTopic
+          Nombre_Curso={Nombre_Curso}
+          Grado={Grado}
+          Seccion={Seccion}
+          topic={topic}
+          index={index}
+          eliminateModal={() => {
+            setViewAddHomeworkTopic(false);
+          }}
+        />
+      )}
     </>
   );
 };

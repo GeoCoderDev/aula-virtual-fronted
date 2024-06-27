@@ -9,7 +9,7 @@ const SuccessMessage = ({
 }) => {
   return (
     <div
-      className={`w-full text-wrap break-words text-verde-spotify font-bold text-center ${className}`}
+      className={` w-full text-wrap break-words text-verde-spotify font-bold text-center ${className}`}
     >
       {message}
     </div>

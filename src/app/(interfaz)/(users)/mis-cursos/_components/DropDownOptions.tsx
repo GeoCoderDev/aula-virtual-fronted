@@ -3,9 +3,11 @@ import { Dispatch, SetStateAction, useState } from "react";
 const DropdownOptions = ({
   setViewAddFileToTopicModal,
   setViewChangeTopicName,
+  setViewAddHomeworkTopic,
 }: {
   setViewAddFileToTopicModal: Dispatch<SetStateAction<boolean>>;
   setViewChangeTopicName: Dispatch<SetStateAction<boolean>>;
+  setViewAddHomeworkTopic: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
     <>
@@ -38,7 +40,12 @@ const DropdownOptions = ({
           <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
             Foro
           </li>
-          <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
+          <li
+            className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]"
+            onClick={() => {
+              setViewAddHomeworkTopic(true);
+            }}
+          >
             Tarea
           </li>
           <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">

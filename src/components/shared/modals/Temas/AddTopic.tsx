@@ -120,7 +120,7 @@ const AddTopic = ({
           }
           type="submit"
         >
-          REGISTRAR TEMAl
+          REGISTRAR TEMA
           {isSomethingLoading && (
             <Loader backgroundSize="8px" width="25px" color="black" />
           )}
