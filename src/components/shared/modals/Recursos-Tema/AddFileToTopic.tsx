@@ -174,7 +174,7 @@ const AddFileToTopic = ({
             cols={30}
             maxLength={255}
             onChange={handleChange}
-            className="custom-input resize-none -border-2 w-full"
+            className="custom-input resize-none -border-2 w-full font-normal"
           ></textarea>
         </label>
 

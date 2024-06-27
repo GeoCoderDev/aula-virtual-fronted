@@ -7,12 +7,12 @@ import DropdownOptions from "./DropDownOptions";
 import { delegarEvento } from "@/lib/utils/delegacionDeEventos";
 import AddFileToTopic from "@/components/shared/modals/Recursos-Tema/AddFileToTopic";
 import ChangeTopicName from "@/components/shared/modals/Temas/ChangeTopicName";
-import AddHomeworkToTopic from "@/components/shared/modals/Recursos-Tema/AddHomeworkToTopic";
 
 const DropDownTopic = ({
   topic,
   index,
   isTeacher,
+  CursoAula_ID,
   Nombre_Curso,
   Grado,
   Seccion,
@@ -22,6 +22,7 @@ const DropDownTopic = ({
   index: number;
   isTeacher: boolean;
   changeNameTopicFrontend: (idTema: number, newName: string) => void;
+  CursoAula_ID: number;
   Nombre_Curso: string;
   Grado: string;
   Seccion: string;
@@ -32,8 +33,6 @@ const DropDownTopic = ({
   const [viewChangeTopicName, setViewChangeTopicName] = useState(false);
 
   const [viewAddFileToTopicModal, setViewAddFileToTopicModal] = useState(false);
-
-  const [viewAddHomeworkTopic, setViewAddHomeworkTopic] = useState(false);
 
   useEffect(() => {
     delegarEvento(
@@ -70,7 +69,8 @@ const DropDownTopic = ({
               />
               {moreOptionsDisplayed && (
                 <DropdownOptions
-                  setViewAddHomeworkTopic={setViewAddHomeworkTopic}
+                  CursoAula_ID={CursoAula_ID}
+                  Id_Tema={topic.Id_Tema}
                   setViewChangeTopicName={setViewChangeTopicName}
                   setViewAddFileToTopicModal={setViewAddFileToTopicModal}
                 />
@@ -100,19 +100,6 @@ const DropDownTopic = ({
           index={index}
           eliminateModal={() => {
             setViewAddFileToTopicModal(false);
-          }}
-        />
-      )}
-
-      {viewAddHomeworkTopic && (
-        <AddHomeworkToTopic
-          Nombre_Curso={Nombre_Curso}
-          Grado={Grado}
-          Seccion={Seccion}
-          topic={topic}
-          index={index}
-          eliminateModal={() => {
-            setViewAddHomeworkTopic(false);
           }}
         />
       )}

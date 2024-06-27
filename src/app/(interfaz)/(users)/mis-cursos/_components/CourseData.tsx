@@ -147,6 +147,7 @@ const CourseData = ({ idCourseClassroom }: { idCourseClassroom: number }) => {
             {courseData.Temas
               ? courseData.Temas.map((topic, index) => (
                   <DropDownTopic
+                    CursoAula_ID={idCourseClassroom}
                     Nombre_Curso={courseData.Nombre_Curso}
                     Grado={courseData.Grado}
                     Seccion={courseData.Seccion}

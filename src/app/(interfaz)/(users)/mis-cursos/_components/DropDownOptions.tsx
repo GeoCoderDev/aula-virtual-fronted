@@ -1,13 +1,16 @@
+import Link from "next/link";
 import { Dispatch, SetStateAction, useState } from "react";
 
 const DropdownOptions = ({
   setViewAddFileToTopicModal,
-  setViewChangeTopicName,
-  setViewAddHomeworkTopic,
+  setViewChangeTopicName,CursoAula_ID,
+  Id_Tema,
+  
 }: {
   setViewAddFileToTopicModal: Dispatch<SetStateAction<boolean>>;
   setViewChangeTopicName: Dispatch<SetStateAction<boolean>>;
-  setViewAddHomeworkTopic: Dispatch<SetStateAction<boolean>>;
+  CursoAula_ID: number;
+  Id_Tema: number;
 }) => {
   return (
     <>
@@ -40,13 +43,13 @@ const DropdownOptions = ({
           <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
             Foro
           </li>
-          <li
-            className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]"
-            onClick={() => {
-              setViewAddHomeworkTopic(true);
-            }}
-          >
-            Tarea
+          <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
+            <Link
+              href={`/${Id_Tema}/crear-tarea`}
+              as={`/mis-cursos/${CursoAula_ID}/${Id_Tema}/crear-tarea`}
+            >
+              Tarea
+            </Link>
           </li>
           <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
             URL

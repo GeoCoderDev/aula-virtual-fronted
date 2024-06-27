@@ -77,6 +77,8 @@ export async function middleware(request: NextRequest) {
       const parts = pathname.replace("/mis-cursos/", "").split("/");
       const courseId = parts[0];
 
+      
+
       const { status } = validateCourseId(courseId);
 
       if (!status) {
