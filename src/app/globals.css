@@ -96,6 +96,12 @@
 }
 
 @layer components {
+
+  .custom-input2 {
+    @apply outline-none w-[100%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black max-w-[100vw];
+    box-shadow: 0 0 10px 4px rgba(0, 255, 111, 0.31);
+  }
+
   .custom-input {
     @apply outline-none w-[60%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black max-w-[80vw];
     box-shadow: 0 0 10px 4px rgba(0, 255, 111, 0.31);
