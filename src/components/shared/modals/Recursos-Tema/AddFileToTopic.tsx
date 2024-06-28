@@ -11,13 +11,7 @@ import separateFullFileName from "../../../../lib/helpers/functions/separateFull
 import { equalObjects } from "@/lib/helpers/equalObjects";
 import validateFileExtension from "@/lib/helpers/validations/validateFileExtension";
 
-interface FileTopicRegisterForm {
-  Titulo: string;
-  Descripcion_Recurso?: string;
-  Grado: string;
-  Seccion: string;
-  Nombre_Curso: string;
-}
+interface FileTopicRegisterForm extends RecursoTemaRegisterFields {}
 
 const AddFileToTopic = ({
   eliminateModal,

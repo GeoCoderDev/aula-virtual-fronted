@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
       maxAge: 0,
     });
 
-    NextResponse.redirect(new URL("/login", request.url), {
+    return NextResponse.redirect(new URL("/login", request.url), {
       headers: {
         "Set-Cookie": `${deletedTokenCookie}, ${deletedRoleCookie}`,
       },
@@ -50,10 +50,11 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    if (
-      !role ||
-      !/^\s*(?:admin|superadmin|teacher|student)\s*$/i.test(role.value)
-    ) {
+    if (!token || !role) {
+      return deleteCookies();
+    }
+
+    if (!/^\s*(?:admin|superadmin|teacher|student)\s*$/i.test(role.value)) {
       throw new Error("ROLE-NOT-VALID");
     }
 
@@ -61,23 +62,13 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
-    if (!token && !pathname.startsWith("/login")) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-
-    if (
-      token &&
-      (pathname.startsWith("/administradores") ||
-        pathname.startsWith("/configuraciones"))
-    ) {
+    if (token && (pathname.startsWith("/administradores") || pathname.startsWith("/configuraciones"))) {
       // Realiza acciones específicas para roles administrativos si es necesario
     }
 
     if (pathname.startsWith("/mis-cursos/")) {
       const parts = pathname.replace("/mis-cursos/", "").split("/");
       const courseId = parts[0];
-
-      
 
       const { status } = validateCourseId(courseId);
 
@@ -91,7 +82,7 @@ export async function middleware(request: NextRequest) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: token?.value as any, //Lamentablemente por alguna razon no se puede enviar info en los headers
+            Authorization: token?.value as any, // Lamentablemente por alguna razón no se puede enviar info en los headers
           },
           body: JSON.stringify({ Authorization: token?.value }),
         }
@@ -106,8 +97,7 @@ export async function middleware(request: NextRequest) {
 
     return NextResponse.next();
   } catch (e) {
-    deleteCookies();
-    return;
+    return deleteCookies();
   }
 }
 

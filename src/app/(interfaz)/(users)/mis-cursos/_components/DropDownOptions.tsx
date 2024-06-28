@@ -3,9 +3,9 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 const DropdownOptions = ({
   setViewAddFileToTopicModal,
-  setViewChangeTopicName,CursoAula_ID,
+  setViewChangeTopicName,
+  CursoAula_ID,
   Id_Tema,
-  
 }: {
   setViewAddFileToTopicModal: Dispatch<SetStateAction<boolean>>;
   setViewChangeTopicName: Dispatch<SetStateAction<boolean>>;
@@ -43,14 +43,14 @@ const DropdownOptions = ({
           <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
             Foro
           </li>
-          <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
-            <Link
-              href={`/${Id_Tema}/crear-tarea`}
-              as={`/mis-cursos/${CursoAula_ID}/${Id_Tema}/crear-tarea`}
-            >
+          <Link
+            href={`/${Id_Tema}/crear-tarea`}
+            as={`/mis-cursos/${CursoAula_ID}/${Id_Tema}/crear-tarea`}
+          >
+            <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
               Tarea
-            </Link>
-          </li>
+            </li>
+          </Link>
           <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
             URL
           </li>

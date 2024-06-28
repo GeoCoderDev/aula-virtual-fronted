@@ -6,6 +6,14 @@ interface RecursoTema {
   Tipo: number;
 }
 
+interface RecursoTemaRegisterFields{
+  Titulo: string;
+  Descripcion_Recurso?: string;
+  Grado: string;
+  Seccion: string;
+  Nombre_Curso: string;
+}
+
 // Esta interfaz representa la respuesta JSON que se espera del endpoint
 interface RecursosTemaResponse {
   message?: string; // Mensaje de error o informativo en caso de ser necesario
