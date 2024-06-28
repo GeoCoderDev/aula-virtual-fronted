@@ -9,7 +9,6 @@ import { RootState } from "@/store";
 import { switchSidebarIsOpen } from "@/state/Flags/sidebarIsOpen";
 
 const Sidebar = () => {
-
   const dispatch = useDispatch();
 
   const pathname = usePathname();
@@ -22,7 +21,9 @@ const Sidebar = () => {
     (state: RootState) => state.elementsDimensions.windowHeight
   );
 
-  const windowWidth = useSelector((state:RootState)=>state.elementsDimensions.windowWidth);
+  const windowWidth = useSelector(
+    (state: RootState) => state.elementsDimensions.windowWidth
+  );
 
   const sidebarIsOpen = useSelector(
     (state: RootState) => state.flags.sidebarIsOpen
@@ -33,8 +34,8 @@ const Sidebar = () => {
   return (
     <>
       <nav
-        id="sidebar"
-        className={`sticky overflow-auto bg-white`}
+        id="sidebar"        
+        className={`sticky overflow-auto bg-white top-0`}
         onClick={() => {
           if (windowWidth < 768) dispatch(switchSidebarIsOpen(null));
         }}

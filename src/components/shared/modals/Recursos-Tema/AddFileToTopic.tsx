@@ -84,7 +84,7 @@ const AddFileToTopic = ({
     formData.append("Grado", form.Grado);
     formData.append("Seccion", form.Seccion);
     if (form.Descripcion_Recurso)
-      formData.append("Seccion", form.Descripcion_Recurso);
+      formData.append("Descripcion_Recurso", form.Descripcion_Recurso);
 
     formData.append("Nombre_Curso", form.Nombre_Curso);
 

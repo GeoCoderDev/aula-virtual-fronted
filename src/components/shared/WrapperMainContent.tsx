@@ -25,7 +25,7 @@ const WrapperMainContent = ({
     <>
       <div
         id="main-content"
-        className={`w-full max-w-[100vw] flex items-start justify-start relative ${
+        className={`w-full max-w-[100vw] flex items-start justify-start  ${
           !isLoginPage && "p-8"
         }`}
       >

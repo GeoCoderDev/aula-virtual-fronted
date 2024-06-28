@@ -29,7 +29,7 @@ export default function RootLayout({
       <body className={`${inter.className} flex flex-col min-h-[100svh]`}>
         <ProviderStore>
           <Header />
-          <div className="flex relative">
+          <div className="top-0 flex relative">
             <Sidebar />
             <main className="flex-1 flex items-center justify-center">
               <WrapperMainContent>{children}</WrapperMainContent>
