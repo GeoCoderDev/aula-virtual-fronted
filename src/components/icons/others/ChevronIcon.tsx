@@ -9,7 +9,7 @@ const ChevronIcon = ({
   return (
     <div title={title} onClick={onClick}>
       <svg
-
+        style={{ transition: "all 200ms" }}
         viewBox="0 0 11 23"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

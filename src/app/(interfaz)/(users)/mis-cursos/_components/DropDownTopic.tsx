@@ -57,7 +57,6 @@ const DropDownTopic = ({
 
   const toggleExpand = () => {
     if (expandibleElement.current) {
-      setIsExpand((prev) => !prev);
       if (isExpand) {
         expandibleElement.current.style.height = "0px";
       } else {
@@ -67,6 +66,7 @@ const DropDownTopic = ({
       expandibleElement.current.classList.toggle("border-2");
       expandibleElement.current.classList.toggle("p-5");
     }
+    setIsExpand((prev) => !prev);
   };
 
   useEffect(() => {
@@ -81,6 +81,7 @@ const DropDownTopic = ({
   }, []);
 
   const handleExpand = async () => {
+    if (isSomethingLoading) return;
     if (isExpand) return toggleExpand();
 
     const fetchCancelable = fetchAPI(
@@ -107,7 +108,9 @@ const DropDownTopic = ({
 
         setTopicResources(() => recursosTema);
 
-        toggleExpand();
+        setTimeout(() => {
+          toggleExpand();
+        }, 150);
       }
 
       setIsSomethingLoading(false);
@@ -126,7 +129,7 @@ const DropDownTopic = ({
           <button
             disabled={isSomethingLoading}
             onClick={handleExpand}
-            title={isSomethingLoading ? "" : "Expandir Tema"}
+            title={isExpand ? "Ocultar Tema" : "Expandir Tema"}
             className={`${
               isSomethingLoading ? "grayscale-[0.5]" : "hover:grayscale-[0.5]"
             } flex items-center justify-center aspect-square w-10 bg-verde-spotify rounded-[0.4rem]`}
@@ -134,12 +137,18 @@ const DropDownTopic = ({
             {isSomethingLoading ? (
               <Loader backgroundSize="8px" width="25px" color="black" />
             ) : (
-              <ChevronIcon className="w-[0.6rem] flex" />
+              <ChevronIcon
+                className={`w-[0.6rem] flex origin-center ${
+                  isExpand && "rotate-90"
+                }`}
+              />
             )}
           </button>
           <h4
-            className="text-[1.2rem] flex-1 cursor-pointer hover:bg-[#ddd] py-2 px-[0.5rem] rounded-[0.5rem]"
-            title="Expandir Tema"
+            className={`${
+              isSomethingLoading ? "bg-[#ddd]" : "hover:bg-[#ddd]"
+            } text-[1.2rem] flex-1 cursor-pointer  py-2 px-[0.5rem] rounded-[0.5rem]`}
+            title={isExpand ? "Ocultar Tema" : "Expandir Tema"}
             onClick={handleExpand}
           >
             TEMA {index}: {topic.Nombre_Tema}
@@ -174,9 +183,14 @@ const DropDownTopic = ({
           className="rounded-[1rem] border-t-2 border-black h-0 overflow-hidden flex flex-col gap-4"
           ref={expandibleElement as LegacyRef<HTMLDivElement>}
         >
-          {topicResources.map((topicResource, index) => (
-            <RecursoTemaComponent topicResource={topicResource} key={index} />
-          ))}
+          {topicResources.length !== 0
+            ? topicResources.map((topicResource, index) => (
+                <RecursoTemaComponent
+                  topicResource={topicResource}
+                  key={index}
+                />
+              ))
+            : "Aun no se han agregado recursos"}
         </div>
       </div>
 
