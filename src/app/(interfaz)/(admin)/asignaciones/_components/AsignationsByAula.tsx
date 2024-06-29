@@ -3,17 +3,12 @@ import AulaSelector from "@/components/inputs/AulaSelector";
 import Loader from "@/components/shared/Loader";
 import AddAsignationByAula from "@/components/shared/modals/Asignaciones/AddAsignationByAula";
 import {
-  Asignacion,
   AsignacionResponse,
   diasSemana,
   HoraAcademica,
 } from "@/interfaces/Asignation";
 import { Aula } from "@/interfaces/Aula";
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
-
-const formatMinutes = (minutes: number) => {
-  return minutes < 10 ? `0${minutes}` : minutes;
-};
 
 const formatTime = (time: string) => {
   return time.substring(0, 5); // Remove seconds
@@ -24,7 +19,9 @@ const generateHoursAndMinutes = (horasAcademicas: HoraAcademica[]) => {
   for (let i = 0; i < horasAcademicas.length; i++) {
     const startHour = formatTime(horasAcademicas[i].Valor);
     const endHour =
-      i < horasAcademicas.length - 1 ? formatTime(horasAcademicas[i + 1].Valor) : null;
+      i < horasAcademicas.length - 1
+        ? formatTime(horasAcademicas[i + 1].Valor)
+        : null;
     if (endHour) {
       hoursAndMinutes.push(`${startHour} - ${endHour}`);
     }
@@ -69,7 +66,7 @@ const AsignationsByAula = () => {
   return (
     <>
       <div className="w-full flex flex-col items-start justify-start gap-y-4">
-        <form className="flex flex-wrap max-w-full items-center gap-x-5 gap-y-4 justify-between">
+        <div className="flex flex-wrap max-w-full items-center gap-x-5 gap-y-4 justify-between">
           <div className="flex items-center gap-x-5 flex-1">
             <label className="font-semibold flex w-auto flex-row items-center gap-x-3 whitespace-nowrap">
               Selecciona un aula:
@@ -83,12 +80,14 @@ const AsignationsByAula = () => {
             />
           </div>
           <button
-            type="submit"
+            onClick={() => {
+              setViewAddAsignationByAulaModal(true);
+            }}
             className="bg-verde-spotify rounded-lg py-3 px-4 font-semibold flex items-center justify-center gap-x-2"
           >
             Añadir Asignación
           </button>
-        </form>
+        </div>
 
         {otherProperties["Horas_Academicas"] &&
         otherProperties["Asignaciones"] ? (
