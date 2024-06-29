@@ -63,8 +63,6 @@ const RegistrarEstudiante = () => {
 
   const [file, setFile] = useState<File | null>(null);
 
-  const [availableSections, setAvailableSections] = useState<string[]>([]);
-
   const registrarEstudiante = async () => {
     const formData = new FormData();
     formData.append("DNI_Estudiante", form.DNI_Estudiante);
@@ -207,30 +205,6 @@ const RegistrarEstudiante = () => {
     }
   };
 
-  const handleSelectChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    handleChange(e);
-    setForm((prev) => ({ ...prev, Seccion: "" }));
-    setAvailableSections([]);
-    if (e.target.value === "") {
-      setAvailableSections([]);
-    } else {
-      const fetchCancelable = fetchAPI(
-        `/api/classrooms/grade/${e.target.value}/sections`
-      );
-
-      if (fetchCancelable === undefined) return;
-
-      const res = await fetchCancelable.fetch();
-
-      if (fetchCancelable?.queryParams?.grado === selectGrado.current?.value)
-        return setAvailableSections([]);
-
-      const sections = await res?.json();
-      setAvailableSections(sections ?? []);
-    }
-  };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -333,9 +307,7 @@ const RegistrarEstudiante = () => {
             setFile={setFile}
             setForm={setForm}
             selectGrado={selectGrado}
-            handleSelectChange={handleSelectChange}
             handleFileChange={handleFileChange}
-            availableSections={availableSections}
             file={file}
             form={form}
             handleChange={handleChange}

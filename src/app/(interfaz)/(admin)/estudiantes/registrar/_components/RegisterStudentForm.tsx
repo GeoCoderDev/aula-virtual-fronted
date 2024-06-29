@@ -1,4 +1,6 @@
+import AulaSelector from "@/components/inputs/AulaSelector";
 import InputPassword from "@/components/shared/InputPassword";
+import { Aula } from "@/interfaces/Aula";
 import { StudentRegisterForm } from "@/interfaces/Student";
 
 import React, {
@@ -13,8 +15,6 @@ const RegisterStudentForm = ({
   handleChange,
   selectGrado,
   setForm,
-  handleSelectChange,
-  availableSections,
   handleFileChange,
   file,
   setFile,
@@ -23,8 +23,7 @@ const RegisterStudentForm = ({
   form: StudentRegisterForm;
   selectGrado: MutableRefObject<HTMLSelectElement | undefined>;
   setForm: Dispatch<SetStateAction<StudentRegisterForm>>;
-  handleSelectChange: React.ChangeEventHandler<HTMLSelectElement>;
-  availableSections: string[];
+
   handleFileChange: ChangeEventHandler<HTMLInputElement>;
   file: File | null;
   setFile: Dispatch<SetStateAction<File | null>>;
@@ -115,49 +114,14 @@ const RegisterStudentForm = ({
           placeholder="dd / mm / aa"
           onChange={handleChange}
         />
-      </label>         
-
-      <label className="flex flex-col gap-y-2 font-bold">
-        Grado:
-        <select
-          ref={selectGrado as React.LegacyRef<HTMLSelectElement>}
-          className="custom-input w-max px-3 text-center"
-          name="Grado"
-          required
-          value={form.Grado}
-          onChange={handleSelectChange}
-        >
-          <option disabled value={""}>
-            - seleccione -
-          </option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
       </label>
 
-      <label className="flex flex-col gap-y-2 font-bold">
-        Sección:
-        <select
-          required
-          value={form.Seccion}
-          className="custom-input w-max px-3 text-center"
-          name="Seccion"
-          disabled={availableSections.length === 0}
-          onChange={handleChange}
-        >
-          <option disabled value="">
-            - seleccione -
-          </option>
-          {availableSections.map((section, index) => (
-            <option value={section} key={index}>
-              {section}
-            </option>
-          ))}
-        </select>
-      </label>
+      <AulaSelector
+        selectGrado={selectGrado}
+        tipo="register"
+        form={form}
+        setForm={setForm as Dispatch<SetStateAction<Aula>>}
+      />
 
       <label
         onMouseUp={() => {

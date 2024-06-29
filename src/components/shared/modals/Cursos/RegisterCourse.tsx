@@ -1,3 +1,4 @@
+"use client";
 import { ModalNoActions } from "@/interfaces/ModalNoActions";
 import ModalContainer from "../../ModalContainer";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";

@@ -1,33 +1,32 @@
 "use client";
 import { Student } from "@/interfaces/Student";
-import React, { useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import StudentRow from "./_components/StudentRow";
 import Link from "next/link";
 import useBatchAPI from "@/app/hooks/useBatchAPI";
 import Loader from "@/components/shared/Loader";
 import WarningMessage from "@/components/shared/messages/WarningMessage";
-import useAPI from "@/app/hooks/useAPI";
+
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
+import { Aula } from "@/interfaces/Aula";
+import AulaSelector from "@/components/inputs/AulaSelector";
 
 const limitStudentsRequired = 50;
 
-
-interface SearchTermsStudent {
-  dni?: string; // DNI del estudiante
-  nombre?: string; // Nombre del estudiante
-  apellidos?: string; // Apellidos del estudiante
-  grado?: string; // Grado del estudiante
-  seccion?: string; // Sección del estudiante
-  estado?: string;
+interface SearchTermsStudent extends Aula {
+  DNI: string; // DNI del estudiante
+  Nombre: string; // Nombre del estudiante
+  Apellidos: string; // Apellidos del estudiante
+  Estado: string;
 }
 
 const searchTermsInitial: SearchTermsStudent = {
-  dni: "",
-  nombre: "",
-  apellidos: "",
-  grado: "",
-  seccion: "",
-  estado: "",
+  DNI: "",
+  Nombre: "",
+  Apellidos: "",
+  Grado: "",
+  Seccion: "",
+  Estado: "",
 };
 
 const Estudiantes = () => {
@@ -38,11 +37,9 @@ const Estudiantes = () => {
   const selectSeccion = useRef<HTMLSelectElement>();
   const selectEstado = useRef<HTMLSelectElement>();
 
-  const [availableSections, setAvailableSections] = useState([]);
 
   const [searchTerms, setSearchTerms] = useState(searchTermsInitial);
 
-  const { fetchAPI } = useAPI();
 
   const {
     fetchNextResults,
@@ -69,34 +66,9 @@ const Estudiantes = () => {
   const handleSelectChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    if (e.target.name === "grado") {
-      setSearchTerms({
-        ...searchTerms,
-        [e.target.name]: e.target.value,
-        seccion: "",
-      });
 
-      setAvailableSections([]);
-      if (e.target.value === "") {
-        setAvailableSections([]);
-      } else {
-        const fetchCancelable = fetchAPI(
-          `/api/classrooms/grade/${e.target.value}/sections`
-        );
-
-        if (fetchCancelable === undefined) return;
-
-        const res = await fetchCancelable.fetch();
-
-        if (fetchCancelable?.queryParams?.grado === selectGrado.current?.value)
-          return setAvailableSections([]);
-
-        const sections = await res?.json();
-        setAvailableSections(sections ?? []);
-      }
-    } else {
       setSearchTerms({ ...searchTerms, [e.target.name]: e.target.value });
-    }
+    
   };
 
   const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,10 +112,10 @@ const Estudiantes = () => {
           <input
             ref={inputDNI as React.LegacyRef<HTMLInputElement>}
             maxLength={8}
-            name="dni"
+            name="DNI"
             className="custom-input w-[8rem]"
             type="text"
-            value={searchTerms.dni}
+            value={searchTerms.DNI}
             onChange={handleInputTextChange}
           />
         </label>
@@ -154,11 +126,11 @@ const Estudiantes = () => {
             ref={inputName as React.LegacyRef<HTMLInputElement>}
             onChange={handleInputTextChange}
             maxLength={60}
-            name="nombre"
+            name="Nombre"
             className="custom-input w-[10rem]"
             type="text"
             placeholder=""
-            value={searchTerms.nombre}
+            value={searchTerms.Nombre}
           />
         </label>
 
@@ -168,49 +140,26 @@ const Estudiantes = () => {
             ref={inputApellido as React.LegacyRef<HTMLInputElement>}
             onChange={handleInputTextChange}
             maxLength={100}
-            name="apellidos"
+            name="Apellidos"
             className="custom-input w-[10rem]"
             type="text"
             placeholder=""
-            value={searchTerms.apellidos}
+            value={searchTerms.Apellidos}
           />
         </label>
 
-        <select
-          ref={selectGrado as React.LegacyRef<HTMLSelectElement>}
-          name="grado"
-          value={searchTerms.grado}
-          onChange={handleSelectChange}
-          className="bg-verde-spotify text-center outline-none px-3 py-2 rounded-[1rem]"
-        >
-          <option value="">GRADO</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-
-        <select
-          ref={selectSeccion as React.LegacyRef<HTMLSelectElement>}
-          name="seccion"
-          value={searchTerms.seccion}
-          onChange={handleSelectChange}
-          disabled={availableSections.length === 0}
-          className="bg-verde-spotify text-center outline-none px-3 py-2 rounded-[1rem]"
-        >
-          <option value="">SECCIÓN</option>
-          {availableSections.map((section, index) => (
-            <option value={section} key={index}>
-              {section}
-            </option>
-          ))}
-        </select>
+        <AulaSelector
+          tipo="search"
+          selectGrado={selectGrado}
+          searchTerms={searchTerms}
+          setSearchTerms={setSearchTerms as Dispatch<SetStateAction<Aula>>}
+          selectSeccion={selectSeccion}
+        />
 
         <select
           ref={selectEstado as React.LegacyRef<HTMLSelectElement>}
-          name="estado"
-          value={searchTerms.estado}
+          name="Estado"
+          value={searchTerms.Estado}
           onChange={handleSelectChange}
           className="bg-verde-spotify text-center outline-none px-3 py-2 rounded-[1rem]"
         >

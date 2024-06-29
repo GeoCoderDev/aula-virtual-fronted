@@ -1,3 +1,4 @@
+import { Aula } from "./Aula";
 import { User } from "./User";
 
 export interface Student extends User {
@@ -6,9 +7,7 @@ export interface Student extends User {
   Seccion: string;
 }
 
-export interface StudentEditionForm {
-  Grado: string;
-  Seccion: string;
+export interface StudentEditionForm extends Aula {
   Nombres: string;
   Apellidos: string;
   Fecha_Nacimiento: string;

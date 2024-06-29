@@ -27,7 +27,9 @@ const useBatchAPI = <T>(
     HTMLInputElement | HTMLSelectElement | undefined
   >[],
   method: MethodHTTP = "GET",
-  body: string | null = null
+  body: string | null = null,
+  keyResults?: keyof T,
+  otherData?: (keyof T)[]
 ) => {
   const { fetchAPI, fetchCancelables } = useAPI();
   const [results, setResults] = useState<Array<T>>([]);
@@ -37,6 +39,7 @@ const useBatchAPI = <T>(
   const [allResultsGetted, setAllResultsGetted] = useState(false);
   const [shouldFetch, setShouldFetch] = useState(true);
   const [error, setError] = useState<ErrorAPI | null>(null);
+  const [otherProperties, setOtherProperties] = useState<any>({});
 
   //Definicion de la funcion fetchNextResults
   const fetchNextResults = useCallback(async () => {
@@ -78,15 +81,29 @@ const useBatchAPI = <T>(
 
       if (!equalsQueryParams) return;
 
-      const {
-        results: nextResults,
-        count: countResults,
-        message,
-      }: {
-        results: Array<T>;
-        count?: number;
-        message?: string;
-      } = await res.json();
+      const respObj:
+        | {
+            results: Array<T>;
+            count?: number;
+            message?: string;
+          }
+        | any = await res.json();
+
+
+      if (otherData) {
+        setOtherProperties(() => {
+          let props: any = {};
+
+          for (const [key, value] of Object.entries(respObj as Object)) {
+            if (otherData.includes(key as keyof T)) {
+              props[key] = value;
+            }
+          }
+          return props;
+        });
+      }
+
+      const { results: nextResults, count: countResults, message } = respObj;
 
       if (res.status === 401) {
         setError(() => ({
@@ -100,12 +117,19 @@ const useBatchAPI = <T>(
 
       if (countResults !== undefined) setCount(() => countResults);
 
-      if (start === 0) {
-        setResults(() => nextResults);
-      } else {
-        setResults(
-          (prevResults) => [...prevResults, ...nextResults] as Array<T>
-        );
+      const resultsDef = keyResults
+        ? respObj[keyResults] ?? nextResults
+        : nextResults;
+
+      if (!resultsDef) setResults(() => []);
+      else {
+        if (start === 0) {
+          setResults(() => resultsDef);
+        } else {
+          setResults(
+            (prevResults) => [...prevResults, ...resultsDef] as Array<T>
+          );
+        }
       }
 
       setStart((prev) => prev + limit);
@@ -157,6 +181,7 @@ const useBatchAPI = <T>(
     allResultsGetted,
     error,
     setResults,
+    otherProperties,
   };
 };
 
