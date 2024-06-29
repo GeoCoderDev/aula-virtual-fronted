@@ -9,6 +9,7 @@ import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
 import { RecursoTemaRegisterFields } from "@/interfaces/RecursoTema";
 import { TopicAdditionalDataResponse } from "@/interfaces/Topic";
 import { equalObjects } from "@/lib/helpers/equalObjects";
+import { toUTC } from "@/lib/helpers/functions/toUTC";
 import { RootState } from "@/store";
 import Link from "next/link";
 import {
@@ -18,6 +19,9 @@ import {
   useState,
 } from "react";
 import { useSelector } from "react-redux";
+
+const MINIMUM_MINUTES_DIFFERENCE = 5;
+const MINIMUM_FUTURE_MINUTES = 5;
 
 interface HomeworkTopicRegisterForm extends RecursoTemaRegisterFields {
   Fecha_hora_apertura: string;
@@ -115,7 +119,6 @@ const CrearTarea = ({
     if (e.target.files && e.target.files.length > 0) {
       reset();
       setDescriptionImage(e.target.files[0]);
-
       const objetoURL = URL.createObjectURL(e.target.files[0]);
       setDescriptionImageURL(() => objetoURL);
     }
@@ -130,13 +133,47 @@ const CrearTarea = ({
     reset();
   };
 
+  const handleChangeDateTime: React.ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) => {
+    const value = toUTC(new Date(e.target.value));
+    setForm((prev) => {
+      return { ...prev!, [e.target.name]: value };
+    });
+    reset();
+  };
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     if (!topicAdditionalData) return;
 
-    const formData = new FormData();
+    const aperturaDate = new Date(form.Fecha_hora_apertura);
+    const limiteDate = new Date(form.Fecha_hora_limite);
+    const currentDate = new Date();
 
+    const futureDate = new Date(
+      currentDate.getTime() + MINIMUM_FUTURE_MINUTES * 60000
+    );
+
+    if (aperturaDate <= futureDate || limiteDate <= futureDate) {
+      setError({
+        message: `Las fechas de apertura y límite deben ser al menos ${MINIMUM_FUTURE_MINUTES} minutos en el futuro.`,
+      });
+      return;
+    }
+
+    const diffInMinutes =
+      (limiteDate.getTime() - aperturaDate.getTime()) / (1000 * 60);
+
+    if (diffInMinutes < MINIMUM_MINUTES_DIFFERENCE) {
+      setError({
+        message: `La fecha de cierre debe ser al menos ${MINIMUM_MINUTES_DIFFERENCE} minutos mayor a la de apertura.`,
+      });
+      return;
+    }
+
+    const formData = new FormData();
     formData.append("Titulo", form.Titulo);
     formData.append("Grado", topicAdditionalData.Grado);
     formData.append("Seccion", topicAdditionalData.Seccion);
@@ -173,15 +210,10 @@ const CrearTarea = ({
 
       if (!res.ok) {
         const { message }: ErrorAPI = await res.json();
-
         if (!message) throw new Error();
-
-        setError(() => ({
-          message,
-        }));
+        setError(() => ({ message }));
       } else {
         const { message }: SuccessMessageAPI = await res.json();
-
         setSuccessMessage(() => ({
           message:
             message ??
@@ -189,7 +221,6 @@ const CrearTarea = ({
         }));
 
         setDescriptionImage(null);
-
         setForm(initialState);
       }
 
@@ -286,8 +317,8 @@ const CrearTarea = ({
                     <input
                       required
                       type="datetime-local"
-                      name=""
-                      id=""
+                      name="Fecha_hora_apertura"
+                      onChange={handleChangeDateTime}
                       className="custom-input w-[15rem] py-2 "
                     />
                   </label>
@@ -296,8 +327,8 @@ const CrearTarea = ({
                     <input
                       required
                       type="datetime-local"
-                      name=""
-                      id=""
+                      name="Fecha_hora_limite"
+                      onChange={handleChangeDateTime}
                       className="custom-input w-[15rem] py-2 "
                     />
                   </label>
@@ -350,25 +381,26 @@ const CrearTarea = ({
                 Puntaje Maximo:
                 <input
                   type="number"
-                  name=""
-                  min={10}
+                  name="Puntaje_Max"
+                  value={form.Puntaje_Max}
+                  onChange={handleChange}
+                  min={1}
                   max={1000}
                   className="custom-input w-[7rem]"
                   required
-                  value={20}
                 />
               </label>
 
               {!successMessage && !isSomethingLoading && error && (
                 <ErrorMessage
                   message={error.message}
-                  className="max-w-[15rem]"
+                  className="max-w-[15rem] self-center"
                 />
               )}
 
               {!error && !isSomethingLoading && successMessage && (
                 <SuccessMessage
-                  className="text-rojo-orange max-w-[15rem]"
+                  className="text-rojo-orange max-w-[15rem] self-center"
                   message={successMessage.message}
                 />
               )}

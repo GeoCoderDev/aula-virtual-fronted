@@ -1,9 +1,17 @@
+export enum ResourceType {
+  Archivo,
+  Foro,
+  Tarea,
+  URL,
+  Cuestionario,
+}
+
 export interface RecursoTema {
   Id_Recurso_Tema: number;
   Titulo: string;
-  Descripcion_Recurso: string;
+  Descripcion_Recurso: string | null;
   Imagen_Key_S3: string | null;
-  Tipo: number;
+  Tipo: ResourceType;
 }
 
 export interface RecursoTemaRegisterFields {
