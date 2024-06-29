@@ -6,6 +6,7 @@ import Loader from "@/components/shared/Loader";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import SuccessMessage from "@/components/shared/messages/SuccessMessage";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
+import { RecursoTemaRegisterFields } from "@/interfaces/RecursoTema";
 import { TopicAdditionalDataResponse } from "@/interfaces/Topic";
 import { equalObjects } from "@/lib/helpers/equalObjects";
 import { RootState } from "@/store";
@@ -18,7 +19,13 @@ import {
 } from "react";
 import { useSelector } from "react-redux";
 
-interface HomeworkTopicRegisterForm extends RecursoTemaRegisterFields {}
+interface HomeworkTopicRegisterForm extends RecursoTemaRegisterFields {
+  Fecha_hora_apertura: string;
+  Fecha_hora_limite: string;
+  Puntaje_Max: number;
+  // Imagen_Descripcion_Nombre?: string;
+  // Nombre_Archivos: string[];
+}
 
 const CrearTarea = ({
   params: { Tema_ID, CursoAula_ID },
@@ -31,10 +38,10 @@ const CrearTarea = ({
 
   const initialState: HomeworkTopicRegisterForm = {
     Titulo: "",
-    Nombre_Curso: "",
-    Grado: "",
-    Seccion: "",
     Descripcion_Recurso: "",
+    Fecha_hora_apertura: "",
+    Fecha_hora_limite: "",
+    Puntaje_Max: 20,
   };
 
   const [form, setForm] = useState(initialState);
@@ -129,13 +136,26 @@ const CrearTarea = ({
     if (!topicAdditionalData) return;
 
     const formData = new FormData();
-    formData.append("Titulo", form.Titulo);
-    formData.append("Grado", form.Grado);
-    formData.append("Seccion", form.Seccion);
-    if (form.Descripcion_Recurso)
-      formData.append("Seccion", form.Descripcion_Recurso);
 
-    formData.append("Nombre_Curso", form.Nombre_Curso);
+    formData.append("Titulo", form.Titulo);
+    formData.append("Grado", topicAdditionalData.Grado);
+    formData.append("Seccion", topicAdditionalData.Seccion);
+    formData.append("Nombre_Curso", topicAdditionalData.Nombre_Curso);
+    formData.append("Fecha_hora_apertura", form.Fecha_hora_apertura);
+    formData.append("Fecha_hora_limite", form.Fecha_hora_limite);
+    formData.append("Puntaje_Max", form.Puntaje_Max.toString());
+
+    if (descriptionImage) {
+      formData.append("Imagen_Descripcion", descriptionImage);
+      formData.append("Imagen_Descripcion_Nombre", descriptionImage.name);
+    }
+
+    if (files) {
+      files.forEach((file, index) => {
+        formData.append(`Nombre_Archivos[]`, file.name);
+        formData.append(`Archivo_${index}`, file);
+      });
+    }
 
     const fetchCancelable = fetchAPI(
       `/api/topicResources/${Tema_ID}/addHomework`,
@@ -226,7 +246,7 @@ const CrearTarea = ({
 
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col w-max h-max gap-y-3"
+              className="flex flex-col w-max h-max gap-y-5"
             >
               <div className="flex gap-y-4 gap-x-8 items-stretch flex-wrap">
                 <div className="flex flex-col -border-2 min-h-[min(15rem,80vh)] justify-between items-center h-full gap-y-4">
@@ -256,19 +276,30 @@ const CrearTarea = ({
                   </label>
                 </div>
 
-                <fieldset className="border-2 border-black p-4 pt-0 rounded-[1rem] flex flex-col gap-y-4">
+                <fieldset className="border-2 border-black p-4 px-6 pt-0 rounded-[1rem] flex flex-col gap-y-4 justify-center">
                   <legend className="ml-4">
                     &nbsp;Duración de la Tarea&nbsp;
                   </legend>
 
-                  <label className="flex flex-col">
+                  <label className="flex flex-col gap-3">
                     <span className="font-semibold">Fecha de Apertura:</span>
-                    <DateTimeSelector />
+                    <input
+                      required
+                      type="datetime-local"
+                      name=""
+                      id=""
+                      className="custom-input w-[15rem] py-2 "
+                    />
                   </label>
-                  <label className="flex flex-col">
+                  <label className="flex flex-col gap-3">
                     <span className="font-semibold">Fecha de Cierre:</span>
-
-                    <DateTimeSelector />
+                    <input
+                      required
+                      type="datetime-local"
+                      name=""
+                      id=""
+                      className="custom-input w-[15rem] py-2 "
+                    />
                   </label>
                 </fieldset>
               </div>
@@ -315,6 +346,19 @@ const CrearTarea = ({
                 />
               </div>
 
+              <label className="flex gap-4 items-center text-center self-center my-2">
+                Puntaje Maximo:
+                <input
+                  type="number"
+                  name=""
+                  min={10}
+                  max={1000}
+                  className="custom-input w-[7rem]"
+                  required
+                  value={20}
+                />
+              </label>
+
               {!successMessage && !isSomethingLoading && error && (
                 <ErrorMessage
                   message={error.message}
@@ -328,18 +372,6 @@ const CrearTarea = ({
                   message={successMessage.message}
                 />
               )}
-
-              <label className="flex gap-4 items-center text-center">
-                Puntaje Maximo:
-                <input
-                  type="number"
-                  name=""
-                  min={10}
-                  className="custom-input w-[5rem]"
-                  required
-                  value={20}
-                />
-              </label>
 
               <button
                 className="button-with-loader py-2 w-max self-center"

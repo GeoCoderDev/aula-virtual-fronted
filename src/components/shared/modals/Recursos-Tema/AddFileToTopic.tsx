@@ -10,6 +10,7 @@ import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import separateFullFileName from "../../../../lib/helpers/functions/separateFullFileName";
 import { equalObjects } from "@/lib/helpers/equalObjects";
 import validateFileExtension from "@/lib/helpers/validations/validateFileExtension";
+import { RecursoTemaRegisterFields } from "@/interfaces/RecursoTema";
 
 interface FileTopicRegisterForm extends RecursoTemaRegisterFields {}
 
@@ -29,9 +30,6 @@ const AddFileToTopic = ({
 }) => {
   const initialState: FileTopicRegisterForm = {
     Titulo: "",
-    Nombre_Curso,
-    Grado,
-    Seccion,
     Descripcion_Recurso: "",
   };
 
@@ -81,12 +79,12 @@ const AddFileToTopic = ({
 
     const formData = new FormData();
     formData.append("Titulo", form.Titulo);
-    formData.append("Grado", form.Grado);
-    formData.append("Seccion", form.Seccion);
+    formData.append("Grado", Grado);
+    formData.append("Seccion", Seccion);
     if (form.Descripcion_Recurso)
       formData.append("Descripcion_Recurso", form.Descripcion_Recurso);
 
-    formData.append("Nombre_Curso", form.Nombre_Curso);
+    formData.append("Nombre_Curso", Nombre_Curso);
 
     if (file) {
       formData.append("Archivo", file);

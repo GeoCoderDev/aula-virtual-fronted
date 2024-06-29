@@ -16,7 +16,7 @@ const DateTimeSelector = () => {
 
       <label className="flex flex-col gap-y-[0.35rem]">
         <i className="font-normal">Hora:</i>
-        <input required type="time" className="custom-input w-[9rem] py-2" />
+        <input required type="datetime-local" className="custom-input w-[9rem] py-2" />
       </label>
     </div>
   );
