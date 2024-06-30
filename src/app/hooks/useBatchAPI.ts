@@ -163,7 +163,6 @@ const useBatchAPI = <T>(
     if (start >= count && count !== 0) return setAllResultsGetted(true);
     if (start !== startFrom) return;
     setIsLoading(true);
-
     setAllResultsGetted(false);
     setError(null);
     setResults([]);

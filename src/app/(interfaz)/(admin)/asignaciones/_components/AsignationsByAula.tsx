@@ -6,7 +6,6 @@ import {
   Asignacion,
   AsignacionResponse,
   diasSemana,
-  HoraAcademica,
 } from "@/interfaces/Asignation";
 import { Aula } from "@/interfaces/Aula";
 import React, {
@@ -17,27 +16,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-import AsignacionComponent from "./Asignacion";
+import AsignacionComponent from "./AsignacionComponent";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
-
-const formatTime = (time: string) => {
-  return time.substring(0, 5); // Remove seconds
-};
-
-const generateHoursAndMinutes = (horasAcademicas: HoraAcademica[]) => {
-  const hoursAndMinutes: string[] = [];
-  for (let i = 0; i < horasAcademicas.length; i++) {
-    const startHour = formatTime(horasAcademicas[i].Valor);
-    const endHour =
-      i < horasAcademicas.length - 1
-        ? formatTime(horasAcademicas[i + 1].Valor)
-        : null;
-    if (endHour) {
-      hoursAndMinutes.push(`${startHour} - ${endHour}`);
-    }
-  }
-  return hoursAndMinutes;
-};
+import { formatterHoursAndMinutes } from "@/lib/helpers/functions/formatterHoursAndMinutes";
 
 const limitAsignationsRequired = 200;
 
@@ -72,7 +53,7 @@ const AsignationsByAula = () => {
   );
 
   const hoursAndMinutes = otherProperties["Horas_Academicas"]
-    ? generateHoursAndMinutes(otherProperties["Horas_Academicas"])
+    ? formatterHoursAndMinutes(otherProperties["Horas_Academicas"])
     : [];
 
   const [celdas, setCeldas] = useState<NodeListOf<Element> | null>(null);
@@ -112,7 +93,7 @@ const AsignationsByAula = () => {
   return (
     <>
       <div className="w-full flex flex-col items-start justify-start gap-y-4">
-        <div className="flex flex-wrap max-w-full items-center w-full gap-x-5 gap-y-4 ">
+        <div className="flex flex-wrap max-w-full items-center w-max gap-x-5 gap-y-4 ">
           <div className="flex items-center gap-x-5 flex-1">
             <label className="font-semibold flex w-auto flex-row items-center gap-x-3 whitespace-nowrap">
               Selecciona un aula:
@@ -129,83 +110,26 @@ const AsignationsByAula = () => {
             onClick={() => {
               setViewAddAsignationByAulaModal(true);
             }}
-            className="bg-verde-spotify rounded-lg py-3 px-4 font-semibold flex items-center justify-center gap-x-2"
+            disabled={
+              isLoading ||
+              !otherProperties["Horas_Academicas"] ||
+              !otherProperties["Asignaciones"]
+            }
+            className="bg-verde-spotify rounded-lg py-3 px-4 font-semibold flex items-center justify-center gap-x-2 disabled:grayscale-[0.5]"
           >
             Añadir Asignación
           </button>
         </div>
 
-        {otherProperties["Horas_Academicas"] &&
-        otherProperties["Asignaciones"] ? (
-          <>
-            {!error && !isLoading && (
-              <>
-                <label className="font-semibold flex w-auto flex-row items-center gap-x-3 whitespace-nowrap text-[1.5rem]">
-                  AULA: {searchTerms.Grado}
-                  {searchTerms.Seccion}
-                </label>
-                <div
-                  className="max-w-[80vw] overflow-auto relative max-h-[300px] w-max "
-                  style={{ overflowX: "auto", margin: "0", padding: "0" }}
-                >
-                  <table
-                    id="tabla-asignaciones-por-aula"
-                    ref={asignationsTable as LegacyRef<HTMLTableElement>}
-                    className=" border-collapse table-fixed p-0 max-w-full relative"
-                  >
-                    <thead className="rounded-[1rem] sticky top-0 z-[10] font-semibold bg-verde-spotify text-black overflow-hidden">
-                      <tr>
-                        <th className="[border-top:none] [border-bottom:none] p-[0.5rem] min-w-[9.2rem] h-[3rem] whitespace-nowrap overflow-hidden text-ellipsis">
-                          Hora
-                        </th>
-                        {diasSemana.map((day) => (
-                          <th
-                            className="[border-top:none] [border-bottom:none] p-[0.5rem] min-w-[9.2rem] h-[3rem] whitespace-nowrap overflow-hidden text-ellipsis"
-                            key={day}
-                          >
-                            {day}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-
-                    <tbody className="">
-                      {hoursAndMinutes.map((time, rowIndex) => (
-                        <tr key={rowIndex}>
-                          <td className="relative border-2 border-[rgb(207,207,207)] text-center min-w-[9.2rem] h-[3rem] p-[0.5rem] text-ellipsis overflow-hidden [border-bottom-left-radius:10px] whitespace-nowrap">
-                            {time}
-                          </td>
-                          {Array(6)
-                            .fill(null)
-                            .map((_, colIndex) => (
-                              <td
-                                key={colIndex}
-                                className="relative border-2 border-[rgb(207,207,207)] text-center min-w-[9.2rem] h-[3rem] p-[0.5rem] text-ellipsis overflow-hidden [border-bottom-left-radius:10px] whitespace-nowrap"
-                              ></td>
-                            ))}
-                        </tr>
-                      ))}
-
-                      {celdas &&
-                        celdas?.length !== 0 &&
-                        asignaciones.map((asignacion, index) => (
-                          <AsignacionComponent
-                            asignationsTable={asignationsTable}
-                            celdas={celdas}
-                            asignacion={asignacion}
-                            key={index}
-                          />
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <div className="w-full -border-2 flex flex-col items-center justify-center">
+        {
+          <div
+            className={`w-full -border-2 flex flex-col items-center justify-center ${
+              error || isLoading || searchTerms.Seccion === "" ? "" : "hidden"
+            }`}
+          >
             {error && <ErrorMessage message={error.message} />}
-            { isLoading && searchTerms.Seccion !== "" ? (
+
+            {isLoading && searchTerms.Seccion !== "" && (
               <Loader
                 color="black"
                 durationSegundos={1}
@@ -213,13 +137,84 @@ const AsignationsByAula = () => {
                 width="40px"
                 className="mt-4"
               />
-            ) : (
+            )}
+
+            {searchTerms.Seccion === "" && (
               <span className="justify-self-start self-start -border-black -border-2">
                 Aun no has seleccionado un Aula
               </span>
             )}
           </div>
-        )}
+        }
+
+        {otherProperties["Horas_Academicas"] &&
+          otherProperties["Asignaciones"] && (
+            <>
+              {!error && !isLoading && (
+                <>
+                  <label className="font-semibold flex w-auto flex-row items-center gap-x-3 whitespace-nowrap text-[1.5rem]">
+                    AULA: {searchTerms.Grado}
+                    {searchTerms.Seccion}
+                  </label>
+                  <div
+                    className="max-w-[80vw] overflow-auto relative max-h-[300px] w-max "
+                    style={{ overflowX: "auto", margin: "0", padding: "0" }}
+                  >
+                    <table
+                      id="tabla-asignaciones-por-aula"
+                      ref={asignationsTable as LegacyRef<HTMLTableElement>}
+                      className=" border-collapse table-fixed p-0 max-w-full relative"
+                    >
+                      <thead className="rounded-[1rem] sticky top-0 z-[10] font-semibold bg-verde-spotify text-black overflow-hidden">
+                        <tr>
+                          <th className="[border-top:none] [border-bottom:none] p-[0.5rem] min-w-[9.2rem] h-[3rem] whitespace-nowrap overflow-hidden text-ellipsis">
+                            Hora
+                          </th>
+                          {diasSemana.map((day) => (
+                            <th
+                              className="[border-top:none] [border-bottom:none] p-[0.5rem] min-w-[9.2rem] h-[3rem] whitespace-nowrap overflow-hidden text-ellipsis"
+                              key={day}
+                            >
+                              {day}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+
+                      <tbody className="">
+                        {hoursAndMinutes.map((time, rowIndex) => (
+                          <tr key={rowIndex}>
+                            <td className="relative border-2 border-[rgb(207,207,207)] text-center min-w-[9.2rem] h-[3rem] p-[0.5rem] text-ellipsis overflow-hidden [border-bottom-left-radius:10px] whitespace-nowrap">
+                              {time}
+                            </td>
+                            {Array(6)
+                              .fill(null)
+                              .map((_, colIndex) => (
+                                <td
+                                  key={colIndex}
+                                  className="relative border-2 border-[rgb(207,207,207)] text-center min-w-[9.2rem] h-[3rem] p-[0.5rem] text-ellipsis overflow-hidden [border-bottom-left-radius:10px] whitespace-nowrap"
+                                ></td>
+                              ))}
+                          </tr>
+                        ))}
+
+                        {celdas &&
+                          celdas?.length !== 0 &&
+                          asignaciones.map((asignacion, index) => (
+                            <AsignacionComponent
+                              asignationsTable={asignationsTable}
+                              celdas={celdas}
+                              asignacion={asignacion}
+                              key={index}
+                            />
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
+            </>
+          )}
       </div>
 
       {viewAddAsignationByAulaModal && (

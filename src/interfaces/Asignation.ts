@@ -1,3 +1,5 @@
+import { HoraAcademica, HorarioCursoAula } from "./Horario";
+
 export type DiaSemana =
   | "Lunes"
   | "Martes"
@@ -16,26 +18,13 @@ export const diasSemana: DiaSemana[] = [
   "Sabado",
 ];
 
-export interface Asignacion {
+export interface Asignacion extends HorarioCursoAula{
   Id_Asignacion: number;
   DNI_Profesor: string;
-  Nombre_Profesor?: string;
-  Apellido_Profesor?: string;
-  Id_Horario_Curso_Aula: number;
-  Nombre_Curso: string;
   Id_Curso_Aula: number;
-  Grado: string;
-  Seccion: string;
-  Dia_Semana: DiaSemana;
-  Id_Hora_Academica: number;
   Hora_Inicio: string;
-  Cant_Horas_Academicas: number;
 }
 
-export interface HoraAcademica {
-  Id_Hora_Academica: number;
-  Valor: string;
-}
 
 export interface AsignacionResponse {
   Asignaciones: Asignacion[];
