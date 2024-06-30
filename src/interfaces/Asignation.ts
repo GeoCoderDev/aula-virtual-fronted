@@ -19,6 +19,8 @@ export const diasSemana: DiaSemana[] = [
 export interface Asignacion {
   Id_Asignacion: number;
   DNI_Profesor: string;
+  Nombre_Profesor?: string;
+  Apellido_Profesor?: string;
   Id_Horario_Curso_Aula: number;
   Nombre_Curso: string;
   Id_Curso_Aula: number;

@@ -43,6 +43,7 @@ const useBatchAPI = <T>(
 
   //Definicion de la funcion fetchNextResults
   const fetchNextResults = useCallback(async () => {
+
     if (!shouldFetch) return;
 
     if ((fetchAPI === undefined || start >= count) && count !== 0) return;
@@ -89,7 +90,6 @@ const useBatchAPI = <T>(
           }
         | any = await res.json();
 
-
       if (otherData) {
         setOtherProperties(() => {
           let props: any = {};
@@ -121,8 +121,9 @@ const useBatchAPI = <T>(
         ? respObj[keyResults] ?? nextResults
         : nextResults;
 
-      if (!resultsDef) setResults(() => []);
-      else {
+      if (!resultsDef) {
+        setResults(() => []);
+      } else {
         if (start === 0) {
           setResults(() => resultsDef);
         } else {
@@ -162,6 +163,7 @@ const useBatchAPI = <T>(
     if (start >= count && count !== 0) return setAllResultsGetted(true);
     if (start !== startFrom) return;
     setIsLoading(true);
+
     setAllResultsGetted(false);
     setError(null);
     setResults([]);

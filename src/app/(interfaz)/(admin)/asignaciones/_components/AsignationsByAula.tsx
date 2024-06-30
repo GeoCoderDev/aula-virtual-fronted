@@ -3,12 +3,22 @@ import AulaSelector from "@/components/inputs/AulaSelector";
 import Loader from "@/components/shared/Loader";
 import AddAsignationByAula from "@/components/shared/modals/Asignaciones/AddAsignationByAula";
 import {
+  Asignacion,
   AsignacionResponse,
   diasSemana,
   HoraAcademica,
 } from "@/interfaces/Asignation";
 import { Aula } from "@/interfaces/Aula";
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  LegacyRef,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import AsignacionComponent from "./Asignacion";
+import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 
 const formatTime = (time: string) => {
   return time.substring(0, 5); // Remove seconds
@@ -42,6 +52,8 @@ const AsignationsByAula = () => {
   const [viewAddAsignationByAulaModal, setViewAddAsignationByAulaModal] =
     useState(false);
 
+  const asignationsTable = useRef<HTMLTableElement>();
+
   const selectGrado = useRef<HTMLSelectElement>();
   const selectSeccion = useRef<HTMLSelectElement>();
 
@@ -63,10 +75,44 @@ const AsignationsByAula = () => {
     ? generateHoursAndMinutes(otherProperties["Horas_Academicas"])
     : [];
 
+  const [celdas, setCeldas] = useState<NodeListOf<Element> | null>(null);
+
+  const asignaciones: Asignacion[] = otherProperties["Asignaciones"] ?? [];
+
+  useEffect(() => {
+    //Para acomodar con las celdas cuando se cambia el tamaño de la ventana
+    const actualizarCeldas = () => {
+      const celdasHTML = document.querySelectorAll(
+        "#tabla-asignaciones-por-aula td"
+      );
+      setCeldas(() => celdasHTML);
+    };
+
+    window.addEventListener("resize", actualizarCeldas);
+
+    return () => window.removeEventListener("resize", actualizarCeldas);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (
+        !otherProperties["Asignaciones"] ||
+        otherProperties["Asignaciones"].length === 0
+      )
+        return;
+
+      const celdasHTML = document.querySelectorAll(
+        "#tabla-asignaciones-por-aula td"
+      );
+
+      setCeldas(() => celdasHTML);
+    }, 200);
+  }, [searchTerms, otherProperties["Asignaciones"]]);
+
   return (
     <>
       <div className="w-full flex flex-col items-start justify-start gap-y-4">
-        <div className="flex flex-wrap max-w-full items-center gap-x-5 gap-y-4 justify-between">
+        <div className="flex flex-wrap max-w-full items-center w-full gap-x-5 gap-y-4 ">
           <div className="flex items-center gap-x-5 flex-1">
             <label className="font-semibold flex w-auto flex-row items-center gap-x-3 whitespace-nowrap">
               Selecciona un aula:
@@ -94,100 +140,72 @@ const AsignationsByAula = () => {
           <>
             {!error && !isLoading && (
               <>
-                <div style={{ maxWidth: "80vw" }}>
-                  <label className="font-semibold flex w-auto flex-row items-center gap-x-3 whitespace-nowrap text-[1.5rem]">
-                    AULA: {searchTerms.Grado}
-                    {searchTerms.Seccion}
-                  </label>
-                </div>
-                <table
-                  style={{
-                    borderCollapse: "collapse",
-                    padding: 0,
-                    tableLayout: "fixed",
-                    maxWidth: "100%",
-                  }}
+                <label className="font-semibold flex w-auto flex-row items-center gap-x-3 whitespace-nowrap text-[1.5rem]">
+                  AULA: {searchTerms.Grado}
+                  {searchTerms.Seccion}
+                </label>
+                <div
+                  className="max-w-[80vw] overflow-auto relative max-h-[300px] w-max "
+                  style={{ overflowX: "auto", margin: "0", padding: "0" }}
                 >
-                  <thead className="font-semibold bg-verde-spotify text-black overflow-hidden">
-                    <tr>
-                      <th
-                        style={{
-                          borderTop: "none",
-                          borderBottom: "none",
-                          padding: "8px",
-                          width: "150px",
-                          height: "50px",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        Hora
-                      </th>
-                      {diasSemana.map((day) => (
-                        <th
-                          key={day}
-                          style={{
-                            borderTop: "none",
-                            borderBottom: "none",
-                            padding: "8px",
-                            width: "150px",
-                            height: "50px",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
-                          {day}
+                  <table
+                    id="tabla-asignaciones-por-aula"
+                    ref={asignationsTable as LegacyRef<HTMLTableElement>}
+                    className=" border-collapse table-fixed p-0 max-w-full relative"
+                  >
+                    <thead className="rounded-[1rem] sticky top-0 z-[10] font-semibold bg-verde-spotify text-black overflow-hidden">
+                      <tr>
+                        <th className="[border-top:none] [border-bottom:none] p-[0.5rem] min-w-[9.2rem] h-[3rem] whitespace-nowrap overflow-hidden text-ellipsis">
+                          Hora
                         </th>
-                      ))}
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {hoursAndMinutes.map((time, rowIndex) => (
-                      <tr key={rowIndex}>
-                        <td
-                          className="text-center"
-                          style={{
-                            border: "2px solid rgb(207, 207, 207)",
-                            padding: "8px",
-                            width: "150px",
-                            height: "50px",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            borderBottomLeftRadius: "10px",
-                          }}
-                        >
-                          {time}
-                        </td>
-                        {Array(6)
-                          .fill(null)
-                          .map((_, colIndex) => (
-                            <td
-                              key={colIndex}
-                              style={{
-                                border: "2px solid rgb(207, 207, 207)",
-                                padding: "8px",
-                                width: "150px",
-                                height: "50px",
-                                whiteSpace: "nowrap",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                              }}
-                            ></td>
-                          ))}
+                        {diasSemana.map((day) => (
+                          <th
+                            className="[border-top:none] [border-bottom:none] p-[0.5rem] min-w-[9.2rem] h-[3rem] whitespace-nowrap overflow-hidden text-ellipsis"
+                            key={day}
+                          >
+                            {day}
+                          </th>
+                        ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+
+                    <tbody className="">
+                      {hoursAndMinutes.map((time, rowIndex) => (
+                        <tr key={rowIndex}>
+                          <td className="relative border-2 border-[rgb(207,207,207)] text-center min-w-[9.2rem] h-[3rem] p-[0.5rem] text-ellipsis overflow-hidden [border-bottom-left-radius:10px] whitespace-nowrap">
+                            {time}
+                          </td>
+                          {Array(6)
+                            .fill(null)
+                            .map((_, colIndex) => (
+                              <td
+                                key={colIndex}
+                                className="relative border-2 border-[rgb(207,207,207)] text-center min-w-[9.2rem] h-[3rem] p-[0.5rem] text-ellipsis overflow-hidden [border-bottom-left-radius:10px] whitespace-nowrap"
+                              ></td>
+                            ))}
+                        </tr>
+                      ))}
+
+                      {celdas &&
+                        celdas?.length !== 0 &&
+                        asignaciones.map((asignacion, index) => (
+                          <AsignacionComponent
+                            asignationsTable={asignationsTable}
+                            celdas={celdas}
+                            asignacion={asignacion}
+                            key={index}
+                          />
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
               </>
             )}
           </>
         ) : (
           <div className="w-full -border-2 flex flex-col items-center justify-center">
-            {!error && isLoading && searchTerms.Seccion !== "" ? (
+            {error && <ErrorMessage message={error.message} />}
+            { isLoading && searchTerms.Seccion !== "" ? (
               <Loader
                 color="black"
                 durationSegundos={1}
