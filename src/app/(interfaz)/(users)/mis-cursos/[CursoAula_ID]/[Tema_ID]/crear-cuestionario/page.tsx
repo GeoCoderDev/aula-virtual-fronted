@@ -1,39 +1,46 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
 const CrearCuestionario = () => {
   const [mostrarComponentes, setMostrarComponentes] = useState(false);
 
   const [preguntas, setPreguntas] = useState([
-    { tipo: "multiple", pregunta: "", opciones: [{ texto: "Opción 1", marcado: false, correcta: false }] },
+    {
+      tipo: "multiple",
+      pregunta: "",
+      opciones: [{ texto: "Opción 1", marcado: false, correcta: false }],
+    },
   ]);
 
   const handleCrearClick = () => {
     setMostrarComponentes(true);
   };
 
-  const handleImagenSeleccionada = (e, index) => {
-    const file = e.target.files[0];
+  const handleImagenSeleccionada = (
+    e: ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const file = e.target.files![0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        const nuevasPreguntas = [...preguntas];
-        nuevasPreguntas[index].imagen = event.target.result;
+        const nuevasPreguntas: any = [...preguntas];
+        nuevasPreguntas[index].imagen = event.target!.result;
         setPreguntas(nuevasPreguntas);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleEliminarImagen = (index) => {
-    const nuevasPreguntas = [...preguntas];
+  const handleEliminarImagen = (index: number) => {
+    const nuevasPreguntas: any = [...preguntas];
     nuevasPreguntas[index].imagen = null;
     setPreguntas(nuevasPreguntas);
   };
 
-  const handleTipoChange = (index, tipo) => {
+  const handleTipoChange = (index: number, tipo: string) => {
     const nuevasPreguntas = [...preguntas];
     nuevasPreguntas[index].tipo = tipo;
     // Limpiar opciones y puntaje cuando se cambia el tipo
@@ -43,51 +50,67 @@ const CrearCuestionario = () => {
     setPreguntas(nuevasPreguntas);
   };
 
-  const handlePreguntaChange = (index, pregunta) => {
+  const handlePreguntaChange = (index: number, pregunta: any) => {
     const nuevasPreguntas = [...preguntas];
     nuevasPreguntas[index].pregunta = pregunta;
     setPreguntas(nuevasPreguntas);
   };
 
-  const handleOpcionChange = (preguntaIndex, opcionIndex, texto) => {
+  const handleOpcionChange = (
+    preguntaIndex: number,
+    opcionIndex: number,
+    texto: string
+  ) => {
     const nuevasPreguntas = [...preguntas];
     nuevasPreguntas[preguntaIndex].opciones[opcionIndex].texto = texto;
     setPreguntas(nuevasPreguntas);
   };
 
-  const handleMarcarOpcion = (preguntaIndex, opcionIndex) => {
+  const handleMarcarOpcion = (preguntaIndex: number, opcionIndex: number) => {
     const nuevasPreguntas = [...preguntas];
-    nuevasPreguntas[preguntaIndex].opciones[opcionIndex].marcado = !nuevasPreguntas[preguntaIndex].opciones[opcionIndex].marcado;
+    nuevasPreguntas[preguntaIndex].opciones[opcionIndex].marcado =
+      !nuevasPreguntas[preguntaIndex].opciones[opcionIndex].marcado;
     setPreguntas(nuevasPreguntas);
   };
 
-  const handleMarcarCorrecta = (preguntaIndex, opcionIndex) => {
+  const handleMarcarCorrecta = (preguntaIndex: number, opcionIndex: number) => {
     const nuevasPreguntas = [...preguntas];
-    nuevasPreguntas[preguntaIndex].opciones[opcionIndex].correcta = !nuevasPreguntas[preguntaIndex].opciones[opcionIndex].correcta;
+    nuevasPreguntas[preguntaIndex].opciones[opcionIndex].correcta =
+      !nuevasPreguntas[preguntaIndex].opciones[opcionIndex].correcta;
     setPreguntas(nuevasPreguntas);
   };
 
   const handleAñadirPregunta = () => {
     setPreguntas([
       ...preguntas,
-      { tipo: "multiple", pregunta: "", opciones: [{ texto: "Opción 1", marcado: false, correcta: false }] },
+      {
+        tipo: "multiple",
+        pregunta: "",
+        opciones: [{ texto: "Opción 1", marcado: false, correcta: false }],
+      },
     ]);
   };
 
-  const handleEliminarPregunta = (index) => {
+  const handleEliminarPregunta = (index: number) => {
     const nuevasPreguntas = preguntas.filter((_, i) => i !== index);
     setPreguntas(nuevasPreguntas);
   };
 
-  const handleAñadirOpcion = (index) => {
+  const handleAñadirOpcion = (index: number) => {
     const nuevasPreguntas = [...preguntas];
-    nuevasPreguntas[index].opciones.push({ texto: `Opción ${preguntas[index].opciones.length + 1}`, marcado: false, correcta: false });
+    nuevasPreguntas[index].opciones.push({
+      texto: `Opción ${preguntas[index].opciones.length + 1}`,
+      marcado: false,
+      correcta: false,
+    });
     setPreguntas(nuevasPreguntas);
   };
 
-  const handleDuplicarPregunta = (index) => {
+  const handleDuplicarPregunta = (index: number) => {
     const nuevasPreguntas = [...preguntas];
-    const preguntaDuplicada = JSON.parse(JSON.stringify(nuevasPreguntas[index])); // Copia profunda de la pregunta
+    const preguntaDuplicada = JSON.parse(
+      JSON.stringify(nuevasPreguntas[index])
+    ); // Copia profunda de la pregunta
     nuevasPreguntas.splice(index + 1, 0, preguntaDuplicada); // Insertar la copia después de la pregunta original
     setPreguntas(nuevasPreguntas);
   };
@@ -99,7 +122,11 @@ const CrearCuestionario = () => {
           <div>
             <Link href="/mis-cursos" as={"/mis-cursos"}>
               <div className="cursor-pointer hover:underline">
-                Mis Cursos <span> &gt; Aritmética 4C &gt; Tema 1 - Crear Cuestionario</span>
+                Mis Cursos{" "}
+                <span>
+                  {" "}
+                  &gt; Aritmética 4C &gt; Tema 1 - Crear Cuestionario
+                </span>
               </div>
             </Link>
             <h1 className="section-tittle">Crear Cuestionario</h1>
@@ -147,11 +174,19 @@ const CrearCuestionario = () => {
               <div className="flex gap-7">
                 <div className="flex flex-col gap-y-2">
                   <label htmlFor="fechaInicio">Fecha y hora de inicio:</label>
-                  <input type="date" id="fechaInicio" className="custom-input2" />
+                  <input
+                    type="date"
+                    id="fechaInicio"
+                    className="custom-input2"
+                  />
                 </div>
                 <div className="flex flex-col gap-y-2">
                   <label htmlFor="fechaCierre">Fecha y hora de cierre:</label>
-                  <input type="date" id="fechaCierre" className="custom-input2" />
+                  <input
+                    type="date"
+                    id="fechaCierre"
+                    className="custom-input2"
+                  />
                 </div>
               </div>
             </div>
@@ -160,8 +195,11 @@ const CrearCuestionario = () => {
 
           <h2 className="section-tittle">Preguntas:</h2>
 
-          {preguntas.map((pregunta, index) => (
-            <div key={index} className="border-2 border-gray-300 p-8 rounded-lg mt-4">
+          {preguntas.map((pregunta: any, index) => (
+            <div
+              key={index}
+              className="border-2 border-gray-300 p-8 rounded-lg mt-4"
+            >
               <div className="flex flex-col gap-y-2">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center">
@@ -191,7 +229,9 @@ const CrearCuestionario = () => {
                     id={`pregunta-${index}`}
                     className="custom-input2 pregunta-input"
                     value={pregunta.pregunta}
-                    onChange={(e) => handlePreguntaChange(index, e.target.value)}
+                    onChange={(e) =>
+                      handlePreguntaChange(index, e.target.value)
+                    }
                   />
 
                   <label className="bg-black text-white rounded-md px-10 py-2 ml-2 cursor-pointer hover:bg-gray-800 mt-2 flex items-center">
@@ -237,17 +277,14 @@ const CrearCuestionario = () => {
                 {pregunta.tipo !== "libre" && (
                   <div>
                     <label>Puntaje:</label>
-                    <input
-                      type="number"
-                      className="custom-input2 mb-4"
-                    />
+                    <input type="number" className="custom-input2 mb-4" />
                   </div>
                 )}
 
                 <div className="flex flex-col gap-y-2">
                   {pregunta.tipo === "multiple" && (
                     <>
-                      {pregunta.opciones.map((opcion, i) => (
+                      {pregunta.opciones.map((opcion: any, i: number) => (
                         <div key={i} className="flex items-center gap-x-2">
                           <input
                             type="checkbox"
@@ -257,7 +294,9 @@ const CrearCuestionario = () => {
                           <input
                             type="text"
                             value={opcion.texto}
-                            onChange={(e) => handleOpcionChange(index, i, e.target.value)}
+                            onChange={(e) =>
+                              handleOpcionChange(index, i, e.target.value)
+                            }
                             className="ml-2 opcion-input"
                           />
                           <div className="slidecontainer">
@@ -288,7 +327,7 @@ const CrearCuestionario = () => {
                   )}
                   {pregunta.tipo === "unica" && (
                     <>
-                      {pregunta.opciones.map((opcion, i) => (
+                      {pregunta.opciones.map((opcion: any, i: number) => (
                         <div key={i} className="flex items-center gap-x-2">
                           <input
                             type="radio"
@@ -299,7 +338,9 @@ const CrearCuestionario = () => {
                           <input
                             type="text"
                             value={opcion.texto}
-                            onChange={(e) => handleOpcionChange(index, i, e.target.value)}
+                            onChange={(e) =>
+                              handleOpcionChange(index, i, e.target.value)
+                            }
                             className="ml-2 opcion-input"
                           />
                           <div className="slidecontainer">
@@ -408,7 +449,13 @@ const CrearCuestionario = () => {
           width: 100%;
           height: 3px; /* Ajustar altura del slider */
           border-radius: 5px;
-          background: linear-gradient(to right, #ff0000 0%, #ff0000 50%, #00ff00 50%, #00ff00 100%); /* Colores rojo a la izquierda y verde a la derecha */
+          background: linear-gradient(
+            to right,
+            #ff0000 0%,
+            #ff0000 50%,
+            #00ff00 50%,
+            #00ff00 100%
+          ); /* Colores rojo a la izquierda y verde a la derecha */
           outline: none;
           opacity: 0.7;
           transition: opacity 0.15s ease-in-out;
