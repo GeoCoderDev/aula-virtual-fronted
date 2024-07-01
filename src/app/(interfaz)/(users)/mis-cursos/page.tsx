@@ -1,7 +1,7 @@
 "use client";
 import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
+import CourseCard from "@/components/shared/courses/CoursesCard";
 
-import CourseCard from "@/components/shared/courses/CourseCard";
 import Loader from "@/components/shared/Loader";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import { ErrorAPI } from "@/interfaces/API";
