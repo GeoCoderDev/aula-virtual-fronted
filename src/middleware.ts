@@ -3,7 +3,7 @@ import { serialize } from "cookie";
 import { isStaticAsset } from "./lib/helpers/isStaticAsset";
 import validateCourseId from "./lib/helpers/validations/validateCursoID";
 
-const urlAPIBackend = "http://ec2-3-140-247-8.us-east-2.compute.amazonaws.com";
+const urlAPIBackend = "https://api.aula-virtual-jbsf.com";
 // const urlAPIBackend = "http://localhost";
 
 export async function middleware(request: NextRequest) {
@@ -62,7 +62,11 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
-    if (token && (pathname.startsWith("/administradores") || pathname.startsWith("/configuraciones"))) {
+    if (
+      token &&
+      (pathname.startsWith("/administradores") ||
+        pathname.startsWith("/configuraciones"))
+    ) {
       // Realiza acciones específicas para roles administrativos si es necesario
     }
 
