@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const formatMinutes = (minutes) => {
+const formatMinutes = (minutes: number) => {
   return minutes < 10 ? `0${minutes}` : minutes;
 };
 
@@ -16,10 +16,8 @@ for (let hour = 8; hour <= 13; hour++) {
 }
 
 const AsignationByProfesor = () => {
-  const [
-    viewAsignationByProfesorModal,
-    setViewAsignationByProfesorModal,
-  ] = useState(false);
+  const [viewAsignationByProfesorModal, setViewAsignationByProfesorModal] =
+    useState(false);
 
   return (
     <div className="w-full flex flex-col items-start justify-start gap-y-4">
@@ -117,14 +115,18 @@ const AsignationByProfesor = () => {
                 <div className="flex justify-end mt-4">
                   <button
                     type="button"
-                    onClick={closeModal}
+                    onClick={() => {
+                      setViewAsignationByProfesorModal(false);
+                    }}
                     className="bg-gray-300 px-4 py-2 rounded-lg font-semibold"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    onClick={closeModal}
+                    onClick={() => {
+                      setViewAsignationByProfesorModal(false);
+                    }}
                     className="bg-verde-spotify px-4 py-2 rounded-lg text-white font-semibold ml-2"
                   >
                     Aceptar
@@ -196,7 +198,7 @@ const AsignationByProfesor = () => {
         </thead>
 
         <tbody>
-          {hoursAndMinutes.map((time, rowIndex) => (
+          {hoursAndMinutes.map((time: string, rowIndex: number) => (
             <tr key={rowIndex}>
               <td
                 className="text-center"
