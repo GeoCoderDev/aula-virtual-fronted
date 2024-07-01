@@ -8,7 +8,7 @@ const SideBarElement = ({ IconTSX, route, text, allowedRoles }: PageApp) => {
   const pathName = usePathname();
 
   //No renderizar el componente si no tiene el rol requerido
-  if (allowedRoles.indexOf(UserSessionData.role) === -1) return null;
+  if (allowedRoles.indexOf(UserSessionData.role!) === -1) return null;
 
   const isSelected = pathName.startsWith(`/${route}`);
 
@@ -24,9 +24,7 @@ const SideBarElement = ({ IconTSX, route, text, allowedRoles }: PageApp) => {
           className="aspect-auto w-8"
           fillColor={isSelected ? "#fff" : "black"}
         />
-        <span
-          className={`w-max text-[0.95rem] ${isSelected && "text-white"} `}
-        >
+        <span className={`w-max text-[0.95rem] ${isSelected && "text-white"} `}>
           {text}
         </span>
       </li>
