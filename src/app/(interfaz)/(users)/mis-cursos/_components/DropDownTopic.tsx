@@ -9,10 +9,11 @@ import AddFileToTopic from "@/components/shared/modals/Recursos-Tema/AddFileToTo
 import ChangeTopicName from "@/components/shared/modals/Temas/ChangeTopicName";
 import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
 import Loader from "@/components/shared/Loader";
-import { RecursosTemaResponse, RecursoTema } from "@/interfaces/RecursoTema";
-import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
+import { ErrorAPI } from "@/interfaces/API";
 import RecursoTemaComponent from "./RecursoTema";
-import { current } from "@reduxjs/toolkit";
+import { RecursoTema } from "@/interfaces/RecursoTema";
+import AddForumToTopic from "@/components/shared/modals/Recursos-Tema/AddForumToTopic";
+
 
 const DropDownTopic = ({
   topic,
@@ -41,6 +42,7 @@ const DropDownTopic = ({
   const [viewChangeTopicName, setViewChangeTopicName] = useState(false);
 
   const [viewAddFileToTopicModal, setViewAddFileToTopicModal] = useState(false);
+  const [viewAddForumModal, setViewAddForumModal] = useState(false);
 
   const [topicResources, setTopicResources] = useState<RecursoTema[]>([]);
 
@@ -172,6 +174,7 @@ const DropDownTopic = ({
                   Id_Tema={topic.Id_Tema}
                   setViewChangeTopicName={setViewChangeTopicName}
                   setViewAddFileToTopicModal={setViewAddFileToTopicModal}
+                  setViewAddForumModal={setViewAddForumModal}
                 />
               )}
             </>
@@ -213,6 +216,19 @@ const DropDownTopic = ({
           index={index}
           eliminateModal={() => {
             setViewAddFileToTopicModal(false);
+          }}
+        />
+      )}
+
+      {viewAddForumModal && (
+        <AddForumToTopic
+          topic={topic}
+          index={index}
+          Nombre_Curso={Nombre_Curso}
+          Grado={Grado}
+          Seccion={Seccion}
+          eliminateModal={() => {
+            setViewAddForumModal(false);
           }}
         />
       )}

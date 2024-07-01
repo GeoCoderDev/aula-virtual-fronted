@@ -4,11 +4,13 @@ import { Dispatch, SetStateAction, useState } from "react";
 const DropdownOptions = ({
   setViewAddFileToTopicModal,
   setViewChangeTopicName,
+  setViewAddForumModal, // Nuevo estado para el foro
   CursoAula_ID,
   Id_Tema,
 }: {
   setViewAddFileToTopicModal: Dispatch<SetStateAction<boolean>>;
   setViewChangeTopicName: Dispatch<SetStateAction<boolean>>;
+  setViewAddForumModal: Dispatch<SetStateAction<boolean>>; // Nuevo
   CursoAula_ID: number;
   Id_Tema: number;
 }) => {
@@ -40,7 +42,12 @@ const DropdownOptions = ({
           >
             Archivo
           </li>
-          <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
+          <li
+            className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]"
+            onClick={() => {
+              setViewAddForumModal(true); // Mostrar el modal del foro
+            }}
+          >
             Foro
           </li>
           <Link

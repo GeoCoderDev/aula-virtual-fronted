@@ -15,7 +15,7 @@ const HorarioCursoAulaComponent = ({
     Seccion,
   },
   celdas,
-  asignationsTable
+  asignationsTable,
 }: {
   horarioCursoAula: HorarioCursoAula;
   celdas: NodeListOf<Element>;
@@ -69,11 +69,13 @@ const HorarioCursoAulaComponent = ({
           className="absolute flex flex-col bg-[#82ff6cf1] backdrop-blur-[30] items-center justify-center gap-y-2 p-2"
         >
           {Nombre_Profesor && (
-            <span className="text-center h-max-[2rem] overflow-hidden text-ellipsis ">
+            <div className="text-center flex h-max -overflow-hidden text-ellipsis -border-2 leading-5 flex-wrap">
               Prof. {Nombre_Profesor} {Apellido_Profesor}
-            </span>
+            </div>
           )}
+
           <i className="text-center">{Nombre_Curso}</i>
+
           <i className="text-center">
             {Grado}
             {Seccion}

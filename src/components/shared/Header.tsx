@@ -24,12 +24,15 @@ import { RootState } from "@/store";
 import { logout } from "@/lib/helpers/logout";
 
 const Header = () => {
-  const urlAPI = useSelector<RootState>(
-    (state) => state.globalConstants.urlAPI
+  const urlAPI = useSelector(
+    (state: RootState) => state.globalConstants.urlAPI
   );
 
   const sidebarIsOpen = useSelector(
     (state: RootState) => state.flags.sidebarIsOpen
+  );
+  const uyuy = useSelector(
+    (state: RootState) => state.elementsDimensions.windowHeight
   );
 
   const pathname = usePathname();
