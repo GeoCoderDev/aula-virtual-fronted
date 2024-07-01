@@ -1,9 +1,9 @@
 import { serialize } from "cookie";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
   try {
-    const bodyString = await readStreamToString(req.body);
+    const bodyString = await readStreamToString(req.body!);
 
     const jsonData = JSON.parse(bodyString);
 
