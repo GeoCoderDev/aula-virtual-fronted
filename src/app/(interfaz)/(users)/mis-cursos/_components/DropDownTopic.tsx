@@ -13,6 +13,8 @@ import RecursoTemaComponent from "./RecursoTema";
 import { RecursoTema } from "@/interfaces/RecursoTema";
 import AddForumToTopic from "@/components/shared/modals/Recursos-Tema/AddForumToTopic";
 import { useDelegacionEventos } from "@/lib/utils/delegacionDeEventos";
+import AddUrlToTopic from "@/components/shared/modals/Recursos-Tema/AddURLToTopic";
+import AddURLToTopic from "@/components/shared/modals/Recursos-Tema/AddURLToTopic";
 
 const DropDownTopic = ({
   topic,
@@ -42,6 +44,7 @@ const DropDownTopic = ({
 
   const [viewAddFileToTopicModal, setViewAddFileToTopicModal] = useState(false);
   const [viewAddForumModal, setViewAddForumModal] = useState(false);
+  const [viewAddURLModal, setViewAddURLModal] = useState(false);
 
   const [topicResources, setTopicResources] = useState<RecursoTema[]>([]);
 
@@ -176,6 +179,7 @@ const DropDownTopic = ({
                   setViewChangeTopicName={setViewChangeTopicName}
                   setViewAddFileToTopicModal={setViewAddFileToTopicModal}
                   setViewAddForumModal={setViewAddForumModal}
+                  setViewURLForumModal={setViewAddURLModal}
                 />
               )}
             </>
@@ -184,7 +188,11 @@ const DropDownTopic = ({
 
         <div
           style={{ transition: "all 300ms" }}
-          className="rounded-[1rem] border-t-2 border-black h-0 overflow-hidden flex flex-col gap-4"
+          className={`rounded-[1rem] border-t-2 border-black h-0 ${
+            topicResources.length !== 0
+              ? "flex-wrap overflow-visible"
+              : "overflow-hidden"
+          } flex flex-col gap-4 `}
           ref={expandibleElement as LegacyRef<HTMLDivElement>}
         >
           {topicResources.length !== 0
@@ -230,6 +238,19 @@ const DropDownTopic = ({
           Seccion={Seccion}
           eliminateModal={() => {
             setViewAddForumModal(false);
+          }}
+        />
+      )}
+
+      {viewAddURLModal && (
+        <AddURLToTopic
+          Grado={Grado}
+          Nombre_Curso={Nombre_Curso}
+          Seccion={Seccion}
+          index={index}
+          topic={topic}
+          eliminateModal={() => {
+            setViewAddURLModal(false);
           }}
         />
       )}

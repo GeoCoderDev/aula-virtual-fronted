@@ -7,10 +7,12 @@ const DropdownOptions = ({
   setViewAddForumModal, // Nuevo estado para el foro
   CursoAula_ID,
   Id_Tema,
+  setViewURLForumModal,
 }: {
   setViewAddFileToTopicModal: Dispatch<SetStateAction<boolean>>;
   setViewChangeTopicName: Dispatch<SetStateAction<boolean>>;
   setViewAddForumModal: Dispatch<SetStateAction<boolean>>; // Nuevo
+  setViewURLForumModal: Dispatch<SetStateAction<boolean>>; // Nuevo
   CursoAula_ID: number;
   Id_Tema: number;
 }) => {
@@ -58,7 +60,12 @@ const DropdownOptions = ({
               Tarea
             </li>
           </Link>
-          <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
+          <li
+            className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]"
+            onClick={() => {
+              setViewURLForumModal(true);
+            }}
+          >
             URL
           </li>
           <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
