@@ -9,7 +9,6 @@ export const initializeUserSessionData = () => {
     static get role(): Role | undefined {
       const roleGetted = localStorage.getItem("role");
       if (!roleGetted) return undefined;
-      // throw new CustomError(UserSessionDataErrors.NOT_ROLE_IN_LOCAL_STORAGE);
       return roleGetted as Role;
     }
 
@@ -20,9 +19,6 @@ export const initializeUserSessionData = () => {
     static get username(): string | undefined {
       const usernameGetted = localStorage.getItem("username");
       if (!usernameGetted) return undefined;
-      // throw new CustomError(
-      //   UserSessionDataErrors.NOT_USERNAME_IN_LOCAL_STORAGE
-      // );
       return usernameGetted;
     }
 
@@ -36,5 +32,5 @@ export const initializeUserSessionData = () => {
     }
   }
 
-  return {UserSessionData};
+  return { UserSessionData };
 };
