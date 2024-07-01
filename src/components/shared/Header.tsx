@@ -7,7 +7,7 @@ import MensajesIcon from "../icons/header/MensajesIcon";
 import PerfilIcon from "../icons/header/PerfilIcon";
 import DespliegueIcon from "../icons/header/DespliegueIcon";
 import HamburguesaIcon from "../icons/header/HamburguesaIcon";
-import { UserSessionData } from "@/lib/utils/UserSessionData";
+
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setHeaderHeight } from "@/state/ElementDimensions/headerHeight";
@@ -22,6 +22,8 @@ import Link from "next/link";
 import { RootState } from "@/store";
 import { logout } from "@/lib/helpers/logout";
 import { useDelegacionEventos } from "@/lib/utils/delegacionDeEventos";
+import { useUserSessionData } from "@/lib/utils/UserSessionData";
+import { UserData } from "@/lib/utils/interfaces/UsedData";
 
 const Header = () => {
   const urlAPI = useSelector(
@@ -49,8 +51,12 @@ const Header = () => {
   };
 
   const { delegarEvento } = useDelegacionEventos();
+  const { UserSessionData } = useUserSessionData() as {
+    UserSessionData: UserData;
+  };
 
   useEffect(() => {
+    if (!UserSessionData) return;
     if (!delegarEvento) return;
     const resizeObserverHeader = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
@@ -122,11 +128,11 @@ const Header = () => {
       resizeObserverHeader.observe(headerHTML);
       window.removeEventListener("resize", handleResize);
     };
-  }, [delegarEvento]);
+  }, [delegarEvento, UserSessionData]);
 
   if (isLoginPage) return null; // No renderizar el componente en la ruta /login
 
-  return (
+  return UserSessionData ? (
     <header
       style={{ boxShadow: "0 0px 2px 2px rgba(0,0,0,0.2)" }}
       id="header"
@@ -170,7 +176,7 @@ const Header = () => {
             {UserSessionData.username}
           </h1>
           <p className="text-left text-[0.9rem] leading-4 italic">
-            {RolesEspañol[UserSessionData.role!]}
+            {RolesEspañol[UserSessionData.role]}
           </p>
         </div>
 
@@ -247,6 +253,8 @@ const Header = () => {
         </div>
       </div>
     </header>
+  ) : (
+    <></>
   );
 };
 

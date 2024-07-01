@@ -6,9 +6,10 @@ import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import SuccessMessage from "@/components/shared/messages/SuccessMessage";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
 import { StudentResponse } from "@/interfaces/Student";
-import { Teacher, TeacherResponse } from "@/interfaces/Teacher";
+import { TeacherResponse } from "@/interfaces/Teacher";
 import { equalObjects } from "@/lib/helpers/equalObjects";
-import { UserSessionData } from "@/lib/utils/UserSessionData";
+import { useUserSessionData } from "@/lib/utils/UserSessionData";
+
 import React, { ChangeEventHandler, useEffect, useState } from "react";
 
 interface EditFormUser {
@@ -92,6 +93,8 @@ const EditarUsuarioForm = ({
     });
     reset();
   };
+
+  const { UserSessionData } = useUserSessionData();
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();

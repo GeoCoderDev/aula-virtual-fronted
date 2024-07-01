@@ -1,18 +1,30 @@
 "use client";
 import { PageApp } from "@/app/assets/routes";
+import { useUserSessionData } from "@/lib/utils/UserSessionData";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserSessionData } from "../../lib/utils/UserSessionData";
+import { useEffect, useState } from "react";
 
 const SideBarElement = ({ IconTSX, route, text, allowedRoles }: PageApp) => {
   const pathName = usePathname();
 
-  //No renderizar el componente si no tiene el rol requerido
-  if (allowedRoles.indexOf(UserSessionData.role!) === -1) return null;
+  const { UserSessionData } = useUserSessionData();
+
+  const [renderizar, setRenderizar] = useState(false);
+
+  useEffect(() => {
+    if (!UserSessionData) return;
+    //No renderizar el componente si no tiene el rol requerido
+    if (allowedRoles.indexOf(UserSessionData.role!) === -1) {
+      setRenderizar(() => false);
+    } else {
+      setRenderizar(() => true);
+    }
+  }, [UserSessionData]);
 
   const isSelected = pathName.startsWith(`/${route}`);
 
-  return (
+  return renderizar ? (
     <Link href={`/${route}`} as={`/${route}`}>
       <li
         className={` flex items-center pl-5 pr-8 h-[4.2rem] gap-x-4 overflow-hidden min-w-[12.5rem] max-w-[25rem] text-ellipsis text-nowrap${
@@ -29,6 +41,8 @@ const SideBarElement = ({ IconTSX, route, text, allowedRoles }: PageApp) => {
         </span>
       </li>
     </Link>
+  ) : (
+    <></>
   );
 };
 
