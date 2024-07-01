@@ -4,8 +4,8 @@ import Loader from "../Loader";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Image from "next/image";
-import { UserData, UserSessionData } from "@/lib/utils/UserSessionData";
 import InputPassword from "../InputPassword";
+import { useUserSessionData } from "@/lib/utils/UserSessionData";
 
 interface LoginForm {
   username: string;
@@ -29,6 +29,9 @@ export default function LoginForm({
   const urlAPI = useSelector<RootState>(
     (state) => state.globalConstants.urlAPI
   );
+
+
+  const {UserSessionData} = useUserSessionData();
 
   const [form, setForm] = useState<LoginForm>(initialForm);
 
