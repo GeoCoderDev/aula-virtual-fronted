@@ -16,7 +16,6 @@ const MisCursosHome = () => {
     setError,
     isSomethingLoading,
     setIsSomethingLoading,
-    setSuccessMessage,
     fetchAPI,
   } = useRequestAPIFeatures();
 
