@@ -153,7 +153,7 @@ const DropDownTopic = ({
           <h4
             className={`${
               isSomethingLoading ? "bg-[#ddd]" : "hover:bg-[#ddd]"
-            } text-[1.2rem] flex-1 cursor-pointer  py-2 px-[0.5rem] rounded-[0.5rem]`}
+            } text-[1.2rem] select-none flex-1 cursor-pointer  py-2 px-[0.5rem] rounded-[0.5rem]`}
             title={isExpand ? "Ocultar Tema" : "Expandir Tema"}
             onClick={handleExpand}
           >
@@ -188,11 +188,7 @@ const DropDownTopic = ({
 
         <div
           style={{ transition: "all 300ms" }}
-          className={`rounded-[1rem] border-t-2 border-black h-0 ${
-            topicResources.length !== 0
-              ? "flex-wrap overflow-visible"
-              : "overflow-hidden"
-          } flex flex-col gap-4 `}
+          className={`rounded-[1rem] border-t-2 border-black h-0 overflow-hidden flex flex-col -flex-wrap gap-4 `}
           ref={expandibleElement as LegacyRef<HTMLDivElement>}
         >
           {topicResources.length !== 0
