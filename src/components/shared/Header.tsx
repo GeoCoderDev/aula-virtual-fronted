@@ -19,9 +19,9 @@ import {
 import { setWindowWidth } from "@/state/ElementDimensions/windowWidth";
 import { RolesEspañol } from "@/app/assets/RolesEspañol";
 import Link from "next/link";
-import { delegarEvento } from "@/lib/utils/delegacionDeEventos";
 import { RootState } from "@/store";
 import { logout } from "@/lib/helpers/logout";
+import { useDelegacionEventos } from "@/lib/utils/delegacionDeEventos";
 
 const Header = () => {
   const urlAPI = useSelector(
@@ -48,7 +48,10 @@ const Header = () => {
     setMenuVisible(!menuVisible);
   };
 
+  const { delegarEvento } = useDelegacionEventos();
+
   useEffect(() => {
+    if (!delegarEvento) return;
     const resizeObserverHeader = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
         dispatch(
@@ -119,7 +122,7 @@ const Header = () => {
       resizeObserverHeader.observe(headerHTML);
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [delegarEvento]);
 
   if (isLoginPage) return null; // No renderizar el componente en la ruta /login
 

@@ -4,7 +4,6 @@ import MoreOptionsIcon from "@/components/icons/others/MoreOptionsIcon";
 import { Topic } from "@/interfaces/Topic";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import DropdownOptions from "./DropDownOptions";
-import { delegarEvento } from "@/lib/utils/delegacionDeEventos";
 import AddFileToTopic from "@/components/shared/modals/Recursos-Tema/AddFileToTopic";
 import ChangeTopicName from "@/components/shared/modals/Temas/ChangeTopicName";
 import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
@@ -13,7 +12,7 @@ import { ErrorAPI } from "@/interfaces/API";
 import RecursoTemaComponent from "./RecursoTema";
 import { RecursoTema } from "@/interfaces/RecursoTema";
 import AddForumToTopic from "@/components/shared/modals/Recursos-Tema/AddForumToTopic";
-
+import { useDelegacionEventos } from "@/lib/utils/delegacionDeEventos";
 
 const DropDownTopic = ({
   topic,
@@ -51,11 +50,12 @@ const DropDownTopic = ({
   const {
     error,
     fetchAPI,
-    fetchCancelables,
     isSomethingLoading,
     setError,
     setIsSomethingLoading,
   } = useRequestAPIFeatures();
+
+  const { delegarEvento } = useDelegacionEventos();
 
   const toggleExpand = () => {
     if (expandibleElement.current) {
@@ -72,6 +72,7 @@ const DropDownTopic = ({
   };
 
   useEffect(() => {
+    if (!delegarEvento) return;
     delegarEvento(
       "click",
       `#${IDMoreOptionsIcon}, #${IDMoreOptionsIcon} *`,
@@ -80,7 +81,7 @@ const DropDownTopic = ({
       },
       true
     );
-  }, []);
+  }, [delegarEvento]);
 
   const handleExpand = async () => {
     if (isSomethingLoading) return;
