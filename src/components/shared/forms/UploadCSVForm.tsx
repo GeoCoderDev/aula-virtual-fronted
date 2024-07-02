@@ -6,6 +6,7 @@ import { Alerts } from "@/interfaces/Alerts";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
 import readedContentToArray from "@/lib/helpers/readedContentToArray";
 import { BD_DataTypes } from "@/interfaces/BD_DataTypes";
+import DescargarIcon from "@/components/icons/others/DescargarIcon";
 
 interface UploadCSVFormProps<T> {
   setError: React.Dispatch<React.SetStateAction<ErrorAPI | null>>;
@@ -32,6 +33,7 @@ interface UploadCSVFormProps<T> {
       event: React.MouseEvent<HTMLDivElement | HTMLButtonElement>
     ) => void;
   }) => React.JSX.Element;
+  // templateType: string; // Añade esta línea
 }
 
 const UploadCSVForm = <T extends object>({
@@ -49,6 +51,7 @@ const UploadCSVForm = <T extends object>({
   setAlerts,
   setSuccessMessage,
   HelpComponent,
+  // templateType,
 }: UploadCSVFormProps<T>) => {
   const [helpModalIsShowing, setHelpModalIsShowing] = useState(false);
   const handleFileChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
@@ -95,6 +98,54 @@ const UploadCSVForm = <T extends object>({
     reader.readAsText(file); // Lee el contenido del archivo como texto
   };
 
+  const handleTemplateDownload = (templateType: string) => {
+    let columnNames: string[];
+    if (templateType === "admins") {
+      columnNames = ["Nombre_Usuario", "Contraseña"];
+    } else if (templateType === "students") {
+      columnNames = [
+        "Nombres",
+        "Apellidos",
+        "DNI_Estudiante",
+        "Nombre_Usuario",
+        "Contraseña",
+        "Fecha_Nacimiento",
+        "Direccion_Domicilio",
+        "Telefono",
+        "Nombre_Contacto_Emergencia",
+        "Parentezco_Contacto_Emergencia",
+        "Telefono_Contacto_Emergencia",
+      ];
+    } else if (templateType === "teachers") {
+      columnNames = [
+        "DNI_Profesor",
+        "Nombres",
+        "Apellidos",
+        "Fecha_Nacimiento",
+        "Nombre_Usuario",
+        "Contraseña_Usuario",
+        "Direccion_Domicilio",
+        "Telefono",
+        "Nombre_Contacto_Emergencia",
+        "Parentezco_Contacto_Emergencia",
+        "Telefono_Contacto_Emergencia",
+      ];
+    } else {
+      columnNames = [];
+    }
+
+    const templateData = columnNames.join(",") + "\n";
+    console.log("Datos de la plantilla:", templateData);
+
+    const blob = new Blob([templateData], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${templateType}_plantilla.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="flex flex-wrap items-center justify-evenly -border-2 gap-8 w-[35rem] max-w-[min(80vw,35rem)]">
       <div className="flex flex-col gap-y-4 items-center justify-center ">
@@ -126,7 +177,7 @@ const UploadCSVForm = <T extends object>({
           />
         </label>
 
-        <Image
+        {/* <Image
           onClick={() => setHelpModalIsShowing(true)}
           width={30}
           height={30}
@@ -134,7 +185,21 @@ const UploadCSVForm = <T extends object>({
           src={"/svg/Icono de Ayuda.svg"}
           title="Ayuda"
           className="w-9 aspect-auto cursor-pointer"
-        />
+        /> */}
+        {/* <button
+          // onClick={() => handleTemplateDownload(templateType)}
+          className="bg-black text-white p-2 rounded-lg flex items-center group"
+        >
+          Descargar Plantilla CSV
+          <span className="ml-2 transition-transform duration-300 transform group-hover:translate-y-1">
+            <DescargarIcon />
+          </span>
+        </button>
+ */}
+
+
+
+
       </div>
 
       <AlertsBox

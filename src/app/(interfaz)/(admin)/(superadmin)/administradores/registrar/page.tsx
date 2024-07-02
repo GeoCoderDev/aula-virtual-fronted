@@ -13,6 +13,8 @@ import validateUsername from "@/lib/helpers/validations/validateUsername";
 import validatePassword from "@/lib/helpers/validations/validatePassword";
 import HelpCSVAdminRegister from "@/components/shared/modals/Admins/HelpCSVAdminRegister";
 import useCSVRegister from "@/app/hooks/useCSVRegister";
+import DescargarIcon from "@/components/icons/others/DescargarIcon";
+import { downloadCSVTemplate } from "@/lib/utils/csvUtils";
 
 export interface RegisterAdminFormFields {
   Nombre_Usuario: string;
@@ -156,6 +158,7 @@ const RegistrarAdministradores = () => {
     }
   };
 
+
   return (
     <div className="">
       <div className="flex justify-between items-start w-full flex-col gap-y-4">
@@ -193,6 +196,17 @@ const RegistrarAdministradores = () => {
               />
             )}
           </button>
+
+          <button
+            onClick={() => downloadCSVTemplate("admins")}
+            className="bg-black text-white p-2 rounded-lg flex items-center group"
+          >
+            Descargar Plantilla CSV
+            <span className="ml-2 transition-transform duration-300 transform group-hover:translate-y-1">
+              <DescargarIcon />
+            </span>
+          </button>
+
         </div>
 
         <form
@@ -232,6 +246,9 @@ const RegistrarAdministradores = () => {
             />
           )}
 
+          
+
+
           {!error && !isSomethingLoading && successMessage && (
             <SuccessMessage
               className="text-rojo-orange"
@@ -254,6 +271,7 @@ const RegistrarAdministradores = () => {
             )}
           </button>
         </form>
+
       </div>
     </div>
   );

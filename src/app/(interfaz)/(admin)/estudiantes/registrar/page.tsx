@@ -16,6 +16,8 @@ import validateUsername from "@/lib/helpers/validations/validateUsername";
 import validatePassword from "@/lib/helpers/validations/validatePassword";
 import validateDNI from "@/lib/helpers/validations/validateDNI";
 import { StudentRegisterForm } from "@/interfaces/Student";
+import { downloadCSVTemplate } from "@/utils/csvUtils";
+import DescargarIcon from "@/components/icons/others/DescargarIcon";
 
 const initialForm: StudentRegisterForm = {
   DNI_Estudiante: "",
@@ -247,6 +249,15 @@ const RegistrarEstudiante = () => {
               src={"/svg/CSV Icon.svg"}
             />
           )}
+        </button>
+        <button
+          onClick={() => downloadCSVTemplate("students")}
+          className="bg-black text-white p-2 rounded-lg flex items-center group"
+        >
+          Descargar Plantilla CSV
+          <span className="ml-2 transition-transform duration-300 transform group-hover:translate-y-1">
+            <DescargarIcon />
+          </span>
         </button>
       </div>
       <form
