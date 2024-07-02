@@ -1,0 +1,179 @@
+/* Importación de la fuente Roboto desde Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+@import "./../../node_modules/animate.css/animate.min.css";
+
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-interfaz: #00FF6F; /* Color por defecto */
+}
+
+/* Aplicación de la fuente Roboto */
+* {
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* CLASE UTILES */
+
+.semi-transparent-border-black {
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.semi-transparent-border-black {
+  border: 1px solid #00000080;
+}
+
+/* SCROLLBARS */
+.scrollbar-oculto {
+  scroll-behavior: contain;
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+.scrollbar-oculto:hover {
+  overflow-y: scroll;
+}
+
+.scrollbar-stilizado::-webkit-scrollbar,
+.scrollbar-oculto::-webkit-scrollbar {
+  width: 0.5rem;
+  max-height: 1rem;
+}
+
+.scrollbar-stilizado::-webkit-scrollbar-thumb,
+.scrollbar-oculto::-webkit-scrollbar-thumb {
+  background-color: #888;
+  /*Colordelthumb*/
+  border-radius: 500px;
+}
+
+.scrollbar-oculto::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.scrollbar-stilizado-white::-webkit-scrollbar-thumb {
+  background-color: #fff;
+}
+.scrollbar-stilizado-white::-webkit-scrollbar-thumb:hover {
+  background-color: #d9d9d9;
+}
+
+.scrollbar-stilizado-dark-red::-webkit-scrollbar-thumb {
+  background-color: #7a0217;
+}
+.scrollbar-stilizado-dark-red::-webkit-scrollbar-thumb:hover {
+  background-color: #4e000d;
+}
+
+.scrollbar-stilizado-semi-black::-webkit-scrollbar-thumb {
+  background-color: #4d4d4d;
+}
+.scrollbar-stilizado-semi-black::-webkit-scrollbar-thumb:hover {
+  background-color: #333232;
+}
+.scrollbar-stilizado-gray::-webkit-scrollbar-thumb {
+  background-color: #c6c6c6;
+}
+.scrollbar-stilizado-gray::-webkit-scrollbar-thumb:hover {
+  background-color: #d8d6d6;
+}
+
+.scrollbar-stilizado-black::-webkit-scrollbar-thumb {
+  background-color: #000000;
+}
+.scrollbar-stilizado-black::-webkit-scrollbar-thumb:hover {
+  background-color: #000000;
+}
+
+.scrollbar-stilizado-verde-spotify::-webkit-scrollbar-thumb {
+  @apply bg-verde-spotify;
+}
+.scrollbar-stilizado-verde-spotify::-webkit-scrollbar-thumb:hover {
+  background-color: #57c639;
+}
+
+@layer components {
+  .custom-input2 {
+    @apply outline-none w-[100%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black max-w-[100vw];
+    box-shadow: 0 0 10px 4px rgba(0, 255, 111, 0.31);
+  }
+
+  .custom-input {
+    @apply outline-none w-[60%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black max-w-[80vw];
+    box-shadow: 0 0 10px 4px rgba(0, 255, 111, 0.31);
+  }
+
+  
+
+  .button-with-loader {
+    @apply bg-verde-spotify rounded-lg py-3 px-4 font-semibold flex items-center justify-center gap-x-2 disabled:grayscale-[0.5];
+  }
+
+  .section-tittle {
+    @apply text-4xl font-extrabold flex flex-wrap break-words max-w-[85vw];
+  }
+
+  .edition-button {
+    @apply text-white font-medium px-2 py-1 rounded-lg bg-amarillo-pooh;
+  }
+
+  .deshabilitar-habilitar-button {
+    @apply text-white font-medium py-1 w-[6.5rem] rounded-lg;
+  }
+
+  .ver-button {
+    @apply text-white font-medium px-2 py-1 rounded-lg bg-azul-pablo;
+  }
+
+  .separator-courses {
+    @apply h-[0.2rem] w-full bg-black rounded-full border-none;
+  }
+}
+
+/* ANIMACIONES */
+
+.response-box {
+  position: relative;
+}
+
+.response-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  background-color: #b4b4b4;
+  /*Colordelborde*/
+  z-index: -1;
+  animation: border-animation 2s 1 ease-in-out forwards;
+}
+
+@keyframes border-animation {
+  0% {
+    transform: scale(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes points_rotate {
+  to {
+    transform: rotate(0.5turn);
+  }
+}
