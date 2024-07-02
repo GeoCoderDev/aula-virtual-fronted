@@ -9,7 +9,7 @@
 @tailwind utilities;
 
 :root {
-  --color-interfaz: #00FF6F; /* Color por defecto */
+  --color-interfaz: #00000000; /* Color por defecto */
 }
 
 /* Aplicación de la fuente Roboto */

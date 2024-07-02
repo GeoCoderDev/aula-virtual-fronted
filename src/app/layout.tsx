@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+
+
   return (
     <html lang="en">
       <head>
@@ -28,6 +30,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} flex flex-col min-h-[100svh]`}>
         <ProviderStore>
+          
           <Header />
           <div className="top-0 flex relative">
             <Sidebar />
