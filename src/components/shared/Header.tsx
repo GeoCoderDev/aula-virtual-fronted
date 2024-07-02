@@ -56,6 +56,23 @@ const Header = () => {
   };
 
   useEffect(() => {
+    const fetchInterfazColor = async () => {
+      const res = await fetch(`${urlAPI}/api/interfazColor`, { method: "GET" });
+
+      if (!res.ok) return;
+
+      const interfazColorRec = await res.json();
+
+      document.documentElement.style.setProperty(
+        "--color-interfaz",
+        interfazColorRec
+      );
+    };
+
+    fetchInterfazColor();
+  }, []);
+
+  useEffect(() => {
     if (!UserSessionData) return;
     if (!delegarEvento) return;
     const resizeObserverHeader = new ResizeObserver((entries) => {

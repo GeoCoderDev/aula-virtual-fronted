@@ -1,9 +1,11 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
+
+const colorInterfazInitial = "#00FF6F";
 
 const WrapperMainContent = ({
   children,
@@ -16,18 +18,11 @@ const WrapperMainContent = ({
   const windowHeight = useSelector(
     (state: RootState) => state.elementsDimensions.windowHeight
   );
-
   const path = usePathname();
 
   const isLoginPage = path.includes("/login");
 
-  useEffect(() => {
-    
-    
-    
-    
-  }, [])
-  
+
 
   return (
     <>
