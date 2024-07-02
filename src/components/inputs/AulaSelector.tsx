@@ -39,7 +39,7 @@ const AulaSelector = ({
   ) => {
     if (tipo === "register") {
       setForm!({
-        ...searchTerms!,
+        ...form!,
         [e.target.name]: e.target.value,
         Seccion: "",
       });

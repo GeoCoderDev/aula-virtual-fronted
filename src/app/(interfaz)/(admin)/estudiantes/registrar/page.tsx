@@ -197,9 +197,9 @@ const RegistrarEstudiante = () => {
   const handleChange: ChangeEventHandler<
     HTMLInputElement | HTMLSelectElement
   > = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
     setError(null);
     setSuccessMessage(null);
-    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleFileChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -207,7 +207,6 @@ const RegistrarEstudiante = () => {
       setFile(e.target.files[0]);
     }
   };
-
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
