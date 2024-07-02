@@ -169,8 +169,8 @@ const RegisterStudentForm = ({
           type="tel"
           required
           onChange={handleChange}
-          maxLength={4}
           minLength={9}
+          maxLength={9}
         />
       </label>
 
@@ -211,8 +211,8 @@ const RegisterStudentForm = ({
           type="tel"
           required
           onChange={handleChange}
-          maxLength={4}
           minLength={9}
+          maxLength={9}
         />
       </label>
     </>

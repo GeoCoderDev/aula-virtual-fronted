@@ -2,11 +2,7 @@ import InputPassword from "@/components/shared/InputPassword";
 import { StudentRegisterForm } from "@/interfaces/Student";
 import { TeacherRegisterForm } from "@/interfaces/Teacher";
 
-import {
-  ChangeEventHandler,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { ChangeEventHandler, Dispatch, SetStateAction } from "react";
 
 const RegisterTeacherForm = ({
   form,
@@ -143,7 +139,7 @@ const RegisterTeacherForm = ({
           type="tel"
           required
           onChange={handleChange}
-          minLength={4}
+          minLength={9}
           maxLength={9}
         />
       </label>
@@ -199,7 +195,7 @@ const RegisterTeacherForm = ({
           type="tel"
           required
           onChange={handleChange}
-          minLength={4}
+          minLength={9}
           maxLength={9}
         />
       </label>
