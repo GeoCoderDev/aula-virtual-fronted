@@ -3,9 +3,11 @@ import { useState } from 'react';
 import EditarIcon from '@/components/icons/others/EditarIcon';
 import RestaurarIcon from '@/components/icons/others/RestaurarIcon';
 import ChangeDayBackup from "@/components/shared/modals/Configuraciones/ChangeDayBackup";
+import CreateBackup from "@/components/shared/modals/Configuraciones/CreateBackup";
 
 const Backups = () => {
   const [viewChangeDayBackup, setViewChangeDayBackup] = useState(false);
+  const [viewCreateBackup, setViewCreateBackup] = useState(false);
 
   return (
     <>
@@ -47,7 +49,10 @@ const Backups = () => {
           <p className="text-sm font-semibold text-red-600 mb-4">
             Importante: La restauración desde un backup sobrescribirá los datos actuales. Se recomienda realizar esta acción con precaución y solo cuando sea estrictamente necesario.
           </p>
-          <button className="button-with-loader ml-0">
+          <button 
+          onClick={() => {
+            setViewCreateBackup(true);
+          }}className="button-with-loader ml-0">
             Restaurar <RestaurarIcon />
           </button>
         </div>
@@ -57,6 +62,13 @@ const Backups = () => {
         <ChangeDayBackup
           eliminateModal={() => {
             setViewChangeDayBackup(false);
+          }}
+        />
+      )}
+      {viewCreateBackup && (
+        <CreateBackup
+          eliminateModal={() => {
+            setViewCreateBackup(false);
           }}
         />
       )}
