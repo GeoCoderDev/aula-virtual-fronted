@@ -3,8 +3,7 @@ import { ReactElement } from "react";
 import MyCoursesIcon from "../../../components/icons/sidebar/MyCoursesIcon";
 import HorarioIcon from "@/components/icons/sidebar/HorarioIcon";
 import AsistenciaIcon from "@/components/icons/sidebar/AsistenciaIcon";
-import CalificacionesIcon from "@/components/icons/sidebar/CalificacionesIcon";
-import ReportesIcon from "@/components/icons/sidebar/ReportesIcon";
+
 import { Role } from "@/interfaces/Role";
 import EstudiantesIcon from "@/components/icons/sidebar/EstudiantesIcon";
 import ProfesoresIcon from "@/components/icons/sidebar/ProfesoresIcon";
@@ -56,22 +55,7 @@ const pagesApp: PageApp[] = [
     },
     allowedRoles: ["teacher", "student"],
   },
-  {
-    route: "calificaciones",
-    text: "Calificaciones",
-    IconTSX: (props: IconProps) => {
-      return <CalificacionesIcon {...props} />;
-    },
-    allowedRoles: ["teacher", "student"],
-  },
-  {
-    route: "reportes",
-    text: "Reportes",
-    IconTSX: (props: IconProps) => {
-      return <ReportesIcon {...props} />;
-    },
-    allowedRoles: ["teacher"],
-  },
+  
   {
     route: "estudiantes",
     text: "Estudiantes",

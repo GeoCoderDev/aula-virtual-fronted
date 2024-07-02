@@ -2,8 +2,8 @@
 // Header.tsx
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
-import NotificacionesIcon from "../icons/header/NotificacionesIcon";
-import MensajesIcon from "../icons/header/MensajesIcon";
+
+
 import PerfilIcon from "../icons/header/PerfilIcon";
 import DespliegueIcon from "../icons/header/DespliegueIcon";
 import HamburguesaIcon from "../icons/header/HamburguesaIcon";
@@ -198,18 +198,7 @@ const Header = () => {
         </div>
 
         <div className="flex items-center justify-end gap-x-1 sm:gap-x-2">
-          <div className="hidden sm:flex items-center gap-x-2">
-            <MensajesIcon
-              className="aspect-auto w-8 cursor-pointer"
-              fillColor="black"
-              title="Chat"
-            />
-            <NotificacionesIcon
-              className="aspect-auto w-8 cursor-pointer"
-              fillColor="black"
-              title="Notificaciones"
-            />
-          </div>
+          
           <div className="flex items-center justify-center">
             {UserSessionData.urlImage ? (
               <img
@@ -242,18 +231,7 @@ const Header = () => {
                 setMenuVisible(false);
               }}
             >
-              <div className="flex sm:hidden items-center justify-center gap-x-4  h-10 w-[7rem]">
-                <MensajesIcon
-                  title="Chat"
-                  className="aspect-auto w-5 sm:w-7 mr-2 cursor-pointer"
-                  fillColor="black"
-                />
-                <NotificacionesIcon
-                  title="Notificaciones"
-                  className="aspect-auto w-5 sm:w-7 cursor-pointer"
-                  fillColor="black"
-                />
-              </div>
+              
               <Link href={"/editar_perfil"} as={"/editar-perfil"}>
                 <li className="hover:font-bold cursor-pointer h-10 flex items-center justify-center px-3 border-t border-gray-200 w-[8rem]">
                   Editar Perfil
