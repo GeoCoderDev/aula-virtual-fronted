@@ -15,8 +15,9 @@ import validateDNI from "@/lib/helpers/validations/validateDNI";
 import { TeacherRegisterForm } from "@/interfaces/Teacher";
 import RegisterTeacherForm from "./_components/RegisterTeacherForm";
 import HelpCSVTeacherRegister from "@/components/shared/modals/Profesores/HelpCSVTeacherRegister";
-import { downloadCSVTemplate } from "@/utils/csvUtils";
+
 import DescargarIcon from "@/components/icons/others/DescargarIcon";
+import { downloadCSVTemplate } from "@/lib/utils/csvUtils";
 
 const initialForm: TeacherRegisterForm = {
   DNI_Profesor: "",
@@ -267,7 +268,6 @@ const RegistrarProfesor = () => {
             setIsThereFileUploaded={setIsThereFileUploaded}
             columnNames={Object.keys(initialForm)}
             columnTypes={[
-              
               "dni",
               "string",
               "string",

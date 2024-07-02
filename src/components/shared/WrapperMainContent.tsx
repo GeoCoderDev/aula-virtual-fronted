@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
@@ -20,6 +20,14 @@ const WrapperMainContent = ({
   const path = usePathname();
 
   const isLoginPage = path.includes("/login");
+
+  useEffect(() => {
+    
+    
+    
+    
+  }, [])
+  
 
   return (
     <>

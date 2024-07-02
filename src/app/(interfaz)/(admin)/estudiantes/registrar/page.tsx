@@ -16,8 +16,9 @@ import validateUsername from "@/lib/helpers/validations/validateUsername";
 import validatePassword from "@/lib/helpers/validations/validatePassword";
 import validateDNI from "@/lib/helpers/validations/validateDNI";
 import { StudentRegisterForm } from "@/interfaces/Student";
-import { downloadCSVTemplate } from "@/utils/csvUtils";
+
 import DescargarIcon from "@/components/icons/others/DescargarIcon";
+import { downloadCSVTemplate } from "@/lib/utils/csvUtils";
 
 const initialForm: StudentRegisterForm = {
   DNI_Estudiante: "",

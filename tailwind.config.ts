@@ -33,7 +33,7 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        "verde-spotify": "#00FF6F",
+        "verde-spotify": "var(--color-interfaz)",
         "rojo-orange": "#FF0000",
         "rojo-orange-dark": "#880000",
         "azul-pablo": "#1400FF",

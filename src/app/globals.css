@@ -8,6 +8,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-interfaz: #00FF6F; /* Color por defecto */
+}
+
 /* Aplicación de la fuente Roboto */
 * {
   font-family: "Roboto", sans-serif;
