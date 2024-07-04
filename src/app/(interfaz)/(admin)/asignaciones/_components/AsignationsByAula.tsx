@@ -20,26 +20,35 @@ import AsignacionComponent from "./AsignacionComponent";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import { formatterHoursAndMinutes } from "@/lib/helpers/functions/formatterHoursAndMinutes";
 
+// Límite de asignaciones requeridas
 const limitAsignationsRequired = 200;
 
-interface SearchTermsAula extends Aula {}
+// Interfaz extendida de Aula para términos de búsqueda
+interface SearchTermsAula extends Aula { }
 
+// Estado inicial de los términos de búsqueda
 const searchTermsInitial: SearchTermsAula = {
   Grado: "",
   Seccion: "",
 };
 
+// Componente principal de Asignaciones por Aula
 const AsignationsByAula = () => {
+  // Estado para manejar la visibilidad del modal de añadir asignación
   const [viewAddAsignationByAulaModal, setViewAddAsignationByAulaModal] =
     useState(false);
 
+  // Referencia a la tabla de asignaciones
   const asignationsTable = useRef<HTMLTableElement>();
 
+  // Referencias a los selectores de Grado y Sección
   const selectGrado = useRef<HTMLSelectElement>();
   const selectSeccion = useRef<HTMLSelectElement>();
 
+  // Estado para manejar los términos de búsqueda
   const [searchTerms, setSearchTerms] = useState(searchTermsInitial);
 
+  // Hook personalizado para manejar la API
   const { isLoading, error, otherProperties } = useBatchAPI<AsignacionResponse>(
     "/api/asignations/byClassroom",
     limitAsignationsRequired,
@@ -52,16 +61,19 @@ const AsignationsByAula = () => {
     ["Asignaciones", "Horas_Academicas"]
   );
 
+  // Formatear las horas y minutos
   const hoursAndMinutes = otherProperties["Horas_Academicas"]
     ? formatterHoursAndMinutes(otherProperties["Horas_Academicas"])
     : [];
 
+  // Estado para manejar las celdas de la tabla
   const [celdas, setCeldas] = useState<NodeListOf<Element> | null>(null);
 
+  // Asignaciones obtenidas de la API
   const asignaciones: Asignacion[] = otherProperties["Asignaciones"] ?? [];
 
+  // useEffect para actualizar las celdas al cambiar el tamaño de la ventana
   useEffect(() => {
-    //Para acomodar con las celdas cuando se cambia el tamaño de la ventana
     const actualizarCeldas = () => {
       const celdasHTML = document.querySelectorAll(
         "#tabla-asignaciones-por-aula td"
@@ -74,6 +86,7 @@ const AsignationsByAula = () => {
     return () => window.removeEventListener("resize", actualizarCeldas);
   }, []);
 
+  // useEffect para actualizar las celdas al cambiar los términos de búsqueda o las asignaciones
   useEffect(() => {
     setTimeout(() => {
       if (
@@ -94,17 +107,20 @@ const AsignationsByAula = () => {
     <>
       <div className="w-full flex flex-col items-start justify-start gap-y-4">
         <div className="flex flex-wrap max-w-full items-center w-max gap-x-5 gap-y-4 ">
-          <div className="flex items-center gap-x-5 flex-1">
-            <label className="font-semibold flex w-auto flex-row items-center gap-x-3 whitespace-nowrap">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-y-4 sm:gap-x-5 flex-1 w-full sm:w-auto">
+            <label className="font-semibold flex w-auto flex-row items-center gap-x-3 whitespace-nowrap mb-2 sm:mb-0">
               Selecciona un aula:
             </label>
-            <AulaSelector
-              tipo="search"
-              selectGrado={selectGrado}
-              searchTerms={searchTerms}
-              setSearchTerms={setSearchTerms as Dispatch<SetStateAction<Aula>>}
-              selectSeccion={selectSeccion}
-            />
+            <div className="flex flex-row gap-4 w-full sm:w-auto">
+              <AulaSelector
+                tipo="search"
+                selectGrado={selectGrado}
+                searchTerms={searchTerms}
+                setSearchTerms={setSearchTerms as Dispatch<SetStateAction<Aula>>}
+                selectSeccion={selectSeccion}
+                className="flex flex-row gap-4 w-full sm:w-auto"
+              />
+            </div>
           </div>
           <button
             onClick={() => {
@@ -121,31 +137,28 @@ const AsignationsByAula = () => {
           </button>
         </div>
 
-        {
-          <div
-            className={`w-full -border-2 flex flex-col items-center justify-center ${
-              error || isLoading || searchTerms.Seccion === "" ? "" : "hidden"
+        <div
+          className={`w-full -border-2 flex flex-col items-center justify-center ${error || isLoading || searchTerms.Seccion === "" ? "" : "hidden"
             }`}
-          >
-            {error && <ErrorMessage message={error.message} />}
+        >
+          {error && <ErrorMessage message={error.message} />}
 
-            {isLoading && searchTerms.Seccion !== "" && (
-              <Loader
-                color="black"
-                durationSegundos={1}
-                backgroundSize="12px"
-                width="40px"
-                className="mt-4"
-              />
-            )}
+          {isLoading && searchTerms.Seccion !== "" && (
+            <Loader
+              color="black"
+              durationSegundos={1}
+              backgroundSize="12px"
+              width="40px"
+              className="mt-4"
+            />
+          )}
 
-            {searchTerms.Seccion === "" && (
-              <span className="justify-self-start self-start -border-black -border-2">
-                Aun no has seleccionado un Aula
-              </span>
-            )}
-          </div>
-        }
+          {searchTerms.Seccion === "" && (
+            <span className="justify-self-start self-start -border-black -border-2">
+              Aun no has seleccionado un Aula
+            </span>
+          )}
+        </div>
 
         {otherProperties["Horas_Academicas"] &&
           otherProperties["Asignaciones"] && (
