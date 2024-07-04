@@ -65,11 +65,14 @@ const HorarioCalendario = () => {
               <button key={day} className="px-2 sm:px-4 py-1 sm:py-2 bg-gray-200 rounded text-sm sm:text-base">{day}</button>
             ))}
           </div>
+          <div className="w-full flex justify-center sm:justify-start mt-4 sm:mt-6">
           <button 
             onClick={() => setViewChangeDay(true)}
-            className="button-with-loader w-full sm:w-auto mt-2 sm:mt-0">
-            Modificar <EditarIcon />
+            className="button-with-loader w-full sm:w-auto px-4 py-2 flex items-center justify-center gap-2">
+            <span>Modificar</span>  
+            <EditarIcon className="w-5 h-5"/>
           </button>
+          </div>
         </div>
       </div>
 
