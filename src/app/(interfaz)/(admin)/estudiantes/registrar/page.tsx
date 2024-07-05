@@ -95,7 +95,7 @@ const RegistrarEstudiante = () => {
     }
 
     try {
-      const fetchCancelable = fetchAPI(
+      const fetchCancelable = fetchAPI( 
         "/api/students",
         "POST",
         null,

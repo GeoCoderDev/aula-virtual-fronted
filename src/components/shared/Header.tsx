@@ -1,5 +1,5 @@
 "use client";
-// Header.tsx
+
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -54,23 +54,6 @@ const Header = () => {
   const { UserSessionData } = useUserSessionData() as {
     UserSessionData: UserData;
   };
-
-  useEffect(() => {
-    const fetchInterfazColor = async () => {
-      const res = await fetch(`${urlAPI}/api/interfazColor`, { method: "GET" });
-
-      if (!res.ok) return;
-
-      const interfazColorRec = await res.json();
-
-      document.documentElement.style.setProperty(
-        "--color-interfaz",
-        interfazColorRec
-      );
-    };
-
-    fetchInterfazColor();
-  }, []);
 
   useEffect(() => {
     if (!UserSessionData) return;
