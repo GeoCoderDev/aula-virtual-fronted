@@ -2,7 +2,7 @@ export async function getInterfazColor(): Promise<string> {
   try {
     const res = await fetch(
       "https://api.aula-virtual-jbsf.com/api/interfazColor",
-      { method: "GET" }
+      { method: "GET", next: { revalidate: 0 } }
     );
     if (res.ok) {
       return await res.json();
