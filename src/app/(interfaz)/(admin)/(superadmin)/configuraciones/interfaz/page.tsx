@@ -1,11 +1,27 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react"; // Asegúrate de importar useState
+import React, { useEffect, useState } from "react"; // Asegúrate de importar useState
 import EditarIcon from "@/components/icons/others/EditarIcon";
 import ChangeInterfazColor from "@/components/shared/modals/Configuraciones/ChangeInterfazColor"; // Asegúrate de que el import sea correcto
 
 const Interfaz = () => {
   const [viewChangeInterfazColor, setViewChangeInterfazColor] = useState(false); // Cambié a `viewChangeInterfazColor` para reflejar el estado correcto
+
+  const [initialColor, setInitialColor] = useState<string>();
+  const [interfazColor, setInterfazColor] = useState<string>();
+
+  useEffect(() => {
+    // Función para obtener el valor de la variable CSS
+    const getCSSVariableValue = (variableName: string) => {
+      const root = document.documentElement;
+      const computedStyle = getComputedStyle(root);
+      return computedStyle.getPropertyValue(variableName).trim();
+    };
+
+    // Obtener el valor de la variable CSS y actualizar el estado
+    setInitialColor(getCSSVariableValue("--color-interfaz"));
+    setInterfazColor(getCSSVariableValue("--color-interfaz"));
+  }, []);
 
   return (
     <>
@@ -29,9 +45,9 @@ const Interfaz = () => {
           </p>
           <div className="flex flex-wrap items-center gap-4 mb-4">
             <span className="text-xl font-semibold">Color Actual:</span>
-            <div className="w-8 h-8 bg-green-500"></div>
+            <div className="w-8 h-8 bg-verde-spotify"></div>
             <span className="bg-gray-300 px-4 py-2 rounded-md text-xl">
-              #06FC68
+              {interfazColor ?? initialColor}
             </span>
             <button
               className="button-with-loader mt-2 sm:mt-0 w-full sm:w-auto"
@@ -46,6 +62,10 @@ const Interfaz = () => {
       </div>
       {viewChangeInterfazColor && (
         <ChangeInterfazColor
+          setInitialColor={setInitialColor}
+          setInterfazColor={setInterfazColor}
+          initialColor={initialColor}
+          interfazColor={interfazColor}
           eliminateModal={() => {
             setViewChangeInterfazColor(false);
           }}
