@@ -8,25 +8,25 @@ const CreateBackup = ({ eliminateModal }: { eliminateModal: () => void }) => {
         eliminateModal();
       }}
     >
-      <form className="flex flex-col gap-y-3 items-center justify-center">
-        <h4 className="text-[1.5rem] font-semibold">Frecuencia de backup</h4>
+      <form className="flex flex-col gap-y-4 items-center justify-center w-full max-w-md px-4">
+        <h4 className="text-xl sm:text-2x1 font-semibold text-center">Frecuencia de backup</h4>
 
-        <div className="flex items-center gap-x-2">
-            <label className="font-semibold flex items-center gap-x-2">
+        <div className="w-full">
+          <label className="font-semibold text-sm sm:text-base flex flex-col sm:flex-row items-start sm:items-center gap-2">
             Seleccionar
-            <select name="backup-frequency" id="backup-frequency" className="font-normal border border-gray-400 rounded-sm p-1 ml-2">
-                <option value="" disabled selected>Seleccionar</option>
-                <option value="backup-1" className="font-normal">Backup - 17/06/2024 - 06:00</option>
-                <option value="backup-2" className="font-normal">Backup - 16/06/2024 - 06:00</option>
-                <option value="backup-3" className="font-normal">Backup - 15/06/2024 - 06:00</option>
+            <select name="backup-frequency" id="backup-frequency" className="font-normal border border-gray-400 rounded-sm p-2 w-full sm:w-auto mt-1 sm:mt-0">
+              <option value="" disabled selected>Seleccionar</option>
+              <option value="backup-1" className="font-normal">Backup - 17/06/2024 - 06:00</option>
+              <option value="backup-2" className="font-normal">Backup - 16/06/2024 - 06:00</option>
+              <option value="backup-3" className="font-normal">Backup - 15/06/2024 - 06:00</option>
             </select>
-            </label>
+          </label>
         </div>
 
-        <button className="button-with-loader mt-3" type="submit">
-            GUARDAR CAMBIOS
+        <button className="button-with-loader mt-4 w-full sm:w-auto" type="submit">
+          GUARDAR CAMBIOS
         </button>
-        </form>
+      </form>
 
     </ModalContainer>
   );
