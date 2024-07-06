@@ -30,3 +30,4 @@ export interface AsignacionResponse {
   Asignaciones: Asignacion[];
   Horas_Academicas: HoraAcademica[];
 }
+

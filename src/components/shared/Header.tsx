@@ -136,7 +136,7 @@ const Header = () => {
     <header
       style={{ boxShadow: "0 0px 2px 2px rgba(0,0,0,0.2)" }}
       id="header"
-      className="flex w-screen text-center z-[5] bg-verde-spotify py-2.5 sticky top-0 left-0 max-w-full pl-4 pr-2 sm:pl-6 sm:pr-4 text-xs sm:text-base "
+      className="flex w-screen text-center z-[1000] bg-verde-spotify py-2.5 sticky top-0 left-0 max-w-full pl-4 pr-2 sm:pl-6 sm:pr-4 text-xs sm:text-base "
     >
       <div className="flex items-center justify-between w-full gap-x-4 sm:gap-x-7 flex-wrap">
         <div className="flex items-center">

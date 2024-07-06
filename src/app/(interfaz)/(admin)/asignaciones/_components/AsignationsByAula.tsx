@@ -24,7 +24,7 @@ import { formatterHoursAndMinutes } from "@/lib/helpers/functions/formatterHours
 const limitAsignationsRequired = 200;
 
 // Interfaz extendida de Aula para términos de búsqueda
-interface SearchTermsAula extends Aula { }
+interface SearchTermsAula extends Aula {}
 
 // Estado inicial de los términos de búsqueda
 const searchTermsInitial: SearchTermsAula = {
@@ -116,7 +116,9 @@ const AsignationsByAula = () => {
                 tipo="search"
                 selectGrado={selectGrado}
                 searchTerms={searchTerms}
-                setSearchTerms={setSearchTerms as Dispatch<SetStateAction<Aula>>}
+                setSearchTerms={
+                  setSearchTerms as Dispatch<SetStateAction<Aula>>
+                }
                 selectSeccion={selectSeccion}
                 className="flex flex-row gap-4 w-full sm:w-auto"
               />
@@ -138,8 +140,9 @@ const AsignationsByAula = () => {
         </div>
 
         <div
-          className={`w-full -border-2 flex flex-col items-center justify-center ${error || isLoading || searchTerms.Seccion === "" ? "" : "hidden"
-            }`}
+          className={`w-full -border-2 flex flex-col items-center justify-center ${
+            error || isLoading || searchTerms.Seccion === "" ? "" : "hidden"
+          }`}
         >
           {error && <ErrorMessage message={error.message} />}
 
@@ -232,6 +235,8 @@ const AsignationsByAula = () => {
 
       {viewAddAsignationByAulaModal && (
         <AddAsignationByAula
+          Grado={selectGrado!.current!.value}
+          Seccion={selectSeccion!.current!.value}
           eliminateModal={() => {
             setViewAddAsignationByAulaModal(false);
           }}

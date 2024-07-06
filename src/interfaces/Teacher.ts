@@ -1,8 +1,12 @@
-import { User } from "./User";
+import { MinimalUser, User } from "./User";
 
-export interface Teacher extends User {
+export interface TeacherDNI {
   DNI_Profesor: string;
 }
+
+export interface MinimalTeacher extends MinimalUser, TeacherDNI {}
+
+export interface Teacher extends User, TeacherDNI {}
 
 export interface TeacherEditionForm {
   Nombres: string;
@@ -16,15 +20,12 @@ export interface TeacherEditionForm {
   Telefono_Contacto_Emergencia: string;
 }
 
-export interface TeacherRegisterForm extends TeacherEditionForm {
-  DNI_Profesor: string;
+export interface TeacherRegisterForm extends TeacherEditionForm, TeacherDNI {
   Contraseña_Usuario: string;
 }
 
-export interface TeacherResponse extends TeacherEditionForm {
-    DNI_Profesor: string;
-    Estado: number;
-    Foto_Perfil_URL?: string;
-    Id_Usuario: number;
-  }
-  
+export interface TeacherResponse extends TeacherEditionForm, TeacherDNI {
+  Estado: number;
+  Foto_Perfil_URL?: string;
+  Id_Usuario: number;
+}

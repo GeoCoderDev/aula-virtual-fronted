@@ -1,6 +1,6 @@
 import { EstadosInterpretacion } from "@/app/assets/EstadosInterpretacion";
 import ToggleStateModal from "@/components/shared/modals/ToggleStateModal";
-import { Teacher } from "@/interfaces/Teacher";
+import { MinimalTeacher, Teacher } from "@/interfaces/Teacher";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -10,7 +10,7 @@ const TeacherRow = ({
   Apellidos,
   Estado,
   togleStateFunction,
-}: Teacher & { togleStateFunction: (dni: string) => void }) => {
+}: MinimalTeacher & { togleStateFunction: (dni: string) => void }) => {
   const [viewModal, setViewModal] = useState(false);
 
   return (

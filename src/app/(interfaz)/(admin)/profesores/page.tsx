@@ -6,11 +6,11 @@ import Loader from "@/components/shared/Loader";
 import WarningMessage from "@/components/shared/messages/WarningMessage";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import TeacherRow from "./_components/TeacherRow";
-import { Teacher } from "@/interfaces/Teacher";
+import { MinimalTeacher } from "@/interfaces/Teacher";
 
 const limitStudentsRequired = 50;
 
-interface SearchTermsTeacher {
+export interface SearchTermsTeacher {
   dni?: string; // DNI del profesor
   nombre?: string; // Nombre del profesor
   apellidos?: string; // Apellidos del profesor
@@ -39,7 +39,7 @@ const Profesores = () => {
     setResults,
     allResultsGetted,
     error,
-  } = useBatchAPI<Teacher>(
+  } = useBatchAPI<MinimalTeacher>(
     "/api/teachers",
     limitStudentsRequired,
     0,
@@ -159,11 +159,11 @@ const Profesores = () => {
               </tr>
             </thead>
             <tbody>
-              {results.map((teacher, index) => (
+              {results.map((minimalTeacher, index) => (
                 <TeacherRow
                   togleStateFunction={toggleEstadoProfesor}
                   key={index}
-                  {...teacher}
+                  {...minimalTeacher}
                 />
               ))}
             </tbody>
