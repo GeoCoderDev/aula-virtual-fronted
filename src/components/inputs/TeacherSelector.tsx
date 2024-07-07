@@ -15,6 +15,7 @@ import useBatchAPI from "@/app/hooks/useBatchAPI";
 import Loader from "../shared/Loader";
 import ErrorMessage from "../shared/messages/ErrorMessage";
 import WarningMessage from "../shared/messages/WarningMessage";
+import { ErrorAPI } from "@/interfaces/API";
 
 const TeacherFinded = ({
   minimalTeacher: { DNI_Profesor, Nombres, Apellidos, Id_Usuario },
@@ -53,6 +54,7 @@ const TeachersFindedContainer = ({
   setViewTeachers,
   setUrlImageTeacherSelected,
   setSelectedTeacher,
+  setError,
 }: {
   setViewTeachers: Dispatch<React.SetStateAction<boolean>>;
   setForm: Dispatch<React.SetStateAction<TeacherDNI>>;
@@ -62,18 +64,18 @@ const TeachersFindedContainer = ({
   setSelectedTeacher: Dispatch<
     React.SetStateAction<MinimalTeacher | undefined>
   >;
+  setError: Dispatch<React.SetStateAction<ErrorAPI | null>>;
 }) => {
   const [searchTerms, setSearchTerms] = useState(searchTermsInitial);
   const inputDNINombreApellido = useRef<HTMLInputElement>();
 
-  const { results, isLoading, allResultsGetted, error } =
-    useBatchAPI<MinimalTeacher>(
-      "/api/teachers",
-      limitStudentsRequired,
-      0,
-      searchTerms as any,
-      [inputDNINombreApellido, inputDNINombreApellido, inputDNINombreApellido]
-    );
+  const { results, isLoading, error } = useBatchAPI<MinimalTeacher>(
+    "/api/teachers",
+    limitStudentsRequired,
+    0,
+    searchTerms as any,
+    [inputDNINombreApellido, inputDNINombreApellido, inputDNINombreApellido]
+  );
 
   const handleChangeMultipleInput: ChangeEventHandler<HTMLInputElement> = (
     e
@@ -126,7 +128,10 @@ const TeachersFindedContainer = ({
         {error && !isLoading && <ErrorMessage message={error.message} />}
 
         {!error && !isLoading && results.length === 0 && (
-          <WarningMessage message="No se encontraron resultados" />
+          <WarningMessage
+            className="text-[0.8rem] font-normal self-center"
+            message="No se encontraron resultados"
+          />
         )}
 
         {results.map((minimalTeacher, index) => (
@@ -143,6 +148,7 @@ const TeachersFindedContainer = ({
               setUrlImageTeacherSelected?.(
                 () => minimalTeacher.Foto_Perfil_URL
               );
+              setError(null);
             }}
           />
         ))}
@@ -155,18 +161,23 @@ const TeacherSelector = ({
   className = "",
   setForm,
   setUrlImageTeacherSelected,
+  setError,
+  selectedTeacher,setSelectedTeacher
 }: {
   className?: string;
   setForm: Dispatch<React.SetStateAction<TeacherDNI>>;
   setUrlImageTeacherSelected?: Dispatch<
     React.SetStateAction<string | undefined>
   >;
+  setError: Dispatch<React.SetStateAction<ErrorAPI | null>>;
+  selectedTeacher: MinimalTeacher | undefined;
+  setSelectedTeacher: Dispatch<
+    React.SetStateAction<MinimalTeacher | undefined>
+  >;
 }) => {
   const [viewTeachers, setViewTeachers] = useState(false);
 
   const { delegarEvento, eliminarEvento } = useDelegacionEventos();
-
-  const [selectedTeacher, setSelectedTeacher] = useState<MinimalTeacher>();
 
   useEffect(() => {
     if (!delegarEvento) return;
@@ -211,6 +222,7 @@ const TeacherSelector = ({
           setSelectedTeacher={setSelectedTeacher}
           setViewTeachers={setViewTeachers}
           setUrlImageTeacherSelected={setUrlImageTeacherSelected}
+          setError={setError}
         />
       )}
     </div>

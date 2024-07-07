@@ -2,7 +2,9 @@ import React, {
   ChangeEventHandler,
   Dispatch,
   FormEventHandler,
+  LegacyRef,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import ModalContainer from "../../ModalContainer";
@@ -10,11 +12,15 @@ import { ModalNoActions } from "@/interfaces/ModalNoActions";
 import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
 import { ErrorAPI, SuccessMessageAPI } from "@/interfaces/API";
 import { ClassroomAdditionalDataResponse } from "@/interfaces/Classrooms";
-import { DiaSemana, diasSemana } from "@/interfaces/Asignation";
+import { Asignacion, DiaSemana, diasSemana } from "@/interfaces/Asignation";
 import { Aula } from "@/interfaces/Aula";
 import { HHMMSSToHHMM } from "@/lib/helpers/functions/HHMMSSToHHMM";
 import TeacherSelector from "@/components/inputs/TeacherSelector";
-import { TeacherDNI } from "@/interfaces/Teacher";
+import { MinimalTeacher, TeacherDNI } from "@/interfaces/Teacher";
+import Loader from "../../Loader";
+import { equalObjects } from "@/lib/helpers/equalObjects";
+import ErrorMessage from "../../messages/ErrorMessage";
+import SuccessMessage from "../../messages/SuccessMessage";
 
 interface AsignationRegisterForm extends TeacherDNI {
   Id_Curso_Aula?: number;
@@ -33,13 +39,19 @@ const AddAsignationByAula = ({
   eliminateModal,
   Grado,
   Seccion,
-}: ModalNoActions & Aula) => {
+  addAsignacionInFrontend,
+}: ModalNoActions &
+  Aula & { addAsignacionInFrontend: (asignacion: Asignacion) => void }) => {
   const [classroomAdditionalData, setClassroomAdditionalData] =
     useState<ClassroomAdditionalDataResponse>();
 
   const [form, setForm] = useState(initialState);
   const [urlImageTeacherSelected, setUrlImageTeacherSelected] =
     useState<string>();
+
+  const [selectedTeacher, setSelectedTeacher] = useState<MinimalTeacher>();
+
+  const selectCourse = useRef<HTMLSelectElement>();
 
   const {
     fetchAPI,
@@ -79,16 +91,19 @@ const AddAsignationByAula = ({
     fetchClassroomAdditionalData();
   }, [fetchAPI]);
 
-  const handleChangeInputText: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setError(() => null);
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
+    if (!form.DNI_Profesor)
+      return setError(() => ({ message: "Debes seleccionar un profesor" }));
+
     try {
-      const fetchCancelable = fetchAPI("/api/courses", "POST", null);
+      const fetchCancelable = fetchAPI(
+        "/api/asignations",
+        "POST",
+        null,
+        JSON.stringify(form)
+      );
 
       if (!fetchCancelable) return;
 
@@ -102,26 +117,44 @@ const AddAsignationByAula = ({
           message,
         }));
       } else {
-        const { message, Id }: SuccessMessageAPI = await res.json();
+        const { message, Id, Id2 }: SuccessMessageAPI = await res.json();
 
-        if (Id) {
+        if (Id && Id2) {
+          const newAsignation: Asignacion = {
+            Id_Asignacion: Id,
+            Dia_Semana: form.Dia_Semana,
+            Cant_Horas_Academicas: form.Cant_Horas_Academicas,
+            DNI_Profesor: form.DNI_Profesor,
+            Id_Curso_Aula: form.Id_Curso_Aula!,
+            Id_Hora_Academica: form.Id_Hora_Academica_Inicio!,
+            Id_Horario_Curso_Aula: Id2,
+            Nombre_Curso:
+              selectCourse.current?.options[selectCourse.current.selectedIndex]
+                .text!,
+          };
+
+          addAsignacionInFrontend(newAsignation);
         }
 
         setSuccessMessage(() => ({
-          message: message ?? "Curso Registrado",
+          message: message ?? "Asignacion añadida correctamente",
         }));
+        setForm(() => initialState);
+        setSelectedTeacher(undefined);
       }
 
       setIsSomethingLoading(false);
     } catch (e) {
       setError(() => ({
-        message: "No se pudo registrar el curso",
+        message: "No se pudo añadir la asignacion",
       }));
       setIsSomethingLoading(false);
     }
   };
 
   const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    setError(null);
+    setSuccessMessage(null);
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
@@ -132,7 +165,7 @@ const AddAsignationByAula = ({
         if (!isSomethingLoading) eliminateModal(e);
       }}
     >
-      <form className="flex flex-col">
+      <form className="flex flex-col gap-y-4" onSubmit={handleSubmit}>
         <h3 className="section-tittle min-w-full text-center text-[1.5rem] flex justify-center mb-2">
           AULA - {Grado}
           {Seccion} &nbsp;&nbsp;|&nbsp;&nbsp; Agregar Asignación
@@ -148,6 +181,7 @@ const AddAsignationByAula = ({
                 className="custom-input w-[10rem] max-w-[10rem] text-center"
                 value={form.Id_Curso_Aula ?? ""}
                 required
+                ref={selectCourse as LegacyRef<HTMLSelectElement>}
               >
                 <option disabled value={""}>
                   - seleccione -
@@ -231,6 +265,9 @@ const AddAsignationByAula = ({
             <label className=" text-[1.2rem] font-semibold ">Profesor:</label>
 
             <TeacherSelector
+              selectedTeacher={selectedTeacher}
+              setSelectedTeacher={setSelectedTeacher}
+              setError={setError}
               setForm={setForm as Dispatch<React.SetStateAction<TeacherDNI>>}
               setUrlImageTeacherSelected={setUrlImageTeacherSelected}
             />
@@ -246,6 +283,30 @@ const AddAsignationByAula = ({
             </div>
           </fieldset>
         </div>
+        {!successMessage && !isSomethingLoading && error && (
+          <ErrorMessage message={error.message} />
+        )}
+        {!error && !isSomethingLoading && successMessage && (
+          <SuccessMessage
+            className="text-rojo-orange"
+            message={successMessage.message}
+          />
+        )}
+        <button
+          className="button-with-loader py-2 w-max self-center"
+          disabled={
+            Boolean(error) ||
+            Boolean(successMessage) ||
+            isSomethingLoading ||
+            equalObjects(initialState, form)
+          }
+          type="submit"
+        >
+          Añadir Asignación{" "}
+          {isSomethingLoading && (
+            <Loader backgroundSize="8px" width="25px" color="black" />
+          )}
+        </button>
       </form>
     </ModalContainer>
   );

@@ -22,7 +22,6 @@ export interface Asignacion extends HorarioCursoAula{
   Id_Asignacion: number;
   DNI_Profesor: string;
   Id_Curso_Aula: number;
-  Hora_Inicio: string;
 }
 
 

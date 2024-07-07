@@ -26,7 +26,7 @@ const ModalContainer = ({
     ReactDOM.createPortal(
       <div
         onClick={handleModalContainerClick}
-        className="fixed flex-col w-screen h-[100dvh] z-[100] top-0 left-0 bg-[#00000054] flex items-center justify-center"
+        className="fixed flex-col w-screen h-[100dvh] z-[1001] top-0 left-0 bg-[#00000054] flex items-center justify-center"
       >
         <div
           className={`bg-white relative p-6 rounded-xl modal-content animate__animated animate__pulse [animation-duration:300ms] max-w-[90vw] max-h-[90vh] ${

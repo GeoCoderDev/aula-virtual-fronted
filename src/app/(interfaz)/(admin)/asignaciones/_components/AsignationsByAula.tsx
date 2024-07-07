@@ -69,9 +69,6 @@ const AsignationsByAula = () => {
   // Estado para manejar las celdas de la tabla
   const [celdas, setCeldas] = useState<NodeListOf<Element> | null>(null);
 
-  // Asignaciones obtenidas de la API
-  const asignaciones: Asignacion[] = otherProperties["Asignaciones"] ?? [];
-
   // useEffect para actualizar las celdas al cambiar el tamaño de la ventana
   useEffect(() => {
     const actualizarCeldas = () => {
@@ -85,6 +82,14 @@ const AsignationsByAula = () => {
 
     return () => window.removeEventListener("resize", actualizarCeldas);
   }, []);
+
+  const [asignaciones, setAsignaciones] = useState<Asignacion[]>([]);
+
+  useEffect(() => {
+    // Asignaciones obtenidas de la API
+
+    setAsignaciones(() => otherProperties["Asignaciones"] ?? []);
+  }, [otherProperties]);
 
   // useEffect para actualizar las celdas al cambiar los términos de búsqueda o las asignaciones
   useEffect(() => {
@@ -101,7 +106,11 @@ const AsignationsByAula = () => {
 
       setCeldas(() => celdasHTML);
     }, 200);
-  }, [searchTerms, otherProperties["Asignaciones"]]);
+  }, [searchTerms, otherProperties]);
+
+  const addAsignacionInFrontend = (asignacion: Asignacion) => {
+    setAsignaciones(() => [...asignaciones, asignacion]);
+  };
 
   return (
     <>
@@ -216,6 +225,7 @@ const AsignationsByAula = () => {
 
                         {celdas &&
                           celdas?.length !== 0 &&
+                          asignaciones &&
                           asignaciones.map((asignacion, index) => (
                             <AsignacionComponent
                               asignationsTable={asignationsTable}
@@ -235,6 +245,7 @@ const AsignationsByAula = () => {
 
       {viewAddAsignationByAulaModal && (
         <AddAsignationByAula
+          addAsignacionInFrontend={addAsignacionInFrontend}
           Grado={selectGrado!.current!.value}
           Seccion={selectSeccion!.current!.value}
           eliminateModal={() => {
