@@ -137,11 +137,13 @@ const Foro = ({
             )}
           </div>
 
-          <RegisterStudentResponse
-          addStudentResponseInFrontend={addStudentResponseInFrontend}
-            Id_Foro={Foro_ID}
-            isAnswered={foroData.isAnswered}
-          />
+          {!foroData.isTeacher && (
+            <RegisterStudentResponse
+              addStudentResponseInFrontend={addStudentResponseInFrontend}
+              Id_Foro={Foro_ID}
+              isAnswered={foroData.isAnswered}
+            />
+          )}
 
           <div className="flex flex-col ">
             <h3 className="text-[1.25rem] font-semibold italic mt-6">
