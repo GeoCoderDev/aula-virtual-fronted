@@ -3,9 +3,8 @@ import React from "react";
 
 const StudentForoResponse = ({
   respuestaForo: {
-    Estudiante: { Apellidos, Id_Usuario, Nombres, Foto_Perfil_URL },
-    Id_Respuesta_Foro,
-    Respuesta,
+    Estudiante: { Apellidos, Nombres, Foto_Perfil_URL },
+    Contenido_Respuesta,
   },
 }: {
   respuestaForo: RespuestaForo;
@@ -27,7 +26,7 @@ const StudentForoResponse = ({
         </h5>
       </div>
 
-      <p className="ml-[3.75rem] mb-4">{Respuesta}</p>
+      <p className="ml-[3.75rem] mb-4">{Contenido_Respuesta}</p>
     </div>
   );
 };

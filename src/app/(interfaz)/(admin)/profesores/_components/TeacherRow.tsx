@@ -1,5 +1,6 @@
 import { EstadosInterpretacion } from "@/app/assets/EstadosInterpretacion";
 import ToggleStateModal from "@/components/shared/modals/ToggleStateModal";
+import { UserEstado } from "@/interfaces/Student";
 import { MinimalTeacher, Teacher } from "@/interfaces/Teacher";
 import Link from "next/link";
 import { useState } from "react";
@@ -38,10 +39,12 @@ const TeacherRow = ({
               setViewModal(true);
             }}
             className={`deshabilitar-habilitar-button ${
-              Estado === 1 ? "bg-rojo-orange" : "bg-teal-400"
+              Estado === UserEstado.Habilitado
+                ? "bg-rojo-orange"
+                : "bg-teal-400"
             }`}
           >
-            {Estado === 1 ? "Deshabilitar" : "Habilitar"}
+            {Estado === UserEstado.Habilitado ? "Deshabilitar" : "Habilitar"}
           </button>
 
           {viewModal && (

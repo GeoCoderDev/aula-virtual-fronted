@@ -41,7 +41,7 @@ const RecursoTemaComponent = ({
 
           {Descripcion_Imagen_URL && (
             <img
-              className="aspect-auto w-[min(20rem,80vw)]"
+              className="aspect-auto w-[min(20rem,80vw)] mb-2"
               src={Descripcion_Imagen_URL}
               alt="Imagen de descripcion de recurso del tema"
             />
@@ -87,6 +87,7 @@ const RecursoTemaComponent = ({
           title={`Ir a ${Recurso_URL}`}
           className="flex flex-col justify-center px-2 py-3 w-full hover:bg-[#00000020] rounded-[0.5rem] cursor-pointer gap-4"
           href={Recurso_URL}
+          target="_blank"
         >
           {contenido}
         </a>

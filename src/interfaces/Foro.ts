@@ -2,9 +2,12 @@ import { MinimalStudent } from "./Student";
 import { Aula } from "./Aula";
 import { RecursoTemaRegisterFields } from "./RecursoTema";
 
-export interface RespuestaForo {
+export interface RespuestaForoRegisterFormFields {
+  Contenido_Respuesta: string;
+}
+
+export interface RespuestaForo extends RespuestaForoRegisterFormFields {
   Id_Respuesta_Foro: number;
-  Respuesta: string;
   Estudiante: MinimalStudent;
 }
 

@@ -1,7 +1,15 @@
 import { Role } from "@/interfaces/Role";
 
+export interface UserSessionDataFields {
+  role?: Role;
+  username?: string;
+  urlImage?: string;
+  Nombres?: string;
+  Apellidos?: string;
+}
+
 export const initializeUserSessionData = () => {
-  class UserSessionData {
+  class UserSessionData implements UserSessionDataFields {
     static set role(value: Role) {
       localStorage.setItem("role", value);
     }
@@ -29,6 +37,26 @@ export const initializeUserSessionData = () => {
     static get urlImage(): string | undefined | null {
       const urlImageGetted = localStorage.getItem("urlImage");
       return urlImageGetted || undefined;
+    }
+
+    static set Nombres(value: string) {
+      localStorage.setItem("Nombres", value);
+    }
+
+    static get Nombres(): string | undefined {
+      const nombresGetted = localStorage.getItem("Nombres");
+      if (!nombresGetted) return undefined;
+      return nombresGetted;
+    }
+
+    static set Apellidos(value: string) {
+      localStorage.setItem("Apellidos", value);
+    }
+
+    static get Apellidos(): string | undefined {
+      const apellidosGetted = localStorage.getItem("Apellidos");
+      if (!apellidosGetted) return undefined;
+      return apellidosGetted;
     }
   }
 

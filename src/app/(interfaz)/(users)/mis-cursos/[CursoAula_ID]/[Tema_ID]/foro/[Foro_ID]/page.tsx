@@ -3,12 +3,13 @@ import useRequestAPIFeatures from "@/app/hooks/useRequestAPIFeatures";
 import Loader from "@/components/shared/Loader";
 import ErrorMessage from "@/components/shared/messages/ErrorMessage";
 import { ErrorAPI } from "@/interfaces/API";
-import { ForoDataResponse } from "@/interfaces/Foro";
+import { ForoDataResponse, RespuestaForo } from "@/interfaces/Foro";
 import { RootState } from "@/store";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import StudentForoResponse from "./_components/StudentForoResponse";
+import RegisterStudentResponse from "./_components/RegisterStudentResponse";
 
 const Foro = ({
   params: { Tema_ID, CursoAula_ID, Foro_ID },
@@ -30,6 +31,13 @@ const Foro = ({
   } = useRequestAPIFeatures();
 
   const [foroData, setForoData] = useState<ForoDataResponse>();
+
+  const addStudentResponseInFrontend = (studentResponse: RespuestaForo) => {
+    setForoData((prev) => ({
+      ...prev!,
+      Respuestas: [...prev!.Respuestas, studentResponse],
+    }));
+  };
 
   useEffect(() => {
     const fetchTopicAdditionalData = async () => {
@@ -89,7 +97,7 @@ const Foro = ({
       )}
 
       {foroData && (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full ">
           <div
             style={{ top: `${headerHeight}px` }}
             className="flex -border-2 break-words flex-wrap sticky left-0 bg-[#ffffff99] backdrop-blur-[30px] w-full py-2 border-black -border-b-[1px]"
@@ -129,18 +137,28 @@ const Foro = ({
             )}
           </div>
 
+          <RegisterStudentResponse
+          addStudentResponseInFrontend={addStudentResponseInFrontend}
+            Id_Foro={Foro_ID}
+            isAnswered={foroData.isAnswered}
+          />
+
           <div className="flex flex-col ">
-            <h3 className="text-[1.25rem] font-semibold italic">
+            <h3 className="text-[1.25rem] font-semibold italic mt-6">
               Respuestas:{" "}
             </h3>
 
-            <div className="ml-6 flex flex-col pt-4 gap-4">
-              {foroData.Respuestas.length===0? <span className="">Aun no hay respuestas</span>:foroData.Respuestas.map((respuestaForo, index) => (
-                <StudentForoResponse
-                  respuestaForo={respuestaForo}
-                  key={index}
-                />
-              ))}
+            <div className="ml-6 flex flex-col pt-4 gap-6">
+              {foroData.Respuestas.length === 0 ? (
+                <span className="">Aun no hay respuestas</span>
+              ) : (
+                foroData.Respuestas.map((respuestaForo, index) => (
+                  <StudentForoResponse
+                    respuestaForo={respuestaForo}
+                    key={index}
+                  />
+                ))
+              )}
             </div>
           </div>
         </div>

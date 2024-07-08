@@ -81,6 +81,9 @@ const AddForumToTopic = ({
     formData.append("Seccion", Seccion);
     formData.append("Nombre_Curso", Nombre_Curso);
 
+    if (form.Descripcion_Recurso)
+      formData.append("Descripcion_Recurso", form.Descripcion_Recurso);
+
     if (descriptionImage) {
       formData.append("Imagen_Descripcion", descriptionImage);
       formData.append("Imagen_Descripcion_Nombre", descriptionImage.name);

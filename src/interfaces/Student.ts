@@ -5,10 +5,14 @@ export interface StudentDNI {
   DNI_Estudiante: string;
 }
 
+export enum UserEstado {
+  Deshabilitado,
+  Habilitado,
+}
+
 export interface MinimalStudent extends StudentDNI, MinimalUser {}
 
 export interface Student extends StudentDNI, User, Aula {}
-
 
 export interface StudentEditionForm extends Aula {
   Nombres: string;
@@ -29,7 +33,7 @@ export interface StudentRegisterForm extends StudentEditionForm {
 
 export interface StudentResponse extends StudentEditionForm {
   DNI_Estudiante: string;
-  Estado: number;
+  Estado: UserEstado;
   Foto_Perfil_URL?: string;
   Id_Usuario: number;
 }

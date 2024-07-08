@@ -1,8 +1,10 @@
+import { UserEstado } from "./Student";
+
 export interface MinimalUser {
   Id_Usuario: number;
   Nombres: string;
   Apellidos: string;
-  Estado: number;
+  Estado: UserEstado;
   Foto_Perfil_URL?: string;
 }
 

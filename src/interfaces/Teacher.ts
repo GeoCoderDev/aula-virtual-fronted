@@ -1,3 +1,4 @@
+import { UserEstado } from "./Student";
 import { MinimalUser, User } from "./User";
 
 export interface TeacherDNI {
@@ -25,7 +26,7 @@ export interface TeacherRegisterForm extends TeacherEditionForm, TeacherDNI {
 }
 
 export interface TeacherResponse extends TeacherEditionForm, TeacherDNI {
-  Estado: number;
+  Estado: UserEstado;
   Foto_Perfil_URL?: string;
   Id_Usuario: number;
 }

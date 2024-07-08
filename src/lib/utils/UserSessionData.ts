@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import { UserSessionDataFields } from "./clientSideUserSessionData";
 
-export const useUserSessionData = () => {
+export const useUserSessionData = (): {
+  UserSessionData: UserSessionDataFields;
+} => {
   const [UserSessionData, setUserSessionData] = useState<any>();
 
   useEffect(() => {

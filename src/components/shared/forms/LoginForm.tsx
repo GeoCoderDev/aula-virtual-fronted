@@ -6,6 +6,7 @@ import { RootState } from "@/store";
 import Image from "next/image";
 import InputPassword from "../InputPassword";
 import { useUserSessionData } from "@/lib/utils/UserSessionData";
+import { Role } from "@/interfaces/Role";
 
 interface LoginForm {
   username: string;
@@ -30,8 +31,7 @@ export default function LoginForm({
     (state) => state.globalConstants.urlAPI
   );
 
-
-  const {UserSessionData} = useUserSessionData();
+  const { UserSessionData } = useUserSessionData();
 
   const [form, setForm] = useState<LoginForm>(initialForm);
 
@@ -62,7 +62,19 @@ export default function LoginForm({
         return setErrorMessage(objectResponse.message);
       }
 
-      const { token, role, urlImage } = objectResponse;
+      const {
+        token,
+        role,
+        urlImage,
+        Nombres,
+        Apellidos,
+      }: {
+        token: string;
+        role: Role;
+        urlImage?: string;
+        Nombres?: string;
+        Apellidos?: string;
+      } = objectResponse;
 
       const res = await fetch("/api/auth/login", {
         method: "POST",
@@ -76,10 +88,16 @@ export default function LoginForm({
       UserSessionData.username = form.username;
       UserSessionData.urlImage = urlImage;
 
+      if (Nombres && Apellidos) {
+        UserSessionData.Nombres = Nombres;
+        UserSessionData.Apellidos = Apellidos;
+      }
+
       // Redirigir al usuario al home
 
       return (window.location.href = "/"); // Cambiar la URL y redirigir al home
     } catch (e) {
+      console.log(e)
       setErrorMessage("La red es inestable");
     } finally {
       setIsLoading(false);
