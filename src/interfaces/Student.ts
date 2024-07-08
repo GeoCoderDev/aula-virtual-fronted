@@ -1,11 +1,14 @@
 import { Aula } from "./Aula";
-import { User } from "./User";
+import { MinimalUser, User } from "./User";
 
-export interface Student extends User {
+export interface StudentDNI {
   DNI_Estudiante: string;
-  Grado: string;
-  Seccion: string;
 }
+
+export interface MinimalStudent extends StudentDNI, MinimalUser {}
+
+export interface Student extends StudentDNI, User, Aula {}
+
 
 export interface StudentEditionForm extends Aula {
   Nombres: string;

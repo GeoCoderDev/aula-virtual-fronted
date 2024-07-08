@@ -73,7 +73,7 @@ const CrearTarea = ({
     const fetchTopicAdditionalData = async () => {
       try {
         const fetchCancelable = fetchAPI(
-          `/api/topics/${Tema_ID}/additionalData`,
+          `/api/forum/${Tema_ID}/additionalData`,
           "GET"
         );
 
@@ -241,6 +241,14 @@ const CrearTarea = ({
             durationSegundos={1}
             backgroundSize="12px"
             width="40px"
+          />
+        </div>
+      )}
+      {!topicAdditionalData && error && (
+        <div className="w-full flex items-center justify-center">
+          <ErrorMessage
+            className="mt-6 self-start justify-self-center"
+            message={error.message}
           />
         </div>
       )}

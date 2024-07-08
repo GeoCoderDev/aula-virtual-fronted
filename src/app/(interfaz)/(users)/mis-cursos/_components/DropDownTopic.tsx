@@ -194,7 +194,9 @@ const DropDownTopic = ({
           {topicResources.length !== 0
             ? topicResources.map((topicResource, index) => (
                 <RecursoTemaComponent
+                  Id_Tema={topic.Id_Tema}
                   topicResource={topicResource}
+                  CursoAula_ID={CursoAula_ID}
                   key={index}
                 />
               ))

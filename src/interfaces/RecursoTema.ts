@@ -9,9 +9,13 @@ export enum ResourceType {
 export interface RecursoTema {
   Id_Recurso_Tema: number;
   Titulo: string;
-  Descripcion_Recurso: string | null;
-  Imagen_Key_S3: string | null;
+  Descripcion_Recurso?: string;
+  Descripcion_Imagen_URL?: string;
   Tipo: ResourceType;
+  Recurso_URL?: string;
+  Id_Foro?: number;
+  Id_Tarea?: number;
+  Id_Cuestionario?: number;
 }
 
 export interface RecursoTemaRegisterFields {
