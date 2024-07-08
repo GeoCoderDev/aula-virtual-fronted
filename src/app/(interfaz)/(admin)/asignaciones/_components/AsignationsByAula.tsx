@@ -186,6 +186,7 @@ const AsignationsByAula = () => {
                     style={{ overflowX: "auto", margin: "0", padding: "0" }}
                   >
                     <table
+                      onContextMenu={() => false}
                       id="tabla-asignaciones-por-aula"
                       ref={asignationsTable as LegacyRef<HTMLTableElement>}
                       className=" border-collapse table-fixed p-0 max-w-full relative"
@@ -232,6 +233,7 @@ const AsignationsByAula = () => {
                               celdas={celdas}
                               asignacion={asignacion}
                               key={index}
+                              index={index}
                             />
                           ))}
                       </tbody>

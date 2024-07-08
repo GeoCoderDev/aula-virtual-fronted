@@ -7,16 +7,21 @@ const AsignacionComponent = ({
   asignacion,
   celdas,
   asignationsTable,
+  index,
 }: {
   asignacion: Asignacion;
   celdas: NodeListOf<Element>;
   asignationsTable: MutableRefObject<HTMLTableElement | undefined>;
+  index: number;
 }) => {
   return (
     <HorarioCursoAulaComponent
+      Id_Asignacion={asignacion.Id_Asignacion}
       celdas={celdas}
       asignationsTable={asignationsTable}
       horarioCursoAula={asignacion}
+      withOptions={true}
+      index={index}
     />
   );
 };
