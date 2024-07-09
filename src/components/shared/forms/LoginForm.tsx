@@ -97,7 +97,7 @@ export default function LoginForm({
 
       return (window.location.href = "/"); // Cambiar la URL y redirigir al home
     } catch (e) {
-      console.log(e)
+      console.log(e);
       setErrorMessage("La red es inestable");
     } finally {
       setIsLoading(false);
@@ -108,7 +108,7 @@ export default function LoginForm({
   return (
     <>
       <div
-        style={{ boxShadow: "0 0 22px 6px #00FF6F50" }}
+        style={{ boxShadow: "0 0 22px 6px var(--color-interfaz)" }}
         className="flex flex-row flex-wrap max-w-[85%] min-h-[28rem] rounded-[2rem] border-red-100 -border-2 overflow-hidden justify-center"
       >
         {/* PRIMERA MITAD */}
@@ -125,7 +125,7 @@ export default function LoginForm({
             maxLength={100}
             name="username"
             required={true}
-            style={{ boxShadow: "0 0 10px 4px #00FF6F50" }}
+            style={{ boxShadow: "0 0 10px 4px var(--color-interfaz)" }}
             className="outline-none w-[80%] px-4 rounded-[1rem] py-2 font-semibold placeholder:text-black"
             type="text"
             placeholder="Usuario*"
