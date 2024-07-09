@@ -6,8 +6,8 @@ import { ErrorAPI } from "@/interfaces/API";
 import { HorarioResponse } from "@/interfaces/Horario";
 import React, { LegacyRef, useEffect, useRef, useState } from "react";
 import { diasSemana } from "@/interfaces/Asignation";
-import HorarioCursoAulaComponent from "@/components/shared/HorarioCursoAulaComponent";
 import { formatterHoursAndMinutes } from "@/lib/helpers/functions/formatterHoursAndMinutes";
+import HorarioCursoAulaComponent from "@/components/shared/HorarioCursoAulaComponent";
 
 const HorarioEstudiante = () => {
   // Definir los días de la semana
@@ -186,6 +186,7 @@ const HorarioEstudiante = () => {
                   celdas?.length !== 0 &&
                   horario.Horario.map((horarioCursoAula, index) => (
                     <HorarioCursoAulaComponent
+                      index={index}
                       asignationsTable={asignationsTable}
                       celdas={celdas}
                       horarioCursoAula={horarioCursoAula}
