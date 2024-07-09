@@ -10,38 +10,11 @@ import { formatterHoursAndMinutes } from "@/lib/helpers/functions/formatterHours
 import HorarioCursoAulaComponent from "@/components/shared/HorarioCursoAulaComponent";
 
 const HorarioEstudiante = () => {
-  // Definir los días de la semana
-  const daysOfWeek = [
-    "Horario",
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-  ];
 
-  // Definir los horarios
-  const PrimeraHora = ["", " ", "", "", "", "", ""];
-  const SegundaHora = ["", "", "", "", "", "", ""];
-  const TerceraHora = ["", "", "", "", "", "", ""];
-  const CuartaHora = ["", "", "", "", "", "", ""];
-  const QuintaHora = ["", "", "", "", "", "", ""];
-  const SextaHora = ["", "", "", "", "", "", ""];
-
-  // Estilo común para las celdas de la tabla
-  const cellStyle = {
-    border: "2px solid #cfcfcf", // Cambiar el color de las líneas de las celdas a gris claro
-    padding: "8px",
-    width: "150px", // Ancho de celda fijo
-    height: "50px", // Alto de celda fijo
-    whiteSpace: "nowrap", // Evitar que el contenido se desborde
-    overflow: "hidden", // Ocultar el contenido que se desborda
-    textOverflow: "ellipsis", // Mostrar puntos suspensivos cuando el contenido se desborda
-  };
   const asignationsTable = useRef<HTMLTableElement>();
 
   const [horario, setHorario] = useState<HorarioResponse>();
+  
   const [celdas, setCeldas] = useState<NodeListOf<Element> | null>(null);
 
   const {

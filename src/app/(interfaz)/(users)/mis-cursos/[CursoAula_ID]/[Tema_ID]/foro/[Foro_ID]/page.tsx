@@ -16,6 +16,7 @@ const Foro = ({
 }: {
   params: { Tema_ID: number; CursoAula_ID: number; Foro_ID: number };
 }) => {
+  
   const headerHeight = useSelector(
     (state: RootState) => state.elementsDimensions.headerHeight
   );
@@ -31,6 +32,7 @@ const Foro = ({
   } = useRequestAPIFeatures();
 
   const [foroData, setForoData] = useState<ForoDataResponse>();
+
 
   const addStudentResponseInFrontend = (studentResponse: RespuestaForo) => {
     setForoData((prev) => ({

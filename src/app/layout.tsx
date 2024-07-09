@@ -39,14 +39,18 @@ export default async function RootLayout({
 
       `}
         </style>
+
         <ProviderStore>
+                    
           <Header />
+
           <div className="top-0 flex relative">
             <Sidebar />
             <main className="flex-1 flex items-center justify-center">
               <WrapperMainContent>{children}</WrapperMainContent>
             </main>
           </div>
+          
         </ProviderStore>
       </body>
     </html>

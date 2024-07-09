@@ -68,9 +68,13 @@ const DropdownOptions = ({
           >
             URL
           </li>
-          <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
-            Cuestionario
-          </li>
+          <Link
+            href={`/mis-cursos/${CursoAula_ID}/${Id_Tema}/crear-cuestionario`}
+          >
+            <li className="w-full cursor-pointer text-[0.9rem] hover:bg-[#ddd] p-1 rounded-[0.3rem]">
+              Cuestionario
+            </li>
+          </Link>
         </ul>
       </div>
     </>

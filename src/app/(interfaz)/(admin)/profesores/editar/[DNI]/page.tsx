@@ -31,6 +31,7 @@ const EditarProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
   } = useRequestAPIFeatures();
 
   useEffect(() => {
+
     const { status, messageError } = validateDNI(DNI);
 
     if (!status)
@@ -40,8 +41,11 @@ const EditarProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
 
     const fetchTeacher = async () => {
       try {
+        
         const fetchCancelable = fetchAPI(`/api/teachers/${DNI}`, "GET");
+
         if (fetchCancelable === undefined) return;
+
         setIsSomethingLoading(true);
 
         const res = await fetchCancelable?.fetch();
@@ -68,6 +72,7 @@ const EditarProfesor = ({ params: { DNI } }: { params: { DNI: string } }) => {
     };
 
     fetchTeacher();
+    
   }, [fetchAPI]);
 
   const handleChange: React.ChangeEventHandler<

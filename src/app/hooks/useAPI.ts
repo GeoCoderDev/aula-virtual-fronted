@@ -37,7 +37,7 @@ const useAPI = () => {
         },
         queryParams as any
       );
-
+      
       setFetchCancelables((prev) => [...prev, fetchCancelable]);
       return fetchCancelable;
     },
