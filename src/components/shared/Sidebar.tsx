@@ -74,7 +74,7 @@ const Sidebar = () => {
               min-height: 100dvh;
               left: 0;        
               background-color:${sidebarIsOpen ? "#00000080" : "transparent"};
-              z-index: 102;
+              z-index: 10000;
             }
   
             #sidebar-ul{
